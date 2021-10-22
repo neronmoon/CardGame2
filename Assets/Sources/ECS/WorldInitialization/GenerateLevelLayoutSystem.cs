@@ -35,7 +35,7 @@ namespace Sources.ECS.WorldInitialization {
             layout[0][1] = configuration.Character;
 
             // generating level
-            for (int i = 0; i < layout.Length -1; i++) {
+            for (int i = 1; i < layout.Length -1; i++) {
                 int nullsCount = 0;
                 for (int j = 0; j < layout[i].Length; j++) {
                     object enemy = choose(level.Enemies);

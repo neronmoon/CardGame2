@@ -11,6 +11,7 @@ namespace Sources.Data {
     public class RuntimeData {
         public Input Input;
         public Level CurrentLevel;
+        public int CurrentPlayerPosition;
         public EcsEntity GarbageEntity;
         public object[][] LevelLayout;
     }

@@ -41,7 +41,8 @@ namespace Sources {
                 .Add(new ClickSystem())
                 .Add(new LevelStartSystem()) // should be on top of non-technical systems
                 .Add(new GenerateLevelLayoutSystem())
-                .Add(new SpawnCardsSystem())
+                .Add(new CreateLevelEntitiesSystem())
+                .Add(new SpawnCardsGameObjectsSystem())
                 .OneFrame<StartLevelEvent>()
                 ;
             // fixedSystems

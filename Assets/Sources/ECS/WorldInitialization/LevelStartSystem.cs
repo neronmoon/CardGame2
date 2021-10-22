@@ -7,7 +7,7 @@ namespace Sources.ECS.WorldInitialization {
     public class LevelStartSystem : IEcsInitSystem, IEcsRunSystem {
         /// <summary>
         /// Creates entity with one-frame component to indicate level start
-        /// Also changes runtimeData's current level prop
+        /// Also changes runtimeData's current level and current player position props
         /// </summary>
         private EcsWorld world;
 
@@ -25,6 +25,7 @@ namespace Sources.ECS.WorldInitialization {
                 var newLevel = filter.Get1(idx).Level;
                 if (runtimeData.CurrentLevel != newLevel) {
                     runtimeData.CurrentLevel = newLevel;
+                    runtimeData.CurrentPlayerPosition = 0;
                 }
 
                 Debug.Log("Level changed to " + newLevel.Name);
