@@ -23,20 +23,24 @@ namespace Sources {
         private void Start() {
             world = new EcsWorld();
 #if UNITY_EDITOR
-            EcsWorldObserver.Create (world);
-#endif   
+            EcsWorldObserver.Create(world);
+#endif
             initSystems = new EcsSystems(world);
             systems = new EcsSystems(world);
             fixedSystems = new EcsSystems(world);
-            
+
             initSystems
-                .Add(new PlayerInitSystem());
+                .Add(new PlayerInitSystem())
+                ;
             systems
                 .Add(new InputSystem())
-                .Add(new HoverSystem());
+                .Add(new HoverSystem())
+                .Add(new ClickSystem())
+                ;
             // fixedSystems
-            //     .Add(new InputSystem());
-            
+            //     .Add(new InputSystem())
+            // ;
+
             RuntimeData runtimeData = new RuntimeData();
             Camera camera = Camera.main;
             foreach (EcsSystems sys in new List<EcsSystems> { initSystems, systems, fixedSystems }) {
@@ -47,7 +51,7 @@ namespace Sources {
                    .Init();
             }
 #if UNITY_EDITOR
-            EcsSystemsObserver.Create (systems);
+            EcsSystemsObserver.Create(systems);
 #endif
             Debug.Log("[ECS] Systems initialized");
         }
