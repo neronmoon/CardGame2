@@ -31,10 +31,13 @@ namespace Sources.ECS.WorldInitialization {
                 layout[i] = new object[Width];
             }
 
-            layout[0][1] = configuration.Character; // player always in middle
-            for (int i = 1; i < level.Length; i++) {
+            // placing player (always in middle of row)
+            layout[0][1] = configuration.Character;
+
+            // generating level
+            for (int i = 0; i < layout.Length -1; i++) {
                 int nullsCount = 0;
-                for (int j = 0; j < Width; j++) {
+                for (int j = 0; j < layout[i].Length; j++) {
                     object enemy = choose(level.Enemies);
                     object exit = choose(level.Exits);
                     object[] options = nullsCount < 1 ? new[] { null, enemy, exit } : new[] { enemy, exit };
@@ -45,7 +48,8 @@ namespace Sources.ECS.WorldInitialization {
                 }
             }
 
-            layout[level.Length - 1][(int)choose(new object[] { 0, 1, 2 })] = choose(level.Exits);
+            // placing exit at last row
+            layout[layout.Length - 1][(int)choose(new object[] { 0, 1, 2 })] = choose(level.Exits);
             runtimeData.LevelLayout = layout;
         }
 
