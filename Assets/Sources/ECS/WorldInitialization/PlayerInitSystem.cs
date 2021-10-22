@@ -1,5 +1,6 @@
 using Leopotam.Ecs;
 using Sources.Data;
+using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.Unity.Support;
 using UnityEngine;
@@ -22,6 +23,8 @@ namespace Sources.ECS.WorldInitialization {
             playerObj.tag = "Entity";
             playerObj.name = "Player";
             playerEntity.Replace(new VisualObject { Object = playerObj });
+            playerEntity.Replace(new Hoverable());
+            playerEntity.Replace(new Clickable());
         }
     }
 }

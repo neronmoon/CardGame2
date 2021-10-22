@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using Leopotam.Ecs;
+#if UNITY_EDITOR
+using Leopotam.Ecs.UnityIntegration;
+#endif
 using Sources.Data;
 using Sources.ECS.BaseInteractions;
 using Sources.ECS.WorldInitialization;
@@ -19,26 +22,33 @@ namespace Sources {
 
         private void Start() {
             world = new EcsWorld();
-
+#if UNITY_EDITOR
+            EcsWorldObserver.Create (world);
+#endif   
             initSystems = new EcsSystems(world);
             systems = new EcsSystems(world);
             fixedSystems = new EcsSystems(world);
-
+            
             initSystems
                 .Add(new PlayerInitSystem());
             systems
-                .Add(new InputSystem());
+                .Add(new InputSystem())
+                .Add(new HoverSystem());
             // fixedSystems
             //     .Add(new InputSystem());
-
+            
             RuntimeData runtimeData = new RuntimeData();
+            Camera camera = Camera.main;
             foreach (EcsSystems sys in new List<EcsSystems> { initSystems, systems, fixedSystems }) {
-                sys.Inject(Configuration);
-                sys.Inject(runtimeData);
-                sys.Inject(ObjectPool);
-                sys.Init();
+                sys.Inject(Configuration)
+                   .Inject(runtimeData)
+                   .Inject(ObjectPool)
+                   .Inject(camera)
+                   .Init();
             }
-
+#if UNITY_EDITOR
+            EcsSystemsObserver.Create (systems);
+#endif
             Debug.Log("[ECS] Systems initialized");
         }
 

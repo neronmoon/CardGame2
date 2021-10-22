@@ -72,6 +72,9 @@ namespace Sources.Unity.Support {
             List<GameObject> list;
             Transform trans;
             GameObject obj;
+            if (parent == null) {
+                parent = transform;
+            }
             if (Instance.pooledObjects.TryGetValue(prefab, out list)) {
                 obj = null;
                 if (list.Count > 0) {
