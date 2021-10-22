@@ -6,6 +6,7 @@ using Sources.ECS.Components;
 namespace Sources.ECS.BaseInteractions {
     public class ClickSystem : IEcsRunSystem {
         /// <summary>
+        /// Adds/removes Clicked component
         /// </summary>
         private EcsWorld world;
 
@@ -13,9 +14,9 @@ namespace Sources.ECS.BaseInteractions {
         private RuntimeData runtimeData;
 
         public void Run() {
-            var keyDown = runtimeData.Input.Primary;
+            bool keyDown = runtimeData.Input.Primary;
 
-            foreach (var idx in clickables) {
+            foreach (int idx in clickables) {
                 EcsEntity entity = clickables.GetEntity(idx);
                 bool alreadyClicked = entity.Has<Clicked>();
                 if (keyDown && !alreadyClicked) {

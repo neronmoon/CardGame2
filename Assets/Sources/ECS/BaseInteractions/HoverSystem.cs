@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Sources.ECS.BaseInteractions {
     public class HoverSystem : IEcsRunSystem {
         /// <summary>
-        /// Trigger hovered prop in hoverable compoent
+        /// Adds/removes Hovered component
         /// </summary>
         private EcsWorld world;
 
