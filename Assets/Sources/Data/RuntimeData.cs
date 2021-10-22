@@ -1,3 +1,4 @@
+using Leopotam.Ecs;
 using UnityEngine;
 
 namespace Sources.Data {
@@ -9,5 +10,8 @@ namespace Sources.Data {
 
     public class RuntimeData {
         public Input Input;
+        public Level CurrentLevel;
+        public EcsEntity GarbageEntity;
+        public object[][] LevelLayout;
     }
 }

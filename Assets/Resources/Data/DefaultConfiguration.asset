@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: DefaultConfiguration
   m_EditorClassIdentifier: 
   CardPrefab: {fileID: 8182558108753156521, guid: 22f65f7c3121b45f492d37225a190735, type: 3}
+  Character: {fileID: 11400000, guid: 9d759537e79e04c5ab4545ae885a5bd7, type: 2}
+  StartLevel: {fileID: 11400000, guid: 4344e52058a6348a8b7e6fed239e333f, type: 2}

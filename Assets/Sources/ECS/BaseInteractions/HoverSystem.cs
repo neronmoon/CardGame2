@@ -29,17 +29,15 @@ namespace Sources.ECS.BaseInteractions {
                 bool shouldBeHovered = size > 0 && checkHovered(hoverables.Get2(idx).Object, rayHits);
                 if (alreadyHovered && !shouldBeHovered) {
                     entity.Del<Hovered>();
-                    Debug.Log("[HoverSystem] Not hovered");
                 }
 
                 if (!alreadyHovered && shouldBeHovered) {
                     entity.Replace(new Hovered());
-                    Debug.Log("[HoverSystem] Hovered");
                 }
             }
         }
 
-        private bool checkHovered(GameObject obj, RaycastHit2D[] hits) {
+        private static bool checkHovered(GameObject obj, RaycastHit2D[] hits) {
             return hits.Any(hit => hit.transform.gameObject == obj);
         }
     }

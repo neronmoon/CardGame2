@@ -5,6 +5,7 @@ using Leopotam.Ecs.UnityIntegration;
 #endif
 using Sources.Data;
 using Sources.ECS.BaseInteractions;
+using Sources.ECS.Components.Events;
 using Sources.ECS.WorldInitialization;
 using Sources.Unity.Support;
 using UnityEngine;
@@ -29,13 +30,19 @@ namespace Sources {
             systems = new EcsSystems(world);
             fixedSystems = new EcsSystems(world);
 
+            // ONLY TO CALLED ONCE!!
             initSystems
-                .Add(new PlayerInitSystem())
+                .Add(new InitGarbageEntity())
                 ;
+
             systems
                 .Add(new InputSystem())
                 .Add(new HoverSystem())
                 .Add(new ClickSystem())
+                .Add(new LevelStartSystem()) // should be on top of non-technical systems
+                .Add(new GenerateLevelLayoutSystem())
+                .Add(new SpawnCardsSystem())
+                .OneFrame<StartLevelEvent>()
                 ;
             // fixedSystems
             //     .Add(new InputSystem())
