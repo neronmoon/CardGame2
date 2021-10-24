@@ -40,12 +40,15 @@ namespace Sources.ECS.WorldInitialization {
                     entity.Replace(new Player());
                     entity.Replace(new Hoverable());
                     entity.Replace(new Clickable());
+                    entity.Replace(new Draggable());
                     break;
                 case EnemySpec enemy:
                     entity.Replace(new Enemy());
+                    entity.Replace(new DropZone());
                     break;
                 case Level level:
                     entity.Replace(new LevelExit());
+                    entity.Replace(new DropZone());
                     break;
             }
         }

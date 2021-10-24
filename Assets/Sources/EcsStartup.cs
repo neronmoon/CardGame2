@@ -38,8 +38,8 @@ namespace Sources {
 
             systems
                 .Add(new InputSystem())
-                .Add(new HoverSystem())
-                .Add(new ClickSystem())
+                .Add(new DragSystem())
+
                 .Add(new LevelStartSystem()) // should be on top of non-technical systems
                 .Add(new GenerateLevelLayoutSystem())
                 .Add(new CreateLevelEntitiesSystem())
