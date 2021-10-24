@@ -1,7 +1,7 @@
 using Leopotam.Ecs;
 using Sources.Data;
+using Sources.Data.Gameplay;
 using Sources.ECS.Components.Events;
-using UnityEngine;
 
 namespace Sources.ECS.WorldInitialization {
     public class LevelStartSystem : IEcsInitSystem, IEcsRunSystem {
@@ -21,14 +21,14 @@ namespace Sources.ECS.WorldInitialization {
         }
 
         public void Run() {
-            foreach (var idx in filter) {
-                var newLevel = filter.Get1(idx).Level;
-                if (runtimeData.CurrentLevel != newLevel) {
-                    runtimeData.CurrentLevel = newLevel;
-                    runtimeData.CurrentPlayerPosition = 0;
+            foreach (int idx in filter) {
+                Level newLevel = filter.Get1(idx).Level;
+                if (runtimeData.CurrentLevel == newLevel) {
+                    continue;
                 }
 
-                Debug.Log("Level changed to " + newLevel.Name);
+                runtimeData.CurrentLevel = newLevel;
+                runtimeData.CurrentPlayerPosition = 0;
             }
         }
     }

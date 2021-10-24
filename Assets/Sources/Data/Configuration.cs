@@ -1,4 +1,5 @@
 using UnityEngine;
+using Sources.Data.Gameplay;
 
 namespace Sources.Data {
     [CreateAssetMenu]

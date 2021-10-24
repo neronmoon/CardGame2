@@ -1,5 +1,6 @@
 using Leopotam.Ecs;
 using Sources.Data;
+using Sources.Data.Gameplay;
 using Sources.ECS.Components.Events;
 using UnityEngine;
 using Random = System.Random;
@@ -9,8 +10,6 @@ namespace Sources.ECS.WorldInitialization {
         /// <summary>
         /// Generates level layout using runtimeData's CurrentLevel prop
         /// </summary>
-        private const int Width = 3;
-
         private Random random = new Random();
 
         private EcsWorld world;
@@ -28,14 +27,14 @@ namespace Sources.ECS.WorldInitialization {
             Level level = runtimeData.CurrentLevel;
             object[][] layout = new object[level.Length + 2][];
             for (int i = 0; i < layout.Length; i++) {
-                layout[i] = new object[Width];
+                layout[i] = new object[level.Width];
             }
 
             // placing player (always in middle of row)
-            layout[0][1] = configuration.Character;
+            layout[0][Mathf.FloorToInt(level.Width / 2)] = configuration.Character;
 
             // generating level
-            for (int i = 1; i < layout.Length -1; i++) {
+            for (int i = 1; i < layout.Length - 1; i++) {
                 int nullsCount = 0;
                 for (int j = 0; j < layout[i].Length; j++) {
                     object enemy = choose(level.Enemies);
@@ -49,7 +48,7 @@ namespace Sources.ECS.WorldInitialization {
             }
 
             // placing exit at last row
-            layout[layout.Length - 1][(int)choose(new object[] { 0, 1, 2 })] = choose(level.Exits);
+            layout[layout.Length - 1][random.Next(0, level.Width)] = choose(level.Exits);
             runtimeData.LevelLayout = layout;
         }
 

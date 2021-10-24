@@ -1,4 +1,5 @@
 using Leopotam.Ecs;
+using Sources.Data.Gameplay;
 using UnityEngine;
 
 namespace Sources.Data {

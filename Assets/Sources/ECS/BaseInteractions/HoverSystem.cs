@@ -38,7 +38,7 @@ namespace Sources.ECS.BaseInteractions {
         }
 
         private static bool checkHovered(GameObject obj, RaycastHit2D[] hits) {
-            return hits.Any(hit => hit.transform.gameObject == obj);
+            return hits.Any(hit => hit && hit.collider.gameObject == obj);
         }
     }
 }

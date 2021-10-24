@@ -19,6 +19,7 @@ namespace Sources {
         private EcsSystems fixedSystems;
 
         [SerializeField] private Configuration Configuration;
+        [SerializeField] private SceneData SceneData;
         [SerializeField] private ObjectPool ObjectPool;
 
         private void Start() {
@@ -53,6 +54,7 @@ namespace Sources {
             Camera camera = Camera.main;
             foreach (EcsSystems sys in new List<EcsSystems> { initSystems, systems, fixedSystems }) {
                 sys.Inject(Configuration)
+                   .Inject(SceneData)
                    .Inject(runtimeData)
                    .Inject(ObjectPool)
                    .Inject(camera)

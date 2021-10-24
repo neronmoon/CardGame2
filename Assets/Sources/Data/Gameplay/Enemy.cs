@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Sources.Data {
+namespace Sources.Data.Gameplay {
     [CreateAssetMenu]
     public class Enemy : ScriptableObject {
         public string Name;

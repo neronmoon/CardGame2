@@ -1,9 +1,10 @@
 using Leopotam.Ecs;
 using Sources.Data;
+using Sources.Data.Gameplay;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
-using EnemySpec = Sources.Data.Enemy;
+using EnemySpec = Sources.Data.Gameplay.Enemy;
 using Enemy = Sources.ECS.Components.Enemy;
 
 namespace Sources.ECS.WorldInitialization {
@@ -24,7 +25,8 @@ namespace Sources.ECS.WorldInitialization {
             for (int i = 0; i < layout.Length; i++) {
                 for (int j = 0; j < layout[i].Length; j++) {
                     if (layout[i][j] == null) continue;
-                    createCardEntity(layout[i][j], i, j);
+                    // i - row number (Y), j - position in row - x, so its inverted
+                    createCardEntity(layout[i][j], j, i);
                 }
             }
         }
