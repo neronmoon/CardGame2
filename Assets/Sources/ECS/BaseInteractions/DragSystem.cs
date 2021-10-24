@@ -20,9 +20,10 @@ namespace Sources.ECS.BaseInteractions {
         private EcsFilter<DropZone, VisualObject> dropZones;
 
         private ContactFilter2D contactFilter = new ContactFilter2D();
+        private Plane plane = new Plane(Vector3.forward, new Vector3(0, 0, 0));
 
         public void Run() {
-            foreach (var idx in draggables) {
+            foreach (int idx in draggables) {
                 EcsEntity entity = draggables.GetEntity(idx);
                 bool dragging = entity.Has<Dragging>();
                 bool clicked = entity.Has<Clicked>();
@@ -93,7 +94,7 @@ namespace Sources.ECS.BaseInteractions {
 
             float distance = 10000;
             EcsEntity candidate = default;
-            foreach (var idx in dropZones) {
+            foreach (int idx in dropZones) {
                 GameObject dropzoneObj = dropZones.Get2(idx).Object;
                 bool isOverlapping = overlaps.Any(coll => coll.gameObject == dropzoneObj);
                 if (!isOverlapping) {
@@ -112,9 +113,7 @@ namespace Sources.ECS.BaseInteractions {
 
         private Vector3 GetWorldPosition(Vector2 screenPosition) {
             Ray ray = camera.ScreenPointToRay(screenPosition);
-            Plane xy = new Plane(Vector3.forward, new Vector3(0, 0, 0));
-            float distance;
-            xy.Raycast(ray, out distance);
+            plane.Raycast(ray, out float distance);
             return ray.GetPoint(distance);
         }
     }
