@@ -2,6 +2,7 @@ using Leopotam.Ecs;
 using Sources.Data;
 using Sources.Data.Gameplay;
 using Sources.ECS.Components.Events;
+using UnityEngine;
 
 namespace Sources.ECS.WorldInitialization {
     public class LevelStartSystem : IEcsInitSystem, IEcsRunSystem {
@@ -16,11 +17,17 @@ namespace Sources.ECS.WorldInitialization {
 
         private EcsFilter<StartLevelEvent> filter;
 
+        private float time;
+
         public void Init() {
-            runtimeData.GarbageEntity.Replace(new StartLevelEvent { Level = configuration.StartLevel });
+            time = Time.time;
         }
 
         public void Run() {
+            if (runtimeData.CurrentLevel == null && Time.time - time > 2) {
+                runtimeData.GarbageEntity.Replace(new StartLevelEvent { Level = configuration.StartLevel });
+            }
+
             foreach (int idx in filter) {
                 Level newLevel = filter.Get1(idx).Level;
                 if (runtimeData.CurrentLevel == newLevel) {

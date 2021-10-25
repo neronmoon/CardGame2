@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.BaseInteractions.Components;
@@ -7,7 +8,7 @@ using Sources.ECS.Components;
 using UnityEngine;
 
 namespace Sources.ECS.BaseInteractions {
-    public class DragSystem : IEcsRunSystem {
+    public class DragndropSystem : IEcsRunSystem {
         /// <summary>
         /// System handles drag events and triggers Dragging and DropCandidate components
         /// </summary>
@@ -74,13 +75,12 @@ namespace Sources.ECS.BaseInteractions {
         private void Released(EcsEntity entity) {
             GameObject gameObject = entity.Get<VisualObject>().Object;
             EcsEntity? candidate = getDropZoneCandidate(entity);
-            if (candidate != null) {
-                Vector3 dropPosition = ((EcsEntity)candidate).Get<VisualObject>().Object.transform.position;
-                gameObject.transform.position = dropPosition;
-            } else {
-                Vector3 pos = entity.Get<Dragging>().StartPosition;
-                gameObject.transform.position = pos;
-            }
+            
+            Vector3 pos = candidate != null
+                ? ((EcsEntity)candidate).Get<VisualObject>().Object.transform.position
+                : entity.Get<Dragging>().StartPosition;
+
+            gameObject.transform.DOMove(pos, 0.1f);
         }
 
         private EcsEntity? getDropZoneCandidate(EcsEntity entity) {

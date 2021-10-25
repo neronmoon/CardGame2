@@ -22,31 +22,23 @@ namespace Sources.ECS.WorldInitialization {
             foreach (int idx in cards) {
                 LevelPosition pos = cards.Get2(idx);
                 
-                // Spawn two rows + player row
-                if (Math.Abs(runtimeData.CurrentPlayerPosition - pos.Y) >= 3) {
+                // Spawn three rows + player row
+                if (Math.Abs(runtimeData.CurrentPlayerPosition - pos.Y) >= 4) {
                     continue;
                 }
 
                 EcsEntity entity = cards.GetEntity(idx);
                 GameObject obj = spawnCardGameObject(entity);
                 entity.Replace(new VisualObject { Object = obj });
+                entity.Replace(new Spawned());
             }
         }
 
         private GameObject spawnCardGameObject(EcsEntity entity) {
             GameObject obj = pool.Spawn(configuration.CardPrefab);
-            obj.transform.position = calculatePosition(entity.Get<LevelPosition>());
+            obj.transform.position = sceneData.SpawnPoint.transform.position;
             return obj;
         }
 
-        private Vector3 calculatePosition(LevelPosition position) {
-            Vector2 origin = sceneData.OriginPoint.position;
-            int relativeX = position.X - Mathf.FloorToInt(runtimeData.CurrentLevel.Width / 2);
-            return new Vector3(
-                origin.x + sceneData.CardSpacing.x * relativeX,
-                origin.y + sceneData.CardSpacing.y * position.Y,
-                0
-            );
-        }
     }
 }
