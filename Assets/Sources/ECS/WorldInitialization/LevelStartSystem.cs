@@ -24,7 +24,9 @@ namespace Sources.ECS.WorldInitialization {
         }
 
         public void Run() {
-            if (runtimeData.CurrentLevel == null && Time.time - time > 2) {
+            // Add a bit delay, because animations are freezing at start
+            // TODO: Fix this!
+            if (runtimeData.CurrentLevel == null && Time.time - time > 1) { 
                 runtimeData.GarbageEntity.Replace(new StartLevelEvent { Level = configuration.StartLevel });
             }
 
