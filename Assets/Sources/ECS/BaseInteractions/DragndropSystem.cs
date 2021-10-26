@@ -5,6 +5,7 @@ using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
+using Sources.ECS.Components.Events;
 using UnityEngine;
 
 namespace Sources.ECS.BaseInteractions {
@@ -75,10 +76,14 @@ namespace Sources.ECS.BaseInteractions {
         private void Released(EcsEntity entity) {
             GameObject gameObject = entity.Get<VisualObject>().Object;
             EcsEntity? candidate = getDropZoneCandidate(entity);
-            
+
             Vector3 pos = candidate != null
                 ? ((EcsEntity)candidate).Get<VisualObject>().Object.transform.position
                 : entity.Get<Dragging>().StartPosition;
+
+            if (candidate != null) {
+                runtimeData.GarbageEntity.Replace(new DroppedEvent { DropZone = (EcsEntity)candidate });
+            }
 
             gameObject.transform.DOMove(pos, 0.1f);
         }

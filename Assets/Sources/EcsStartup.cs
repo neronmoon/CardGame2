@@ -45,13 +45,24 @@ namespace Sources {
                 .Add(new InputSystem(), "input")
                 .Add(new DragndropSystem())
                 .Add(new LevelStartSystem()) // should be on top of non-technical systems
+
+                // Level initializaion
                 .Add(new GenerateLevelLayoutSystem())
                 .Add(new CreateLevelEntitiesSystem())
+                
+                // Cards spawn cycle
                 .Add(new SetCurrentPlayerPositionSystem())
                 .Add(new SpawnCardsGameObjectsSystem())
                 .Add(new CardAnimationSystem())
+                
+                // Player movement
                 .Add(new DefinePlayerAvailableMovesSystem())
+                .Add(new PlayerMoveSystem())
+
+                // Events
                 .OneFrame<StartLevelEvent>()
+                .OneFrame<DroppedEvent>()
+                .OneFrame<PlayerMovedEvent>()
                 ;
             // fixedSystems
             //     .Add(new InputSystem())
