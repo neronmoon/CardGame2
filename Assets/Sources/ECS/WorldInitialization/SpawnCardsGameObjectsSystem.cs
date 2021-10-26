@@ -24,7 +24,7 @@ namespace Sources.ECS.WorldInitialization {
                 LevelPosition pos = cards.Get2(idx);
                 
                 // Spawn three rows + player row
-                if (Math.Abs(runtimeData.CurrentPlayerPosition - pos.Y) >= 4) {
+                if (Math.Abs(runtimeData.PlayerPosition.Y - pos.Y) >= 4) {
                     continue;
                 }
 

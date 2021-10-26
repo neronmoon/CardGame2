@@ -8,7 +8,7 @@ namespace Sources.ECS.WorldInitialization {
     public class LevelStartSystem : IEcsInitSystem, IEcsRunSystem {
         /// <summary>
         /// Creates entity with one-frame component to indicate level start
-        /// Also changes runtimeData's current level and current player position props
+        /// Also changes runtimeData's current level
         /// </summary>
         private EcsWorld world;
 
@@ -37,7 +37,6 @@ namespace Sources.ECS.WorldInitialization {
                 }
 
                 runtimeData.CurrentLevel = newLevel;
-                runtimeData.CurrentPlayerPosition = 0;
             }
         }
     }

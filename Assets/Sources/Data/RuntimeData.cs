@@ -1,5 +1,6 @@
 using Leopotam.Ecs;
 using Sources.Data.Gameplay;
+using Sources.ECS.Components;
 using UnityEngine;
 
 namespace Sources.Data {
@@ -12,8 +13,8 @@ namespace Sources.Data {
     public class RuntimeData {
         public Input Input;
         public Level CurrentLevel;
-        public int CurrentPlayerPosition;
         public EcsEntity GarbageEntity;
+        public LevelPosition PlayerPosition = new LevelPosition { X = 0, Y = 0 };
         public object[][] LevelLayout;
     }
 }

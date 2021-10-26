@@ -17,6 +17,7 @@ namespace Sources.ECS.Animations {
         private EcsFilter<PlayableCard, VisualObject> cards;
         private SceneData sceneData;
         private RuntimeData runtimeData;
+        private EcsFilter<PlayableCard, Player, LevelPosition> playerCard;
 
         private EcsSystems systems;
 
@@ -40,7 +41,7 @@ namespace Sources.ECS.Animations {
                             LevelPosition levelPosition = entity.Get<LevelPosition>();
                             Vector3 targetPos = calcLevelPosition(levelPosition);
                             obj.transform.position = new Vector3(targetPos.x, obj.transform.position.y, targetPos.z);
-                            float delay = 0.3f * levelPosition.X + (levelPosition.Y - runtimeData.CurrentPlayerPosition) * 0.3f;
+                            float delay = 0.3f * levelPosition.X + (levelPosition.Y - runtimeData.PlayerPosition.Y) * 0.3f;
                             return seq(obj.transform.DOMove(targetPos, 1.2f)).SetDelay(delay).SetEase(Ease.OutCubic);
                         }
                     );
