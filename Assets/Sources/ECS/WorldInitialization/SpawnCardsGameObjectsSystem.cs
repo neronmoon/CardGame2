@@ -2,6 +2,7 @@ using System;
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.Components;
+using Sources.Unity;
 using Sources.Unity.Support;
 using UnityEngine;
 
@@ -37,6 +38,9 @@ namespace Sources.ECS.WorldInitialization {
         private GameObject spawnCardGameObject(EcsEntity entity) {
             GameObject obj = pool.Spawn(configuration.CardPrefab);
             obj.transform.position = sceneData.SpawnPoint.transform.position;
+            if (entity.Has<Player>()) {
+                obj.GetComponent<CardView>().AdditionalSortOrder = 100;                
+            }
             return obj;
         }
 
