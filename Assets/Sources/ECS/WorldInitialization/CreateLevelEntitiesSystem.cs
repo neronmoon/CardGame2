@@ -44,11 +44,9 @@ namespace Sources.ECS.WorldInitialization {
                     break;
                 case EnemySpec enemy:
                     entity.Replace(new Enemy());
-                    entity.Replace(new DropZone());
                     break;
                 case Level level:
                     entity.Replace(new LevelExit());
-                    entity.Replace(new DropZone());
                     break;
             }
         }

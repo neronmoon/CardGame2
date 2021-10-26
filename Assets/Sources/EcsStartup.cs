@@ -8,6 +8,7 @@ using Sources.Data;
 using Sources.ECS.Animations;
 using Sources.ECS.BaseInteractions;
 using Sources.ECS.Components.Events;
+using Sources.ECS.Movement;
 using Sources.ECS.WorldInitialization;
 using Sources.Unity.Support;
 using UnityEngine;
@@ -48,6 +49,7 @@ namespace Sources {
                 .Add(new CreateLevelEntitiesSystem())
                 .Add(new SpawnCardsGameObjectsSystem())
                 .Add(new CardAnimationSystem())
+                .Add(new SetAvailableDropZones())
                 .OneFrame<StartLevelEvent>()
                 ;
             // fixedSystems
