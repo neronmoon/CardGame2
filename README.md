@@ -11,7 +11,8 @@
 - [x] Implement dragndrop system based on click and hover
 - [x] Add dragndrop animations
 - [x] Make cards pretty
-- [] Add drop constraint
+- [x] Add drop constraint
+- [x] Highlight to drop candidate card 
 - [] Add drop action — fight
 - [] Add stats to enemies and player
 - [] Add implement fight stats recalculation

@@ -6,7 +6,9 @@ using Sources.Data;
 using Sources.ECS.Animations.Components;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
+using Sources.Unity;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Sources.ECS.Animations {
     public class CardAnimationSystem : IEcsRunSystem {
@@ -19,30 +21,38 @@ namespace Sources.ECS.Animations {
         private RuntimeData runtimeData;
         private EcsFilter<PlayableCard, Player, LevelPosition> playerCard;
 
-        private EcsSystems systems;
+        private Random random = new Random();
 
         public void Run() {
-            foreach (var idx in cards) {
+            foreach (int idx in cards) {
                 EcsEntity entity = cards.GetEntity(idx);
                 GameObject obj = entity.Get<VisualObject>().Object;
+                Transform transform = obj.transform;
                 if (!entity.Has<CardAnimationState>()) {
                     entity.Replace(new CardAnimationState {
-                        InitScale = obj.transform.localScale,
+                        InitScale = transform.localScale,
                         Components = new List<Type>()
                     });
                 }
 
                 CardAnimationState state = entity.Get<CardAnimationState>();
-                animate<Dragging>(entity, (up) => seq(obj.transform.DOScale(state.InitScale * (up ? 1.1f : 1f), 0.3f)));
+                animate<Dragging>(entity, (up) => transform.DOScale(state.InitScale * (up ? 1.1f : 1f), 0.3f));
+                animate<DropCandidate>(
+                    entity,
+                    (up) => obj.GetComponent<CardView>().HighlightMask.DOFade(up ? 0.5f : 0f, 0.1f)
+                );
                 if (entity.Has<LevelPosition>()) {
                     animate<Spawned>(
                         entity,
                         (up) => {
                             LevelPosition levelPosition = entity.Get<LevelPosition>();
                             Vector3 targetPos = calcLevelPosition(levelPosition);
-                            obj.transform.position = new Vector3(targetPos.x, obj.transform.position.y, targetPos.z);
-                            float delay = 0.3f * levelPosition.X + (levelPosition.Y - runtimeData.PlayerPosition.Y) * 0.3f;
-                            return seq(obj.transform.DOMove(targetPos, 1.2f)).SetDelay(delay).SetEase(Ease.OutCubic);
+                            transform.position = new Vector3(targetPos.x, transform.position.y, targetPos.z);
+                            float delay = 0.3f * levelPosition.X +
+                                          (levelPosition.Y - runtimeData.PlayerPosition.Y) * 0.1f;
+                            const float time = 0.9f;
+                            transform.DOMove(targetPos, time).SetDelay(delay).SetEase(Ease.OutCubic);
+                            transform.DORotate(new Vector3(0f, 0f, randomFloat(-2.5f, 2.5f)), time);
                         }
                     );
                 }
@@ -59,11 +69,13 @@ namespace Sources.ECS.Animations {
             );
         }
 
-        private Sequence seq(Tween tween) {
-            return DOTween.Sequence().Append(tween);
+        private float randomFloat(float min, float max) {
+            float range = max - min;
+            double sample = random.NextDouble();
+            return (float)(sample * range + min);
         }
 
-        private void animate<T>(EcsEntity entity, Func<bool, Sequence> transition) where T : struct {
+        private static void animate<T>(EcsEntity entity, Action<bool> transition) where T : struct {
             CardAnimationState state = entity.Get<CardAnimationState>();
             Type type = typeof(T);
             animate(entity, entity.Has<T>(), state.Components.Contains(type), (up) => {
@@ -77,20 +89,19 @@ namespace Sources.ECS.Animations {
             }, transition);
         }
 
-        private void animate(
+        private static void animate(
             EcsEntity entity,
             bool currentState,
             bool lastState,
             Func<bool, CardAnimationState> updateState,
-            Func<bool, Sequence> transition
+            Action<bool> transition
         ) {
             if (currentState == lastState) {
                 return;
             }
 
             entity.Replace(updateState.Invoke(currentState));
-
-            transition.Invoke(currentState).Play();
+            transition.Invoke(currentState);
         }
     }
 }

@@ -6,6 +6,8 @@ namespace Sources.Unity {
     public class CardView : MonoBehaviour {
         public SpriteRenderer Sprite;
 
+        public SpriteRenderer HighlightMask;
+
         public TextMeshProUGUI HealthText;
         public GameObject[] HealthObjects;
 
