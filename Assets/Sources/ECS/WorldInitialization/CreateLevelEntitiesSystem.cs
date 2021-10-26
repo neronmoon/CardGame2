@@ -3,9 +3,10 @@ using Sources.Data;
 using Sources.Data.Gameplay;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
+using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Events;
 using EnemySpec = Sources.Data.Gameplay.Enemy;
-using Enemy = Sources.ECS.Components.Enemy;
+using Enemy = Sources.ECS.Components.Gameplay.Enemy;
 
 namespace Sources.ECS.WorldInitialization {
     public class CreateLevelEntitiesSystem : IEcsRunSystem {

@@ -6,6 +6,7 @@ using Sources.Data;
 using Sources.ECS.Animations.Components;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
+using Sources.ECS.Components.Gameplay;
 using Sources.Unity;
 using UnityEngine;
 using Random = System.Random;

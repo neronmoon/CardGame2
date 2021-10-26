@@ -13,6 +13,8 @@
 - [x] Make cards pretty
 - [x] Add drop constraint
 - [x] Highlight to drop candidate card 
+- [] Implement player movement forward
+- [] Implement other cards move backwards and fade
 - [] Add drop action — fight
 - [] Add stats to enemies and player
 - [] Add implement fight stats recalculation

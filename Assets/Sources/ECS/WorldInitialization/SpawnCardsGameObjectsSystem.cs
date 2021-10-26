@@ -2,6 +2,7 @@ using System;
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.Components;
+using Sources.ECS.Components.Gameplay;
 using Sources.Unity;
 using Sources.Unity.Support;
 using UnityEngine;

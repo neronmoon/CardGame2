@@ -3,6 +3,7 @@ using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
+using Sources.ECS.Components.Gameplay;
 
 namespace Sources.ECS.Movement {
     public class DefinePlayerAvailableMovesSystem : IEcsRunSystem {
