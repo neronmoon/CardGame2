@@ -15,6 +15,8 @@
 - [x] Highlight to drop candidate card 
 - [x] Implement player movement forward
 - [] Implement other cards move backwards and fade
+  (остановился на том, что нужно двигать карты вниз, только когда все drop action сработали и проанимировались)
+
 - [] Add drop action — fight
 - [] Add stats to enemies and player
 - [] Add implement fight stats recalculation

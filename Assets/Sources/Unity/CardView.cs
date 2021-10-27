@@ -15,19 +15,19 @@ namespace Sources.Unity {
         public GameObject[] NameObjects;
         public int AdditionalSortOrder = 0;
 
-        private Dictionary<Component, int> sortOrders = new Dictionary<Component, int>(10);
+        private Dictionary<Component, int> renderers = new Dictionary<Component, int>(10);
 
         private void Start() {
             foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>()) {
-                sortOrders.Add(renderer, renderer.sortingOrder);
+                renderers.Add(renderer, renderer.sortingOrder);
             }
             foreach (Canvas canvas in GetComponentsInChildren<Canvas>()) {
-                sortOrders.Add(canvas, canvas.sortingOrder);
+                renderers.Add(canvas, canvas.sortingOrder);
             }
         }
 
         private void Update() {
-            foreach (KeyValuePair<Component, int> x in sortOrders) {
+            foreach (KeyValuePair<Component, int> x in renderers) {
                 int order = (int)(x.Value + transform.position.y) + AdditionalSortOrder;
                 switch (x.Key) {
                     case SpriteRenderer renderer:

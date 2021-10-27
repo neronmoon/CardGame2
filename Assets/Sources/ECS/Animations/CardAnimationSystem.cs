@@ -57,6 +57,23 @@ namespace Sources.ECS.Animations {
                         }
                     );
                 }
+
+                animate<Discarded>(entity, (up) => {
+                    Vector3 targetPos = calcLevelPosition(entity.Get<LevelPosition>());
+                    const float fadeTime = 0.2f;
+                    transform.DOMove(new Vector3(
+                        targetPos.x, sceneData.DiscardPoint.transform.position.y,
+                        targetPos.z
+                    ), 1f);
+
+                    foreach (SpriteRenderer renderer in obj.GetComponentsInChildren<SpriteRenderer>()) {
+                        renderer.DOFade(0f, fadeTime);
+                    }
+
+                    foreach (CanvasGroup renderer in obj.GetComponentsInChildren<CanvasGroup>()) {
+                        renderer.DOFade(0f, fadeTime);
+                    }
+                });
             }
         }
 

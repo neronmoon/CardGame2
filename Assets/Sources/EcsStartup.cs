@@ -58,6 +58,7 @@ namespace Sources {
                 // Player movement
                 .Add(new DefinePlayerAvailableMovesSystem())
                 .Add(new PlayerMoveSystem())
+                .Add(new DiscardCardsInPlayerRowSystem())
 
                 // Events
                 .OneFrame<StartLevelEvent>()
