@@ -1,8 +1,8 @@
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.Components;
-using Sources.ECS.Components.Events;
 using Sources.ECS.Components.Gameplay;
+using Sources.GameplayActions.Components;
 
 namespace Sources.ECS.Movement {
     public class DiscardCardsInPlayerRowSystem : IEcsRunSystem {
@@ -12,12 +12,12 @@ namespace Sources.ECS.Movement {
         private EcsWorld world;
 
         private RuntimeData runtimeData;
-        private EcsFilter<PlayerMovedEvent> moved;
+        private EcsFilter<CompleteStep> stepCompleted;
         private EcsFilter<PlayableCard, LevelPosition>.Exclude<Player> cards;
 
         public void Run() {
-            // if (moved.IsEmpty()) return;
-            foreach (var idx in cards) {
+            if (stepCompleted.IsEmpty()) return;
+            foreach (int idx in cards) {
                 LevelPosition pos = cards.Get2(idx);
                 if (pos.Y <= runtimeData.PlayerPosition.Y) {
                     cards.GetEntity(idx).Replace(new Discarded());

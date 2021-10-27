@@ -3,6 +3,7 @@ using System.Linq;
 using DG.Tweening;
 using Leopotam.Ecs;
 using Sources.Data;
+using Sources.ECS.Animations.Components;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
@@ -18,7 +19,7 @@ namespace Sources.ECS.BaseInteractions {
         private Camera camera;
         private RuntimeData runtimeData;
 
-        private EcsFilter<Draggable, Clickable, VisualObject> draggables;
+        private EcsFilter<Draggable, Clickable, VisualObject>.Exclude<Animated> draggables;
         private EcsFilter<DropZone, VisualObject> dropZones;
 
         private ContactFilter2D contactFilter = new ContactFilter2D();

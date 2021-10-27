@@ -16,8 +16,9 @@ namespace Sources.ECS.Animations {
         public void Run() {
             foreach (var idx in animations) {
                 bool isTweening = DOTween.IsTweening(animations.Get2(idx).Object.transform, true);
-                if (!isTweening) {
-                    animations.GetEntity(idx).Del<Animated>();
+                EcsEntity entity = animations.GetEntity(idx);
+                if (!isTweening && entity.Has<Animated>()) {
+                    entity.Del<Animated>();
                 }
             }
         }

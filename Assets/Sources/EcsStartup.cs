@@ -47,15 +47,13 @@ namespace Sources {
                 .Add(new DragndropSystem())
                 .Add(new LevelStartSystem()) // should be on top of non-technical systems
 
-                // Level initializaion
+                // Level initialization
                 .Add(new GenerateLevelLayoutSystem())
                 .Add(new CreateLevelEntitiesSystem())
                 
                 // Cards spawn cycle
                 .Add(new SetCurrentPlayerPositionSystem())
                 .Add(new SpawnCardsGameObjectsSystem())
-                .Add(new CardAnimationSystem())
-                .Add(new CleanupAnimatedSystem())
                 
                 // Player movement
                 .Add(new DefinePlayerAvailableMovesSystem())
@@ -67,7 +65,11 @@ namespace Sources {
                 // here goes all GameplayAction systems
                 .Add(new ApplyDamageSystem())
                 
-                // .Add(new DiscardCardsInPlayerRowSystem())
+                .Add(new DiscardCardsInPlayerRowSystem())
+
+                // Animations
+                .Add(new CardAnimationSystem())
+                .Add(new CleanupAnimatedSystem())
 
                 // Events
                 .OneFrame<StartLevelEvent>()

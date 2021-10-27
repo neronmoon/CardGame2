@@ -7,6 +7,7 @@ using Sources.ECS.Animations.Components;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
+using Sources.GameplayActions.Components;
 using Sources.Unity;
 using UnityEngine;
 using Random = System.Random;
@@ -37,7 +38,7 @@ namespace Sources.ECS.Animations {
                 }
 
                 CardAnimationState state = entity.Get<CardAnimationState>();
-                animate<Dragging>(entity, (up) => transform.DOScale(state.InitScale * (up ? 1.1f : 1f), 0.3f));
+                animate<Dragging>(entity, (up) => transform.DOScale(state.InitScale * (up ? 1.1f : 1f), 0.3f), false);
                 animate<DropCandidate>(
                     entity,
                     (up) => obj.GetComponent<CardView>().HighlightMask.DOFade(up ? 0.5f : 0f, 0.1f)
@@ -54,24 +55,30 @@ namespace Sources.ECS.Animations {
                             const float time = 0.9f;
                             transform.DOMove(targetPos, time).SetDelay(delay).SetEase(Ease.OutCubic);
                             transform.DORotate(new Vector3(0f, 0f, randomFloat(-2.5f, 2.5f)), time);
-                        }
+                        },
+                        false
                     );
                 }
 
                 animate<Discarded>(entity, (up) => {
-                    Vector3 targetPos = calcLevelPosition(entity.Get<LevelPosition>());
                     const float fadeTime = 0.2f;
-                    transform.DOMove(new Vector3(
-                        targetPos.x, sceneData.DiscardPoint.transform.position.y,
-                        targetPos.z
-                    ), 1f);
-
                     foreach (SpriteRenderer renderer in obj.GetComponentsInChildren<SpriteRenderer>()) {
                         renderer.DOFade(0f, fadeTime);
                     }
 
                     foreach (CanvasGroup renderer in obj.GetComponentsInChildren<CanvasGroup>()) {
                         renderer.DOFade(0f, fadeTime);
+                    }
+                });
+
+                animate<Hit>(entity, (up) => { transform.DOPunchScale(-Vector3.one / 5, 0.2f, 1); });
+
+                animate<CompleteStep>(entity, (up) => {
+                    // Only player completed step, but we move all cards  
+                    foreach (int i in cards) {
+                        EcsEntity cardEntity = cards.GetEntity(i);
+                        Vector3 targetPos = calcLevelPosition(cardEntity.Get<LevelPosition>());
+                        cardEntity.Get<VisualObject>().Object.transform.DOMove(targetPos, 0.5f);
                     }
                 });
             }
@@ -82,7 +89,7 @@ namespace Sources.ECS.Animations {
             int relativeX = position.X - Mathf.FloorToInt(runtimeData.CurrentLevel.Width / 2);
             return new Vector3(
                 origin.x + sceneData.CardSpacing.x * relativeX,
-                origin.y + sceneData.CardSpacing.y * position.Y,
+                origin.y + sceneData.CardSpacing.y * (position.Y - runtimeData.PlayerPosition.Y),
                 0
             );
         }
@@ -93,7 +100,7 @@ namespace Sources.ECS.Animations {
             return (float)(sample * range + min);
         }
 
-        private static void animate<T>(EcsEntity entity, Action<bool> transition) where T : struct {
+        private static void animate<T>(EcsEntity entity, Action<bool> transition, bool block = true) where T : struct {
             CardAnimationState state = entity.Get<CardAnimationState>();
             Type type = typeof(T);
             animate(entity, entity.Has<T>(), state.Components.Contains(type), (up) => {
@@ -104,7 +111,7 @@ namespace Sources.ECS.Animations {
                 }
 
                 return state;
-            }, transition);
+            }, transition, block);
         }
 
         private static void animate(
@@ -112,14 +119,18 @@ namespace Sources.ECS.Animations {
             bool currentState,
             bool lastState,
             Func<bool, CardAnimationState> updateState,
-            Action<bool> transition
+            Action<bool> transition,
+            bool block = true
         ) {
             if (currentState == lastState) {
                 return;
             }
 
             entity.Replace(updateState.Invoke(currentState));
-            entity.Replace(new Animated());
+            if (block) {
+                entity.Replace(new Animated());
+            }
+
             transition.Invoke(currentState);
         }
     }

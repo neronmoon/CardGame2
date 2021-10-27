@@ -14,6 +14,7 @@ namespace Sources.GameplayActions {
         private EcsWorld world;
 
         private EcsFilter<ActionsQueue> queueFilter;
+        private EcsFilter<Animated> animated;
 
         public void Run() {
             foreach (int idx in queueFilter) {
@@ -27,17 +28,20 @@ namespace Sources.GameplayActions {
                     entity.Del(actions.Dequeue().GetType());
                 }
 
-                if (queue.Count > 0 && !entity.Has<Animated>()) {
+                if (queue.Count > 0 && animated.IsEmpty()) {
                     IGameplayTrigger trigger = queue.Dequeue();
                     // Add triggers dynamicly
                     switch (trigger) {
                         case Hit hit:
                             entity.Replace(hit);
                             actions.Enqueue(hit);
-                            Debug.Log("Executing hit");
+                            break;
+                        case CompleteStep step:
+                            entity.Replace(step);
+                            actions.Enqueue(step);
                             break;
                         default:
-                            Debug.Log("Unregistered trigger type");
+                            Debug.LogWarning("Unregistered trigger type");
                             break;
                     }
 
