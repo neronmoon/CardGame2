@@ -29,26 +29,17 @@ namespace Sources.GameplayActions {
                 if (target.Has<Enemy>()) {
                     // TODO: fix amount
                     actionsQueue.Queue.Enqueue(new Hit { Source = target, Amount = 1 });
-                    Debug.Log("Planned hit by enemy");
                 } else if (target.Has<LevelExit>()) {
                     // TODO: replace hit with level exit component
                     actionsQueue.Queue.Enqueue(new Hit { Source = target, Amount = 1 });
-                    Debug.Log("Planned level exit");
                 } else {
                     Debug.LogWarning("Player moved, but no actions planned!");
                 }
+
                 // Finish move
                 actionsQueue.Queue.Enqueue(new CompleteStep());
                 entity.Replace(actionsQueue);
             }
-            //
-            //
-            // foreach (int idx in cards) {
-            //     EcsEntity entity = cards.GetEntity(idx);
-            //     ActionsQueue actionsQueue = GetQueue(entity);
-            //     
-            //     entity.Replace(actionsQueue);
-            // }
         }
 
         private static ActionsQueue GetQueue(EcsEntity entity) {

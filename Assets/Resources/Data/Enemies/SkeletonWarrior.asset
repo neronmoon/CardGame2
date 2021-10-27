@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da679c19a4094a0ebd615c4433cf9717, type: 3}
-  m_Name: BlackKnight
+  m_Name: SkeletonWarrior
   m_EditorClassIdentifier: 
-  Health: 5
-  Sprite: {fileID: 21300000, guid: a0eed73a298224af2b1e3b934c8f4f1a, type: 3}
+  Health: 2
+  Sprite: {fileID: 21300000, guid: 127920812a6a64f3cb38dd29ffb06829, type: 3}

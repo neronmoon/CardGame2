@@ -14,8 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Infinite recursion
   Enemies:
+  - {fileID: 11400000, guid: cffa0ff3443c34173b806a870b15f9f7, type: 2}
   - {fileID: 11400000, guid: 4eb48dadc6ab34a28ad11719fadb0304, type: 2}
-  - {fileID: 11400000, guid: 10bffee715f9d426b981163cfdcf7eab, type: 2}
+  - {fileID: 11400000, guid: e3603e042adef46ac981d4d5f3320695, type: 2}
+  - {fileID: 11400000, guid: d386910da4333462699d550d596b0fdb, type: 2}
+  - {fileID: 11400000, guid: d26482f5085a542f89bf6bc179f4d1ab, type: 2}
+  - {fileID: 11400000, guid: cfb8f66aa6b544d85a7f21faf2b06be0, type: 2}
+  - {fileID: 11400000, guid: b90050b4426ab43fea36558aff57225b, type: 2}
+  - {fileID: 11400000, guid: b71a3cc3e30554afe9a98b5ec82c4199, type: 2}
+  - {fileID: 11400000, guid: f5467bfd069094047891ba9abd0bc5e9, type: 2}
+  - {fileID: 11400000, guid: 0f1b82f909c834795a812f2abdfd5472, type: 2}
+  - {fileID: 11400000, guid: 22f1e5431ccfb476b97c1a1c41ad249b, type: 2}
+  - {fileID: 11400000, guid: 13f380fc708e44defa3f02215f3bf9fd, type: 2}
+  - {fileID: 11400000, guid: 274be1b2e0d0c4c28b317e15ff27ea88, type: 2}
+  - {fileID: 11400000, guid: f14f8502b6e1f4a9e8693563067cf451, type: 2}
+  - {fileID: 11400000, guid: 90308065f09eb4f9a9a583c6c41a7c5a, type: 2}
   Exits:
   - {fileID: 11400000}
+  Width: 3
   Length: 5
+  Sprite: {fileID: 0}

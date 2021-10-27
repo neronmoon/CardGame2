@@ -38,21 +38,36 @@ namespace Sources.ECS.WorldInitialization {
             entity.Replace(new LevelPosition { X = x, Y = y });
             switch (data) {
                 case Character character:
-                    entity.Replace(new Player());
+                    entity.Replace(new Player { Data = character });
                     entity.Replace(new Hoverable());
                     entity.Replace(new Clickable());
                     entity.Replace(new Draggable());
-                    
-                    // TODO: Fix amount
-                    entity.Replace(new Health { Amount = 10 });
+
+                    entity.Replace(new Health { Amount = character.Health });
+
+                    if (character.Sprite) {
+                        entity.Replace(new Face { Sprite = character.Sprite });
+                    }
+
                     break;
                 case EnemySpec enemy:
-                    entity.Replace(new Enemy());
-                    // TODO: Fix amount
-                    entity.Replace(new Health { Amount = 1 });
+                    entity.Replace(new Enemy { Data = enemy });
+                    entity.Replace(new Health { Amount = enemy.Health });
+                    if (enemy.Sprite) {
+                        entity.Replace(new Face { Sprite = enemy.Sprite });
+                    }
+
                     break;
                 case Level level:
-                    entity.Replace(new LevelExit());
+                    entity.Replace(new LevelExit { Data = level });
+                    if (level.Sprite) {
+                        entity.Replace(new Face { Sprite = level.Sprite });
+                    }
+
+                    if (!string.IsNullOrEmpty(level.Name)) {
+                        entity.Replace(new Name { Value = level.Name });
+                    }
+
                     break;
             }
         }

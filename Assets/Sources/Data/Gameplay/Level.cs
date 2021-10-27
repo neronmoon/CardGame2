@@ -9,5 +9,7 @@ namespace Sources.Data.Gameplay {
 
         public int Width = 3;
         public int Length;
+
+        public Sprite Sprite;
     }
 }

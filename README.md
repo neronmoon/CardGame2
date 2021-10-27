@@ -16,6 +16,8 @@
 - [x] Implement player movement forward
 - [x] Implement gameplay actions system (animation waits..)
 - [x] Implement other cards move backwards and fade
+- [] Add more enemies and level exists
+- [] Implement stats display on card
 - [] Add drop action — fight
 - [] Add stats to enemies and player
 - [] Add implement fight stats recalculation
