@@ -1,3 +1,4 @@
+using System;
 using Leopotam.Ecs;
 using Sources.ECS.Components.Gameplay;
 using Sources.GameplayActions.Components;
@@ -13,11 +14,11 @@ namespace Sources.GameplayActions {
         private EcsFilter<Health, Hit> hits;
 
         public void Run() {
-            foreach (var idx in hits) {
+            foreach (int idx in hits) {
                 EcsEntity entity = hits.GetEntity(idx);
                 int dmg = hits.Get2(idx).Amount;
                 int health = hits.Get1(idx).Amount;
-                entity.Replace(new Health { Amount = health - dmg });
+                entity.Replace(new Health { Amount = Math.Max(0, health - dmg) });
                 Debug.Log($"Hit by {dmg}!");
             }
         }

@@ -7,7 +7,7 @@ using Sources.Unity;
 using Sources.Unity.Support;
 using UnityEngine;
 
-namespace Sources.ECS.WorldInitialization {
+namespace Sources.ECS.Visualization {
     public class SpawnCardsGameObjectsSystem : IEcsRunSystem {
         /// <summary>
         /// Spawns cards game objects according to level layout entities and current player position

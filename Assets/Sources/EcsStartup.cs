@@ -44,29 +44,30 @@ namespace Sources {
                 ;
 
             updateSystems
-                .Add(new InputSystem(), "input")
+                .Add(new InputSystem())
                 .Add(new DragndropSystem())
                 .Add(new LevelStartSystem()) // should be on top of non-technical systems
 
                 // Level initialization
                 .Add(new GenerateLevelLayoutSystem())
                 .Add(new CreateLevelEntitiesSystem())
-                
-                // Cards spawn cycle
                 .Add(new SetCurrentPlayerPositionSystem())
+
+                // Visualization
                 .Add(new SpawnCardsGameObjectsSystem())
                 .Add(new DisplayCardStatsSystem())
-                
+                .Add(new ShowDeadScreenSystem())
+
                 // Player movement
                 .Add(new DefinePlayerAvailableMovesSystem())
                 .Add(new PlayerMoveSystem())
-                
+
                 // Gameplay actions
                 .Add(new PlanActionsSystem())
                 .Add(new ExecuteActionsQueueSystem())
                 // here goes all GameplayAction systems
                 .Add(new ApplyDamageSystem())
-                
+                .Add(new DeathSystem())
                 .Add(new DiscardCardsInPlayerRowSystem())
 
                 // Animations
@@ -77,6 +78,7 @@ namespace Sources {
                 .OneFrame<StartLevelEvent>()
                 .OneFrame<DroppedEvent>()
                 .OneFrame<PlayerMovedEvent>()
+                .OneFrame<PlayerDiedEvent>()
                 ;
             // fixedSystems
             //     .Add(new InputSystem())
