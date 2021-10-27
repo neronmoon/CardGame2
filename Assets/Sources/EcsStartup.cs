@@ -10,6 +10,7 @@ using Sources.ECS.BaseInteractions;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Movement;
 using Sources.ECS.WorldInitialization;
+using Sources.GameplayActions;
 using Sources.Unity.Support;
 using UnityEngine;
 
@@ -54,11 +55,19 @@ namespace Sources {
                 .Add(new SetCurrentPlayerPositionSystem())
                 .Add(new SpawnCardsGameObjectsSystem())
                 .Add(new CardAnimationSystem())
+                .Add(new CleanupAnimatedSystem())
                 
                 // Player movement
                 .Add(new DefinePlayerAvailableMovesSystem())
                 .Add(new PlayerMoveSystem())
-                .Add(new DiscardCardsInPlayerRowSystem())
+                
+                // Gameplay actions
+                .Add(new PlanActionsSystem())
+                .Add(new ExecuteActionsQueueSystem())
+                // here goes all GameplayAction systems
+                .Add(new ApplyDamageSystem())
+                
+                // .Add(new DiscardCardsInPlayerRowSystem())
 
                 // Events
                 .OneFrame<StartLevelEvent>()

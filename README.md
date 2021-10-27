@@ -14,6 +14,7 @@
 - [x] Add drop constraint
 - [x] Highlight to drop candidate card 
 - [x] Implement player movement forward
+- [x] Implement gameplay actions system (animation waits..)
 - [] Implement other cards move backwards and fade
   (остановился на том, что нужно двигать карты вниз, только когда все drop action сработали и проанимировались)
 

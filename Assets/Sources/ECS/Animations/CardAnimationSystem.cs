@@ -119,6 +119,7 @@ namespace Sources.ECS.Animations {
             }
 
             entity.Replace(updateState.Invoke(currentState));
+            entity.Replace(new Animated());
             transition.Invoke(currentState);
         }
     }

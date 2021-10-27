@@ -21,10 +21,10 @@ namespace Sources.ECS.Movement {
             foreach (int idx in dropped) {
                 EcsEntity dropzone = dropped.Get1(idx).DropZone;
                 if (!dropzone.Has<LevelPosition>()) return;
-                foreach (var playerIdx in player) {
-                    EcsEntity entity = player.GetEntity(playerIdx);
-                    entity.Replace(dropzone.Get<LevelPosition>());
-                    runtimeData.GarbageEntity.Replace(new PlayerMovedEvent { Player = entity, Card = dropzone });
+                foreach (int playerIdx in player) {
+                    EcsEntity playerEnt = player.GetEntity(playerIdx);
+                    playerEnt.Replace(dropzone.Get<LevelPosition>());
+                    playerEnt.Replace(new PlayerMovedEvent { Target = dropzone });
                 }
             }
         }

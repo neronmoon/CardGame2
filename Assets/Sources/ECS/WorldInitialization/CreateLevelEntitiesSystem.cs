@@ -42,9 +42,14 @@ namespace Sources.ECS.WorldInitialization {
                     entity.Replace(new Hoverable());
                     entity.Replace(new Clickable());
                     entity.Replace(new Draggable());
+                    
+                    // TODO: Fix amount
+                    entity.Replace(new Health { Amount = 10 });
                     break;
                 case EnemySpec enemy:
                     entity.Replace(new Enemy());
+                    // TODO: Fix amount
+                    entity.Replace(new Health { Amount = 1 });
                     break;
                 case Level level:
                     entity.Replace(new LevelExit());
