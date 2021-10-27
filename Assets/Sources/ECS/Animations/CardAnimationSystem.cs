@@ -78,7 +78,13 @@ namespace Sources.ECS.Animations {
                     foreach (int i in cards) {
                         EcsEntity cardEntity = cards.GetEntity(i);
                         Vector3 targetPos = calcLevelPosition(cardEntity.Get<LevelPosition>());
-                        cardEntity.Get<VisualObject>().Object.transform.DOMove(targetPos, 0.5f);
+                        GameObject gameObject = cardEntity.Get<VisualObject>().Object;
+                        // This animation conflicting with non-blocking Spawned animation cause moving artifacts
+                        // But this animations does same thing - moves cards to right position
+                        // So if gameobject is already tweening — this animation don't need to do same thing
+                        if (!DOTween.IsTweening(gameObject.transform)) {
+                            gameObject.transform.DOMove(targetPos, 0.5f);
+                        }
                     }
                 });
             }
