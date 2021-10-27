@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Sources.Unity {
     public class CardView : MonoBehaviour {
@@ -24,6 +25,9 @@ namespace Sources.Unity {
             foreach (Canvas canvas in GetComponentsInChildren<Canvas>()) {
                 renderers.Add(canvas, canvas.sortingOrder);
             }
+            foreach (SortingGroup group in GetComponentsInChildren<SortingGroup>()) {
+                renderers.Add(group, group.sortingOrder);
+            }
         }
 
         private void Update() {
@@ -34,6 +38,9 @@ namespace Sources.Unity {
                         renderer.sortingOrder = order;
                     break;
                     case Canvas renderer:
+                        renderer.sortingOrder = order;
+                        break;
+                    case SortingGroup renderer:
                         renderer.sortingOrder = order;
                         break;
                 }
