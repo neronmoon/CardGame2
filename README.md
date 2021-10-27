@@ -26,9 +26,12 @@
 - [] Implement level announcement
 - [] Implement consumables 
 - [] Implement level map display
-- [] Implement inventory
-- [] 
-- []
+- [] Add more levels
+- [] Reimplement level generation system: add more randomness and features
+- [] Implement chests
+- [] Implement inventory & items
+- [] Inventory items effects
+- [] Playtest with Vova
 - [] Add VFX (Блики карт, ...)
 
 To be continued... 
