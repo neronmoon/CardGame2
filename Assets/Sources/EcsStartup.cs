@@ -9,6 +9,7 @@ using Sources.ECS.Animations;
 using Sources.ECS.BaseInteractions;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Movement;
+using Sources.ECS.Visualization;
 using Sources.ECS.WorldInitialization;
 using Sources.GameplayActions;
 using Sources.Unity.Support;
@@ -54,6 +55,7 @@ namespace Sources {
                 // Cards spawn cycle
                 .Add(new SetCurrentPlayerPositionSystem())
                 .Add(new SpawnCardsGameObjectsSystem())
+                .Add(new DisplayCardStatsSystem())
                 
                 // Player movement
                 .Add(new DefinePlayerAvailableMovesSystem())

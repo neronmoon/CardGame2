@@ -26,9 +26,8 @@ namespace Sources.GameplayActions {
                 EcsEntity entity = player.GetEntity(idx);
                 ActionsQueue actionsQueue = GetQueue(player.GetEntity(idx));
                 EcsEntity target = player.Get2(idx).Target;
-                if (target.Has<Enemy>()) {
-                    // TODO: fix amount
-                    actionsQueue.Queue.Enqueue(new Hit { Source = target, Amount = 1 });
+                if (target.Has<Enemy>() && target.Has<Health>()) {
+                    actionsQueue.Queue.Enqueue(new Hit { Source = target, Amount = target.Get<Health>().Amount });
                 } else if (target.Has<LevelExit>()) {
                     // TODO: replace hit with level exit component
                     actionsQueue.Queue.Enqueue(new Hit { Source = target, Amount = 1 });

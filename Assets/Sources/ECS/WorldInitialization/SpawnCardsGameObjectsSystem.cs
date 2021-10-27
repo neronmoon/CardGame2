@@ -44,25 +44,6 @@ namespace Sources.ECS.WorldInitialization {
                 view.AdditionalSortOrder = 100;
             }
 
-            view.Sprite.sprite = entity.Has<Face>() ? entity.Get<Face>().Sprite : null;
-
-            foreach (GameObject o in view.HealthObjects) {
-                o.SetActive(entity.Has<Health>());
-            }
-
-            if (entity.Has<Health>()) {
-                view.HealthText.text = entity.Get<Health>().Amount.ToString();
-            }
-
-            foreach (GameObject o in view.NameObjects) {
-                o.SetActive(entity.Has<Name>());
-            }
-
-            if (entity.Has<Name>()) {
-                view.NameText.text = entity.Get<Name>().Value;
-            }
-
-            // view.Sprite.sprite = entity
             return obj;
         }
     }

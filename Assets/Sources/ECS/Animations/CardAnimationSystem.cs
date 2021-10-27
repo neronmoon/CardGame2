@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Leopotam.Ecs;
 using Sources.Data;
@@ -50,8 +51,9 @@ namespace Sources.ECS.Animations {
                             LevelPosition levelPosition = entity.Get<LevelPosition>();
                             Vector3 targetPos = calcLevelPosition(levelPosition);
                             transform.position = new Vector3(targetPos.x, transform.position.y, targetPos.z);
+                            int nulls = runtimeData.LevelLayout[levelPosition.Y].Count((x) => x == null);
                             float delay = 0.3f * levelPosition.X +
-                                          (levelPosition.Y - runtimeData.PlayerPosition.Y) * 0.1f;
+                                          (levelPosition.Y - runtimeData.PlayerPosition.Y - nulls) * 0.1f;
                             const float time = 0.9f;
                             transform.DOMove(targetPos, time).SetDelay(delay).SetEase(Ease.OutCubic);
                             transform.DORotate(new Vector3(0f, 0f, randomFloat(-2.5f, 2.5f)), time);
