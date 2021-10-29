@@ -9,5 +9,7 @@ namespace Sources.Data {
         public Vector2 CardSpacing;
 
         public DeathScreenView DeathScreen;
+
+        public AudioSource AudioSource;
     }
 }

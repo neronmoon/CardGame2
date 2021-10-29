@@ -19,8 +19,8 @@
 - [x] Implement stats display on card
 - [x] Add drop action — fight
 - [x] Add stats to enemies and player
-- [ ] Add implement fight and death
-- [ ] Add animations: fight, die (enemy), die (player)
+- [x] Add implement fight and death
+- [x] Add animations: fight, die (enemy), die (player)
 - [ ] Add SFX
 - [ ] Implement level change
 - [ ] Implement level announcement
