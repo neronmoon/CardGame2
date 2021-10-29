@@ -19,15 +19,19 @@ namespace Sources.ECS.BaseInteractions {
         private Camera camera;
         private RuntimeData runtimeData;
 
-        private EcsFilter<Draggable, Clickable, VisualObject>.Exclude<Animated> draggables;
+        private EcsFilter<Draggable, Clickable, VisualObject> draggables;
         private EcsFilter<DropZone, VisualObject> dropZones;
 
-        private ContactFilter2D contactFilter = new ContactFilter2D();
-        private Plane plane = new Plane(Vector3.forward, new Vector3(0, 0, 0));
+        private ContactFilter2D contactFilter = new();
+        private Plane plane = new(Vector3.forward, new Vector3(0, 0, 0));
 
         public void Run() {
             foreach (int idx in draggables) {
                 EcsEntity entity = draggables.GetEntity(idx);
+                if (entity.Has<Animated>() && entity.Get<Animated>().Blocking) {
+                    continue;
+                }
+
                 bool dragging = entity.Has<Dragging>();
                 bool clicked = entity.Has<Clicked>();
 
@@ -79,11 +83,11 @@ namespace Sources.ECS.BaseInteractions {
             EcsEntity? candidate = getDropZoneCandidate(entity);
 
             Vector3 pos = candidate != null
-                ? ((EcsEntity)candidate).Get<VisualObject>().Object.transform.position
+                ? ((EcsEntity) candidate).Get<VisualObject>().Object.transform.position
                 : entity.Get<Dragging>().StartPosition;
 
             if (candidate != null) {
-                runtimeData.GarbageEntity.Replace(new DroppedEvent { DropZone = (EcsEntity)candidate });
+                runtimeData.GarbageEntity.Replace(new DroppedEvent {DropZone = (EcsEntity) candidate});
             }
 
             gameObject.transform.DOMove(pos, 0.1f);
@@ -92,7 +96,7 @@ namespace Sources.ECS.BaseInteractions {
         private EcsEntity? getDropZoneCandidate(EcsEntity entity) {
             GameObject gameObject = entity.Get<VisualObject>().Object;
 
-            List<Collider2D> overlaps = new List<Collider2D>();
+            List<Collider2D> overlaps = new();
             int count = gameObject.GetComponent<Collider2D>().OverlapCollider(contactFilter, overlaps);
             if (count <= 0) {
                 return null;
@@ -114,7 +118,7 @@ namespace Sources.ECS.BaseInteractions {
                 }
             }
 
-            return candidate != default ? candidate : (EcsEntity?)null;
+            return candidate != default ? candidate : (EcsEntity?) null;
         }
 
         private Vector3 GetWorldPosition(Vector2 screenPosition) {

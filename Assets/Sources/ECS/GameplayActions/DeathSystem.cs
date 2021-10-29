@@ -1,9 +1,9 @@
 using Leopotam.Ecs;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Components.Gameplay;
-using Sources.GameplayActions.Components;
+using Sources.ECS.GameplayActions.Components;
 
-namespace Sources.GameplayActions {
+namespace Sources.ECS.GameplayActions {
     public class DeathSystem : IEcsRunSystem {
         /// <summary>
         /// This system adds Dead component to card, if it's health is <= 0 and fires event

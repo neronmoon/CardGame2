@@ -31,7 +31,8 @@ namespace Sources.ECS.WorldInitialization {
             }
 
             // placing player (always in middle of row)
-            layout[0][Mathf.FloorToInt(level.Width / 2)] = configuration.Character;
+            int center = Mathf.FloorToInt(level.Width / 2);
+            layout[0][center] = configuration.Character;
 
             // generating level
             for (int i = 1; i < layout.Length - 1; i++) {
@@ -47,7 +48,7 @@ namespace Sources.ECS.WorldInitialization {
             }
 
             // placing exit at last row
-            layout[layout.Length - 1][random.Next(0, level.Width)] = choose(level.Exits);
+            layout[layout.Length - 1][center] = choose(level.Exits);
             runtimeData.LevelLayout = layout;
         }
 

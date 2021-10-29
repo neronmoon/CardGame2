@@ -19,19 +19,19 @@
 - [x] Implement stats display on card
 - [x] Add drop action — fight
 - [x] Add stats to enemies and player
-- [] Add implement fight and death
-- [] Add animations: fight, die (enemy), die (player)
-- [] Add SFX
-- [] Implement level change
-- [] Implement level announcement
-- [] Implement consumables 
-- [] Implement level map display
-- [] Add more levels
-- [] Reimplement level generation system: add more randomness and features
-- [] Implement chests
-- [] Implement inventory & items
-- [] Inventory items effects
-- [] Playtest with Vova
-- [] Add VFX (Блики карт, ...)
+- [ ] Add implement fight and death
+- [ ] Add animations: fight, die (enemy), die (player)
+- [ ] Add SFX
+- [ ] Implement level change
+- [ ] Implement level announcement
+- [ ] Implement consumables 
+- [ ] Implement level map display
+- [ ] Add more levels
+- [ ] Reimplement level generation system: add more randomness and features
+- [ ] Implement chests
+- [ ] Implement inventory & items
+- [ ] Inventory items effects
+- [ ] Playtest with Vova
+- [ ] Add VFX (Блики карт, ...)
 
 To be continued... 

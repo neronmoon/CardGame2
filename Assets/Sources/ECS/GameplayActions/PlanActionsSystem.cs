@@ -3,11 +3,11 @@ using Leopotam.Ecs;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Components.Gameplay;
-using Sources.GameplayActions.Components;
+using Sources.ECS.GameplayActions.Components;
 using UnityEditor.SearchService;
 using UnityEngine;
 
-namespace Sources.GameplayActions {
+namespace Sources.ECS.GameplayActions {
     public class PlanActionsSystem : IEcsRunSystem {
         /// <summary>
         /// This system reacts to moved event and creates queue of gameplay actions

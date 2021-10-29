@@ -15,7 +15,7 @@ namespace Sources.ECS.BaseInteractions {
 
         private EcsWorld world;
 
-        private EcsFilter<Hoverable, Hovered, Clickable, VisualObject> clickables;
+        private EcsFilter<Clickable, VisualObject> clickables;
         private EcsFilter<Hoverable, VisualObject> hoverables;
         private Camera camera;
 
@@ -58,7 +58,7 @@ namespace Sources.ECS.BaseInteractions {
             foreach (int idx in clickables) {
                 EcsEntity entity = clickables.GetEntity(idx);
                 bool alreadyClicked = entity.Has<Clicked>();
-                if (keyDown && !alreadyClicked) {
+                if (keyDown && entity.Has<Hovered>() && !alreadyClicked) {
                     entity.Replace(new Clicked());
                 }
 
