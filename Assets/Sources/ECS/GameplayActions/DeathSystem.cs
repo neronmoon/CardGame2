@@ -1,4 +1,6 @@
 using Leopotam.Ecs;
+using Sources.Data;
+using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.GameplayActions.Components;
@@ -11,6 +13,7 @@ namespace Sources.ECS.GameplayActions {
         private EcsWorld world;
 
         private EcsFilter<Health> cards;
+        private RuntimeData runtimeData;
 
         public void Run() {
             foreach (int idx in cards) {
@@ -18,6 +21,8 @@ namespace Sources.ECS.GameplayActions {
                     EcsEntity entity = cards.GetEntity(idx);
                     entity.Replace(new Dead());
                     if (entity.Has<Player>()) {
+                        runtimeData.PlayerIsDead = true;
+                        entity.Del<Draggable>();
                         entity.Replace(new PlayerDiedEvent());
                     }
                 }

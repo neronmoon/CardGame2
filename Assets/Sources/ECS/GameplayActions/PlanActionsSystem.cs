@@ -24,13 +24,18 @@ namespace Sources.ECS.GameplayActions {
 
             foreach (int idx in player) {
                 EcsEntity entity = player.GetEntity(idx);
+                if (entity.Has<Dead>()) {
+                    Debug.Log("Player is dead! Stopping action queues");
+                    return;
+                }
+
                 ActionsQueue actionsQueue = GetQueue(player.GetEntity(idx));
                 EcsEntity target = player.Get2(idx).Target;
                 if (target.Has<Enemy>() && target.Has<Health>()) {
-                    actionsQueue.Queue.Enqueue(new Hit { Source = target, Amount = target.Get<Health>().Amount });
+                    actionsQueue.Queue.Enqueue(new Hit {Source = target, Amount = target.Get<Health>().Amount});
                 } else if (target.Has<LevelExit>()) {
                     // TODO: replace hit with level exit component
-                    actionsQueue.Queue.Enqueue(new Hit { Source = target, Amount = 1 });
+                    actionsQueue.Queue.Enqueue(new Hit {Source = target, Amount = 1});
                 } else {
                     Debug.LogWarning("Player moved, but no actions planned!");
                 }

@@ -21,6 +21,8 @@ namespace Sources.ECS.Visualization {
         private EcsFilter<PlayableCard, LevelPosition>.Exclude<VisualObject> cards;
 
         public void Run() {
+            if (runtimeData.PlayerIsDead) return;
+            
             foreach (int idx in cards) {
                 LevelPosition pos = cards.Get2(idx);
 
@@ -31,7 +33,7 @@ namespace Sources.ECS.Visualization {
 
                 EcsEntity entity = cards.GetEntity(idx);
                 GameObject obj = spawnCardGameObject(entity);
-                entity.Replace(new VisualObject { Object = obj });
+                entity.Replace(new VisualObject {Object = obj});
                 entity.Replace(new Spawned());
             }
         }

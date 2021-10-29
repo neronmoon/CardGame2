@@ -85,6 +85,12 @@ namespace Sources.ECS.Animations {
                 });
 
                 animate<CompleteStep>(entity, (up) => {
+                    if (entity.Has<Player>() && entity.Has<Dead>()) {
+                        sceneData.DeathScreen.Show();
+                        transform.DOMove(sceneData.OriginPoint.transform.position, 0.3f);
+                        return;
+                    }
+
                     // Only player completed step, but we move all cards  
                     foreach (int i in cards) {
                         EcsEntity cardEntity = cards.GetEntity(i);
@@ -96,6 +102,12 @@ namespace Sources.ECS.Animations {
                         if (!DOTween.IsTweening(gameObject.transform)) {
                             gameObject.transform.DOMove(targetPos, 0.5f);
                         }
+                    }
+                });
+
+                animate<Dead>(entity, (up) => {
+                    if (!entity.Has<Player>()) {
+                        return;
                     }
                 });
             }

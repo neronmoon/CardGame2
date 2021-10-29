@@ -1,3 +1,4 @@
+using Sources.Unity;
 using UnityEngine;
 
 namespace Sources.Data {
@@ -6,5 +7,7 @@ namespace Sources.Data {
         public Transform SpawnPoint;
         public Transform DiscardPoint;
         public Vector2 CardSpacing;
+
+        public DeathScreenView DeathScreen;
     }
 }
