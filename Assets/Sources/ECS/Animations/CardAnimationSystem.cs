@@ -8,7 +8,7 @@ using Sources.ECS.Animations.Components;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
-using Sources.GameplayActions.Components;
+using Sources.ECS.GameplayActions.Components;
 using Sources.Unity;
 using UnityEngine;
 using Random = System.Random;
@@ -16,6 +16,7 @@ using Random = System.Random;
 namespace Sources.ECS.Animations {
     public class CardAnimationSystem : IEcsRunSystem {
         /// <summary>
+        /// This is system, responsible for starting card animations.
         /// </summary>
         private EcsWorld world;
 
@@ -105,7 +106,7 @@ namespace Sources.ECS.Animations {
         private float randomFloat(float min, float max) {
             float range = max - min;
             double sample = random.NextDouble();
-            return (float)(sample * range + min);
+            return (float) (sample * range + min);
         }
 
         private static void animate<T>(EcsEntity entity, Action<bool> transition, bool block = true) where T : struct {
@@ -135,9 +136,7 @@ namespace Sources.ECS.Animations {
             }
 
             entity.Replace(updateState.Invoke(currentState));
-            if (block) {
-                entity.Replace(new Animated());
-            }
+            entity.Replace(new Animated {Blocking = block});
 
             transition.Invoke(currentState);
         }

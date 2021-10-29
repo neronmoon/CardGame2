@@ -2,7 +2,7 @@ using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
-using Sources.GameplayActions.Components;
+using Sources.ECS.GameplayActions.Components;
 
 namespace Sources.ECS.Movement {
     public class DiscardCardsInPlayerRowSystem : IEcsRunSystem {

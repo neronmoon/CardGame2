@@ -11,7 +11,7 @@ using Sources.ECS.Components.Events;
 using Sources.ECS.Movement;
 using Sources.ECS.Visualization;
 using Sources.ECS.WorldInitialization;
-using Sources.GameplayActions;
+using Sources.ECS.GameplayActions;
 using Sources.Unity.Support;
 using UnityEngine;
 

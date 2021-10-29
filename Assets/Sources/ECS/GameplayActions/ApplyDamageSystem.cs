@@ -1,10 +1,10 @@
 using System;
 using Leopotam.Ecs;
 using Sources.ECS.Components.Gameplay;
-using Sources.GameplayActions.Components;
+using Sources.ECS.GameplayActions.Components;
 using UnityEngine;
 
-namespace Sources.GameplayActions {
+namespace Sources.ECS.GameplayActions {
     public class ApplyDamageSystem : IEcsRunSystem {
         /// <summary>
         /// This system applies damage from hit

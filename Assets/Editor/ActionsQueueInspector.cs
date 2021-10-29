@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Leopotam.Ecs;
 using Leopotam.Ecs.UnityIntegration.Editor;
-using Sources.GameplayActions.Components;
+using Sources.ECS.GameplayActions.Components;
 using UnityEditor;
 
 namespace Editor {

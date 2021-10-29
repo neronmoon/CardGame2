@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using Leopotam.Ecs;
 using Sources.ECS.Animations.Components;
 using Sources.ECS.Extensions;
-using Sources.GameplayActions.Components;
+using Sources.ECS.GameplayActions.Components;
 using UnityEngine;
 
-namespace Sources.GameplayActions {
+namespace Sources.ECS.GameplayActions {
     public class ExecuteActionsQueueSystem : IEcsRunSystem {
         /// <summary>
         /// This system executes actions queue. It's adds component to entity and waits its' to dissapear
@@ -28,9 +28,17 @@ namespace Sources.GameplayActions {
                     entity.Del(actions.Dequeue().GetType());
                 }
 
-                if (queue.Count > 0 && animated.IsEmpty()) {
+                bool animationIsBlocking = false;
+                foreach (int i in animated) {
+                    if (animated.Get1(i).Blocking) {
+                        animationIsBlocking = true;
+                        break;
+                    }
+                }
+
+                if (queue.Count > 0 && !animationIsBlocking) {
                     IGameplayTrigger trigger = queue.Dequeue();
-                    // Add triggers dynamicly
+                    // Add triggers dynamicaly
                     switch (trigger) {
                         case Hit hit:
                             entity.Replace(hit);

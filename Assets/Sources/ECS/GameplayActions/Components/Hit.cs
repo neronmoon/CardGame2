@@ -1,6 +1,6 @@
 using Leopotam.Ecs;
 
-namespace Sources.GameplayActions.Components {
+namespace Sources.ECS.GameplayActions.Components {
     public struct Hit : IGameplayTrigger {
         public EcsEntity Source;
         public int Amount;
