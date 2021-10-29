@@ -2,7 +2,6 @@ using System;
 using Leopotam.Ecs;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.GameplayActions.Components;
-using UnityEngine;
 
 namespace Sources.ECS.GameplayActions {
     public class ApplyDamageSystem : IEcsRunSystem {
@@ -19,7 +18,6 @@ namespace Sources.ECS.GameplayActions {
                 int dmg = hits.Get2(idx).Amount;
                 int health = hits.Get1(idx).Amount;
                 entity.Replace(new Health { Amount = Math.Max(0, health - dmg) });
-                Debug.Log($"Hit by {dmg}!");
             }
         }
     }

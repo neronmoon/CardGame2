@@ -41,9 +41,10 @@ namespace Sources.ECS.Animations {
 
                 CardAnimationState state = entity.Get<CardAnimationState>();
                 animate<Dragging>(entity, (up) => transform.DOScale(state.InitScale * (up ? 1.1f : 1f), 0.3f), false);
+                CardView view = obj.GetComponent<CardView>();
                 animate<DropCandidate>(
                     entity,
-                    (up) => obj.GetComponent<CardView>().HighlightMask.DOFade(up ? 0.5f : 0f, 0.1f)
+                    (up) => view.HighlightMask.DOFade(up ? 0.5f : 0f, 0.1f)
                 );
                 if (entity.Has<LevelPosition>()) {
                     animate<Spawned>(
@@ -74,7 +75,14 @@ namespace Sources.ECS.Animations {
                     }
                 });
 
-                animate<Hit>(entity, (up) => { transform.DOPunchScale(-Vector3.one / 5, 0.2f, 1); });
+                animate<Hit>(entity, (up) => {
+                    view.AnimateHit();
+                    DOTween.Sequence()
+                           .Append(view.HitMask.DOFade(0.5f, 0.2f))
+                           .Append(view.HitMask.DOFade(0f, 0.2f))
+                           .Play();
+                    transform.DOPunchScale(-Vector3.one / 5, 0.4f, 1);
+                });
 
                 animate<CompleteStep>(entity, (up) => {
                     // Only player completed step, but we move all cards  

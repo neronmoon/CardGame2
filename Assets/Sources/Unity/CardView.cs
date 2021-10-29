@@ -7,7 +7,10 @@ namespace Sources.Unity {
     public class CardView : MonoBehaviour {
         public SpriteRenderer Sprite;
 
+        public Animator HitAnimator;
+        
         public SpriteRenderer HighlightMask;
+        public SpriteRenderer HitMask;
 
         public TextMeshProUGUI HealthText;
         public GameObject[] HealthObjects;
@@ -16,7 +19,7 @@ namespace Sources.Unity {
         public GameObject[] NameObjects;
         public int AdditionalSortOrder = 0;
 
-        private Dictionary<Component, int> renderers = new Dictionary<Component, int>(10);
+        private Dictionary<Component, int> renderers = new(10);
 
         private void Start() {
             foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>()) {
@@ -28,6 +31,10 @@ namespace Sources.Unity {
             foreach (SortingGroup group in GetComponentsInChildren<SortingGroup>()) {
                 renderers.Add(group, group.sortingOrder);
             }
+        }
+
+        public void AnimateHit() {
+            HitAnimator.Play("Blood");
         }
 
         private void Update() {
