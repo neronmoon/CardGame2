@@ -61,9 +61,8 @@ namespace Sources.ECS.Animations {
                         }
 
                         int levelWidth = runtimeData.CurrentLevel.Width;
-                        int delayY = Math.Abs(Math.Max(runtimeData.PlayerPosition.Y, maxSpawnedY) - levelPosition.Y) + 1;
                         float delay = (
-                            delayY * levelWidth -
+                            Math.Abs(Math.Max(runtimeData.PlayerPosition.Y, maxSpawnedY) - levelPosition.Y) + 1 * levelWidth -
                             (levelWidth - levelPosition.X - nulls)
                         ) * 0.1f;
                         const float time = 0.8f;
@@ -77,7 +76,7 @@ namespace Sources.ECS.Animations {
                                    entity.Replace(state);
                                })
                                .Play();
-                        
+
                         transform.DORotate(new Vector3(0f, 0f, randomFloat(-2.5f, 2.5f)), time);
                     },
                     false
