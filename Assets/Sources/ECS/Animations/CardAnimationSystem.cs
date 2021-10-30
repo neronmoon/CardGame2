@@ -54,10 +54,17 @@ namespace Sources.ECS.Animations {
                             Vector3 targetPos = calcLevelPosition(levelPosition);
                             transform.position = new Vector3(targetPos.x, transform.position.y, targetPos.z);
                             int nulls = runtimeData.LevelLayout[levelPosition.Y].Count((x) => x == null);
-                            float delay = 0.3f * levelPosition.X +
-                                          (levelPosition.Y - runtimeData.PlayerPosition.Y - nulls) * 0.1f;
+
+                            int levelWidth = runtimeData.CurrentLevel.Width;
+                            float delay = (
+                                (Math.Abs(runtimeData.PlayerPosition.Y - levelPosition.Y) + 1) * levelWidth -
+                                (levelWidth - levelPosition.X - nulls)
+                            ) * 0.2f;
                             const float time = 0.9f;
-                            transform.DOMove(targetPos, time).SetDelay(delay).SetEase(Ease.OutCubic);
+                            DOTween.Sequence()
+                                   .AppendInterval(delay)
+                                   .Append(transform.DOMove(targetPos, time).SetEase(Ease.OutCubic))
+                                   .Play();
                             transform.DORotate(new Vector3(0f, 0f, randomFloat(-2.5f, 2.5f)), time);
                         },
                         false
