@@ -44,46 +44,44 @@ namespace Sources.ECS.Animations {
                 CardView view = obj.GetComponent<CardView>();
                 animate<Dragging>(entity, (up) => transform.DOScale(state.InitScale * (up ? 1.1f : 1f), 0.3f), false);
                 animate<DropCandidate>(entity, (up) => view.HighlightMask.DOFade(up ? 0.5f : 0f, 0.1f));
-                if (entity.Has<LevelPosition>()) {
-                    animate<Spawned>(
-                        entity,
-                        (up) => {
-                            LevelPosition levelPosition = entity.Get<LevelPosition>();
-                            Vector3 targetPos = calcLevelPosition(levelPosition);
-                            transform.position = new Vector3(targetPos.x, transform.position.y, targetPos.z);
-                            int nulls = runtimeData.LevelLayout[levelPosition.Y].Count((x) => x == null);
+                animate<Spawned>(
+                    entity,
+                    (up) => {
+                        LevelPosition levelPosition = entity.Get<LevelPosition>();
+                        Vector3 targetPos = calcLevelPosition(levelPosition);
+                        transform.position = new Vector3(targetPos.x, transform.position.y, targetPos.z);
+                        int nulls = runtimeData.LevelLayout[levelPosition.Y].Count((x) => x == null);
 
-                            int maxSpawnedY = 0;
-                            foreach (int idx in cards) {
-                                EcsEntity card = cards.GetEntity(idx);
-                                if (card.Has<CardAnimationState>() && card.Get<CardAnimationState>().SpawnAnimationComplete) {
-                                    maxSpawnedY = Math.Max(cards.Get3(idx).Y, maxSpawnedY);
-                                }
+                        int maxSpawnedY = 0;
+                        foreach (int idx in cards) {
+                            EcsEntity card = cards.GetEntity(idx);
+                            if (card.Has<CardAnimationState>() && card.Get<CardAnimationState>().SpawnAnimationComplete) {
+                                maxSpawnedY = Math.Max(cards.Get3(idx).Y, maxSpawnedY);
                             }
+                        }
 
-                            int levelWidth = runtimeData.CurrentLevel.Width;
-                            int delayY = Math.Abs(Math.Max(runtimeData.PlayerPosition.Y, maxSpawnedY) - levelPosition.Y) + 1;
-                            float delay = (
-                                delayY * levelWidth -
-                                (levelWidth - levelPosition.X - nulls)
-                            ) * 0.1f;
-                            const float time = 0.8f;
+                        int levelWidth = runtimeData.CurrentLevel.Width;
+                        int delayY = Math.Abs(Math.Max(runtimeData.PlayerPosition.Y, maxSpawnedY) - levelPosition.Y) + 1;
+                        float delay = (
+                            delayY * levelWidth -
+                            (levelWidth - levelPosition.X - nulls)
+                        ) * 0.1f;
+                        const float time = 0.8f;
 
-                            DOTween.Sequence()
-                                   .AppendInterval(delay)
-                                   .Append(transform.DOMove(targetPos, time).SetEase(Ease.OutCubic))
-                                   .AppendCallback(() => {
-                                       CardAnimationState state = entity.Get<CardAnimationState>();
-                                       state.SpawnAnimationComplete = true;
-                                       entity.Replace(state);
-                                   })
-                                   .Play();
-                            
-                            transform.DORotate(new Vector3(0f, 0f, randomFloat(-2.5f, 2.5f)), time);
-                        },
-                        false
-                    );
-                }
+                        DOTween.Sequence()
+                               .AppendInterval(delay)
+                               .Append(transform.DOMove(targetPos, time).SetEase(Ease.OutCubic))
+                               .AppendCallback(() => {
+                                   CardAnimationState state = entity.Get<CardAnimationState>();
+                                   state.SpawnAnimationComplete = true;
+                                   entity.Replace(state);
+                               })
+                               .Play();
+                        
+                        transform.DORotate(new Vector3(0f, 0f, randomFloat(-2.5f, 2.5f)), time);
+                    },
+                    false
+                );
 
                 animate<Discarded>(entity, (up) => {
                     const float fadeTime = 0.2f;
