@@ -6,5 +6,6 @@ namespace Sources.ECS.Animations.Components {
     public struct CardAnimationState {
         public Vector3 InitScale;
         public List<Type> Components;
+        public bool SpawnAnimationComplete;
     }
 }
