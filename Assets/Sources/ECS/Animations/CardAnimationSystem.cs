@@ -61,14 +61,26 @@ namespace Sources.ECS.Animations {
                         }
 
                         int levelWidth = runtimeData.CurrentLevel.Width;
-                        float delay = (
-                            Math.Abs(Math.Max(runtimeData.PlayerPosition.Y, maxSpawnedY) - levelPosition.Y) + 1 * levelWidth -
-                            (levelWidth - levelPosition.X - nulls)
-                        ) * 0.1f;
+                        float delay = Mathf.Max(0f, (
+                            (Math.Abs(Math.Max(runtimeData.PlayerPosition.Y, maxSpawnedY) - levelPosition.Y) + 0.5f) * levelWidth -
+                            (levelWidth - (levelPosition.X + 1))
+                        ) * 0.2f);
+                        CardAnimationState state = entity.Get<CardAnimationState>();
+                        state.SpawnDelay = new Vector2(
+                            (levelWidth - levelPosition.X - nulls),
+                            Math.Abs(runtimeData.PlayerPosition.Y - levelPosition.Y) + 1 * levelWidth
+                        );
+                        entity.Replace(state);
+
                         const float time = 0.8f;
 
                         DOTween.Sequence()
                                .AppendInterval(delay)
+                               .AppendCallback(() => {
+                                   CardAnimationState state = entity.Get<CardAnimationState>();
+                                   state.SpawnAnimationStarted = true;
+                                   entity.Replace(state);
+                               })
                                .Append(transform.DOMove(targetPos, time).SetEase(Ease.OutCubic))
                                .AppendCallback(() => {
                                    CardAnimationState state = entity.Get<CardAnimationState>();
@@ -144,7 +156,7 @@ namespace Sources.ECS.Animations {
         private float randomFloat(float min, float max) {
             float range = max - min;
             double sample = random.NextDouble();
-            return (float) (sample * range + min);
+            return (float)(sample * range + min);
         }
 
         private static void animate<T>(EcsEntity entity, Action<bool> transition, bool block = true) where T : struct {
@@ -174,7 +186,7 @@ namespace Sources.ECS.Animations {
             }
 
             entity.Replace(updateState.Invoke(currentState));
-            entity.Replace(new Animated {Blocking = block});
+            entity.Replace(new Animated { Blocking = block });
 
             transition.Invoke(currentState);
         }

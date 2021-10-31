@@ -6,6 +6,7 @@ using Leopotam.Ecs.UnityIntegration;
 #endif
 using Sources.Data;
 using Sources.ECS.Animations;
+using Sources.ECS.Audio;
 using Sources.ECS.BaseInteractions;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Movement;
@@ -73,6 +74,8 @@ namespace Sources {
                 // Animations
                 .Add(new CardAnimationSystem())
                 .Add(new CleanupAnimatedSystem())
+                // Sounds
+                .Add(new AudioSystem())
 
                 // Events
                 .OneFrame<StartLevelEvent>()

@@ -10,5 +10,6 @@ namespace Sources.Data {
 
         public AudioClip[] HitClips;
         public AudioClip[] CardSpawnClips;
+        public AudioClip DeadClip;
     }
 }

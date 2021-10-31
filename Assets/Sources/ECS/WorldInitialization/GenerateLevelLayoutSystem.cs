@@ -38,9 +38,7 @@ namespace Sources.ECS.WorldInitialization {
             for (int i = 1; i < layout.Length - 1; i++) {
                 int nullsCount = 0;
                 for (int j = 0; j < layout[i].Length; j++) {
-                    object enemy = choose(level.Enemies);
-                    object[] options = nullsCount < 1 ? new[] { null, enemy } : new[] { enemy };
-                    layout[i][j] = choose(options);
+                    layout[i][j] = choose(level.Enemies);
                     if (layout[i][j] == null) {
                         nullsCount++;
                     }
