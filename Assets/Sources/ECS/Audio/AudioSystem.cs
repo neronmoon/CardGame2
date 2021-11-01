@@ -32,10 +32,8 @@ namespace Sources.ECS.Audio {
                     });
                 }
 
-                if (entity.Has<CardAnimationState>()) {
-                    if (entity.Get<CardAnimationState>().SpawnAnimationStarted) {
-                        play<Spawned>(entity, (up) => source.PlayOneShot(randomClip(configuration.CardSpawnClips)));
-                    }
+                if (entity.Has<CardAnimationState>() && entity.Get<CardAnimationState>().SpawnAnimationStarted) {
+                    play<Spawned>(entity, (up) => source.PlayOneShot(randomClip(configuration.CardSpawnClips)));
                 }
 
                 play<Hit>(entity, (up) => {

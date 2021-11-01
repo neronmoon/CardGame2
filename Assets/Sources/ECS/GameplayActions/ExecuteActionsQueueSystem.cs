@@ -16,6 +16,9 @@ namespace Sources.ECS.GameplayActions {
         private EcsFilter<ActionsQueue> queueFilter;
         private EcsFilter<Animated> animated;
 
+        private float lastRunTime;
+        private const float Delay = 0.5f;
+
         public void Run() {
             foreach (int idx in queueFilter) {
                 EcsEntity entity = queueFilter.GetEntity(idx);
@@ -36,25 +39,32 @@ namespace Sources.ECS.GameplayActions {
                     }
                 }
 
-                if (queue.Count > 0 && !animationIsBlocking) {
-                    IGameplayTrigger trigger = queue.Dequeue();
-                    // Add triggers dynamicaly
-                    switch (trigger) {
-                        case Hit hit:
-                            entity.Replace(hit);
-                            actions.Enqueue(hit);
-                            break;
-                        case CompleteStep step:
-                            entity.Replace(step);
-                            actions.Enqueue(step);
-                            break;
-                        default:
-                            Debug.LogWarning("Unregistered trigger type");
-                            break;
-                    }
-
-                    entity.Replace(new ActionsQueue { Queue = queue, ActiveActions = actions });
+                if (queue.Count <= 0 || animationIsBlocking || !(Time.time - lastRunTime >= Delay)) {
+                    continue;
                 }
+
+                lastRunTime = Time.time;
+                IGameplayTrigger trigger = queue.Dequeue();
+                // Add triggers dynamicaly
+                switch (trigger) {
+                    case Hit hit:
+                        entity.Replace(hit);
+                        actions.Enqueue(hit);
+                        break;
+                    case LevelChangeTrigger change:
+                        entity.Replace(change);
+                        actions.Enqueue(change);
+                        break;
+                    case CompleteStep step:
+                        entity.Replace(step);
+                        actions.Enqueue(step);
+                        break;
+                    default:
+                        Debug.LogWarning("Unregistered trigger type");
+                        break;
+                }
+
+                entity.Replace(new ActionsQueue { Queue = queue, ActiveActions = actions });
             }
         }
     }

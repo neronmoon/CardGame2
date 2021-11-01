@@ -2,6 +2,7 @@ using Leopotam.Ecs;
 using Sources.Data;
 using Sources.Data.Gameplay;
 using Sources.ECS.Components.Events;
+using Sources.ECS.GameplayActions.Components;
 using UnityEngine;
 
 namespace Sources.ECS.WorldInitialization {
@@ -15,7 +16,8 @@ namespace Sources.ECS.WorldInitialization {
         private Configuration configuration;
         private RuntimeData runtimeData;
 
-        private EcsFilter<StartLevelEvent> filter;
+        private EcsFilter<StartLevelEvent> start;
+        private EcsFilter<LevelChangeTrigger> change;
 
         private float time;
 
@@ -26,17 +28,19 @@ namespace Sources.ECS.WorldInitialization {
         public void Run() {
             // Add a bit delay, because animations are freezing at start
             // TODO: Fix this!
-            if (runtimeData.CurrentLevel == null && Time.time - time > 1) { 
+            if (runtimeData.CurrentLevel == null && Time.time - time > 1) {
                 runtimeData.GarbageEntity.Replace(new StartLevelEvent { Level = configuration.StartLevel });
             }
 
-            foreach (int idx in filter) {
-                Level newLevel = filter.Get1(idx).Level;
-                if (runtimeData.CurrentLevel == newLevel) {
-                    continue;
-                }
+            foreach (var idx in change) {
+                runtimeData.GarbageEntity.Replace(new StartLevelEvent { Level = change.Get1(idx).Level });
+            }
 
-                runtimeData.CurrentLevel = newLevel;
+            foreach (int idx in start) {
+                Level level = start.Get1(idx).Level;
+                if (runtimeData.CurrentLevel != level) {
+                    runtimeData.CurrentLevel = level;
+                }
             }
         }
     }

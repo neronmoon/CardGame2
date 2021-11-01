@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -8,7 +10,7 @@ namespace Sources.Unity {
         public SpriteRenderer Sprite;
 
         public Animator HitAnimator;
-        
+
         public SpriteRenderer HighlightMask;
         public SpriteRenderer HitMask;
 
@@ -25,9 +27,11 @@ namespace Sources.Unity {
             foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>()) {
                 renderers.Add(renderer, renderer.sortingOrder);
             }
+
             foreach (Canvas canvas in GetComponentsInChildren<Canvas>()) {
                 renderers.Add(canvas, canvas.sortingOrder);
             }
+
             foreach (SortingGroup group in GetComponentsInChildren<SortingGroup>()) {
                 renderers.Add(group, group.sortingOrder);
             }
@@ -43,7 +47,7 @@ namespace Sources.Unity {
                 switch (x.Key) {
                     case SpriteRenderer renderer:
                         renderer.sortingOrder = order;
-                    break;
+                        break;
                     case Canvas renderer:
                         renderer.sortingOrder = order;
                         break;
@@ -51,6 +55,16 @@ namespace Sources.Unity {
                         renderer.sortingOrder = order;
                         break;
                 }
+            }
+        }
+
+        public void FadeOut(float time, float target = 0f) {
+            foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>()) {
+                renderer.DOFade(target, time);
+            }
+
+            foreach (CanvasGroup renderer in GetComponentsInChildren<CanvasGroup>()) {
+                renderer.DOFade(target, time);
             }
         }
     }

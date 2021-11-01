@@ -21,8 +21,8 @@
 - [x] Add stats to enemies and player
 - [x] Add implement fight and death
 - [x] Add animations: fight, die (enemy), die (player)
-- [ ] Add SFX
-- [ ] Implement level change
+- [x] Add SFX
+- [x] Implement level change
 - [ ] Implement level announcement
 - [ ] Implement consumables 
 - [ ] Implement level map display

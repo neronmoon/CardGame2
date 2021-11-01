@@ -6,6 +6,7 @@ using Sources.ECS.Components.Gameplay;
 using Sources.Unity;
 using Sources.Unity.Support;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Sources.ECS.Visualization {
     public class SpawnCardsGameObjectsSystem : IEcsRunSystem {
@@ -17,7 +18,6 @@ namespace Sources.ECS.Visualization {
         private RuntimeData runtimeData;
         private SceneData sceneData;
         private Configuration configuration;
-        private ObjectPool pool;
         private EcsFilter<PlayableCard, LevelPosition>.Exclude<VisualObject> cards;
 
         public void Run() {
@@ -39,7 +39,7 @@ namespace Sources.ECS.Visualization {
         }
 
         private GameObject spawnCardGameObject(EcsEntity entity) {
-            GameObject obj = pool.Spawn(configuration.CardPrefab);
+            GameObject obj = Object.Instantiate(configuration.CardPrefab);
             obj.transform.position = sceneData.SpawnPoint.transform.position;
             CardView view = obj.GetComponent<CardView>();
             if (entity.Has<Player>()) {

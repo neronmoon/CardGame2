@@ -15,10 +15,10 @@ namespace Sources.Unity.Support {
             public GameObject Prefab;
         }
 
-        List<GameObject> tempList = new List<GameObject>();
+        List<GameObject> tempList = new();
 
-        Dictionary<GameObject, List<GameObject>> pooledObjects = new Dictionary<GameObject, List<GameObject>>();
-        Dictionary<GameObject, GameObject> spawnedObjects = new Dictionary<GameObject, GameObject>();
+        Dictionary<GameObject, List<GameObject>> pooledObjects = new();
+        Dictionary<GameObject, GameObject> spawnedObjects = new();
 
         public StartupPoolMode startupPoolMode;
         public StartupPool[] StartupPools;

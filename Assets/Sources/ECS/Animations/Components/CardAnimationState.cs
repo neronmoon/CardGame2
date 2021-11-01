@@ -6,10 +6,8 @@ namespace Sources.ECS.Animations.Components {
     public struct CardAnimationState {
         public Vector3 InitScale;
         public List<Type> Components;
-
-        public Vector2 SpawnDelay;
-        
         public bool SpawnAnimationStarted;
-        public bool SpawnAnimationComplete; // Used for calculation of spawn delay
+        public bool SpawnAnimationCompleted; // Used for calculation of spawn delay
+        public bool SpawnAnimationScheduled;
     }
 }

@@ -34,8 +34,7 @@ namespace Sources.ECS.GameplayActions {
                 if (target.Has<Enemy>() && target.Has<Health>()) {
                     actionsQueue.Queue.Enqueue(new Hit {Source = target, Amount = target.Get<Health>().Amount});
                 } else if (target.Has<LevelExit>()) {
-                    // TODO: replace hit with level exit component
-                    actionsQueue.Queue.Enqueue(new Hit {Source = target, Amount = 1});
+                    actionsQueue.Queue.Enqueue(new LevelChangeTrigger{Level = target.Get<LevelExit>().Data});
                 } else {
                     Debug.LogWarning("Player moved, but no actions planned!");
                 }

@@ -13,7 +13,6 @@ using Sources.ECS.Movement;
 using Sources.ECS.Visualization;
 using Sources.ECS.WorldInitialization;
 using Sources.ECS.GameplayActions;
-using Sources.Unity.Support;
 using UnityEngine;
 
 namespace Sources {
@@ -26,7 +25,6 @@ namespace Sources {
 
         [SerializeField] private Configuration Configuration;
         [SerializeField] private SceneData SceneData;
-        [SerializeField] private ObjectPool ObjectPool;
 
         private void Start() {
             DOTween.Init().SetCapacity(1000, 1000);
@@ -49,9 +47,13 @@ namespace Sources {
                 .Add(new DragndropSystem())
                 .Add(new LevelStartSystem()) // should be on top of non-technical systems
 
+                // Cleanup
+                .Add(new RecycleDiscardedEntitiesSystem())
+                .Add(new DiscardLeftoverCardsSystem())
+
                 // Level initialization
                 .Add(new GenerateLevelLayoutSystem())
-                .Add(new CreateLevelEntitiesSystem())
+                .Add(new PopulateLevelWithEntitiesSystem())
                 .Add(new SetCurrentPlayerPositionSystem())
 
                 // Visualization
@@ -76,6 +78,8 @@ namespace Sources {
                 .Add(new CleanupAnimatedSystem())
                 // Sounds
                 .Add(new AudioSystem())
+                
+                
 
                 // Events
                 .OneFrame<StartLevelEvent>()
@@ -93,7 +97,6 @@ namespace Sources {
                 sys.Inject(Configuration)
                    .Inject(SceneData)
                    .Inject(runtimeData)
-                   .Inject(ObjectPool)
                    .Inject(camera)
                    .Inject(updateSystems)
                    .Init();

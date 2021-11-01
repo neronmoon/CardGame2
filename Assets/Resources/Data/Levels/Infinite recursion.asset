@@ -32,5 +32,5 @@ MonoBehaviour:
   Exits:
   - {fileID: 11400000}
   Width: 3
-  Length: 50
+  Length: 10
   Sprite: {fileID: 0}
