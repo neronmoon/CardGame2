@@ -1,5 +1,5 @@
 namespace Sources.ECS.GameplayActions.Components {
-    public struct Dead {
+    public struct Dead : IGameplayTrigger {
         
     }
 }
