@@ -117,6 +117,7 @@ namespace Sources.ECS.Animations {
                         // This animation conflicting with non-blocking Spawned animation cause moving artifacts
                         // But this animations does same thing - moves cards to right position
                         // So if gameobject is already tweening — this animation don't need to do same thing
+                        // TODO Possible fix: use blendable movement only by Y axis 
                         bool scheduled = false;
                         if (cardEntity.Has<CardAnimationState>()) {
                             scheduled = cardEntity.Get<CardAnimationState>().SpawnAnimationScheduled;
