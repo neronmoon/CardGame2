@@ -130,7 +130,7 @@ namespace Sources.ECS.Animations {
                 animate<Heal>(entity, _ => view.AnimateHeal());
 
                 animate<Dead>(entity, (up) => {
-                    sceneData.DeathScreen.Show();
+                    sceneData.DeathScreenView.Show();
                     transform.DOMove(sceneData.OriginPoint.transform.position, 0.3f);
                 });
             }

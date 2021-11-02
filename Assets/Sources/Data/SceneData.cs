@@ -8,7 +8,8 @@ namespace Sources.Data {
         public Transform DiscardPoint;
         public Vector2 CardSpacing;
 
-        public DeathScreenView DeathScreen;
+        public DeathScreenView DeathScreenView;
+        public LevelAnnounceView LevelAnnounceView;
 
         public AudioSource SFXAudioSource;
     }

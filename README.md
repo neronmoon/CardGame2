@@ -23,13 +23,13 @@
 - [x] Add animations: fight, die (enemy), die (player)
 - [x] Add SFX
 - [x] Implement level change
-- [x] Implement heal potions 
-- [ ] Implement level map display
-- [ ] Add more levels
-- [ ] Implement level announcement
+- [x] Implement heal potions
+- [x] Implement level announcement
 - [ ] Implement chests
 - [ ] Implement inventory & items
 - [ ] Inventory items effects
+- [ ] Add more levels
+- [ ] Implement level map display
 - [ ] Add more items and potions
 - [ ] Reimplement level generation system: add more randomness and features
 - [ ] Fix card animation (spawned & complete level conflict)

@@ -57,6 +57,7 @@ namespace Sources {
                 .Add(new SetCurrentPlayerPositionSystem())
 
                 // Visualization
+                .Add(new AnnounceLevelSystem())
                 .Add(new SpawnCardsGameObjectsSystem())
                 .Add(new DisplayCardStatsSystem())
 
