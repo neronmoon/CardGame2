@@ -1,11 +1,11 @@
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.Components.Events;
-using UnityEngine;
 
 namespace Sources.ECS.Visualization {
     public class AnnounceLevelSystem : IEcsRunSystem {
         /// <summary>
+        /// This system triggers level announce view when new level started
         /// </summary>
         private EcsWorld world;
 
@@ -14,10 +14,9 @@ namespace Sources.ECS.Visualization {
         private SceneData sceneData;
 
         public void Run() {
-            foreach (var idx in filter) {
+            foreach (int idx in filter) {
                 string levelName = filter.Get1(idx).Level.Name;
                 sceneData.LevelAnnounceView.AnnounceLevel(levelName);
-                Debug.Log("Announce level!");
             }
         }
     }

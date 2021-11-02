@@ -10,7 +10,7 @@ namespace Sources.ECS.WorldInitialization {
         /// <summary>
         /// Generates level layout using runtimeData's CurrentLevel prop
         /// </summary>
-        private Random random = new Random();
+        private Random random = new();
 
         private EcsWorld world;
         private EcsFilter<StartLevelEvent> filter;
