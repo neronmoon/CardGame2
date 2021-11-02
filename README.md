@@ -23,14 +23,15 @@
 - [x] Add animations: fight, die (enemy), die (player)
 - [x] Add SFX
 - [x] Implement level change
-- [ ] Implement level announcement
 - [ ] Implement consumables 
 - [ ] Implement level map display
 - [ ] Add more levels
-- [ ] Reimplement level generation system: add more randomness and features
+- [ ] Implement level announcement
 - [ ] Implement chests
 - [ ] Implement inventory & items
 - [ ] Inventory items effects
+- [ ] Reimplement level generation system: add more randomness and features
+- [ ] Fix card animation (spawned & complete level conflict)
 - [ ] Playtest with Vova
 - [ ] Add VFX (Блики карт, ...)
 
