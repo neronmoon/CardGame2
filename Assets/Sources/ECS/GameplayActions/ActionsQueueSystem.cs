@@ -72,6 +72,10 @@ namespace Sources.ECS.GameplayActions {
                         entity.Replace(hit);
                         actions.Enqueue(hit);
                         break;
+                    case Heal heal:
+                        entity.Replace(heal);
+                        actions.Enqueue(heal);
+                        break;
                     case LevelChangeTrigger change:
                         entity.Replace(change);
                         actions.Enqueue(change);
@@ -108,6 +112,9 @@ namespace Sources.ECS.GameplayActions {
                         added = true;
                     } else if (target.Has<LevelExit>()) {
                         actionsQueue.Queue.Enqueue(new LevelChangeTrigger { Level = target.Get<LevelExit>().Data });
+                        added = true;
+                    } else if (target.Has<HealthPotion>()) {
+                        actionsQueue.Queue.Enqueue(new Heal { Amount = target.Get<HealthPotion>().Amount });
                         added = true;
                     } else {
                         Debug.LogWarning("Player moved, but no actions planned!");

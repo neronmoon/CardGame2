@@ -23,3 +23,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6345d4f209ec7c84484afaba0480e754, type: 3}
   - {fileID: 8300000, guid: 1ab48de0131f7fa4f8be2edf7ebb42be, type: 3}
   DeadClip: {fileID: 8300000, guid: 13a4ca52647b6e34bb133f4e10d20712, type: 3}
+  PotionClip: {fileID: 8300000, guid: 4499ea9d5997f924daf40f0bd2b9854a, type: 3}

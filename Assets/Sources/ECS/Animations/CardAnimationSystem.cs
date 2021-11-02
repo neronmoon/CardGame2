@@ -127,12 +127,11 @@ namespace Sources.ECS.Animations {
                         }
                     }
                 });
+                animate<Heal>(entity, _ => view.AnimateHeal());
 
                 animate<Dead>(entity, (up) => {
-                    if (entity.Has<Player>() && entity.Has<Dead>()) {
-                        sceneData.DeathScreen.Show();
-                        transform.DOMove(sceneData.OriginPoint.transform.position, 0.3f);
-                    }
+                    sceneData.DeathScreen.Show();
+                    transform.DOMove(sceneData.OriginPoint.transform.position, 0.3f);
                 });
             }
         }

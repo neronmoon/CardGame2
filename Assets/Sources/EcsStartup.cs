@@ -69,6 +69,7 @@ namespace Sources {
                 .Add(new ActionsQueueSystem())
                 // here goes all GameplayAction systems
                 .Add(new ApplyDamageSystem())
+                .Add(new HealSystem())
                 .Add(new DiscardCardsInPlayerRowSystem())
 
                 // Animations
@@ -76,8 +77,6 @@ namespace Sources {
                 .Add(new CleanupAnimatedSystem())
                 // Sounds
                 .Add(new AudioSystem())
-                
-                
 
                 // Events
                 .OneFrame<StartLevelEvent>()

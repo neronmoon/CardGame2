@@ -33,15 +33,16 @@ namespace Sources.ECS.Audio {
                 }
 
                 if (entity.Has<CardAnimationState>() && entity.Get<CardAnimationState>().SpawnAnimationStarted) {
-                    play<Spawned>(entity, (up) => source.PlayOneShot(randomClip(configuration.CardSpawnClips)));
+                    play<Spawned>(entity, _ => source.PlayOneShot(randomClip(configuration.CardSpawnClips)));
                 }
 
-                play<Hit>(entity, (up) => {
+                play<Hit>(entity, up => {
                     if (up) {
                         source.PlayOneShot(randomClip(configuration.HitClips));
                     }
                 });
-                play<Dead>(entity, (up) => source.PlayOneShot(configuration.DeadClip));
+                play<Heal>(entity, _ => source.PlayOneShot(configuration.PotionClip));
+                play<Dead>(entity, _ => source.PlayOneShot(configuration.DeadClip));
             }
         }
 

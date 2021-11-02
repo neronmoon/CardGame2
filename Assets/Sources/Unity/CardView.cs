@@ -23,7 +23,10 @@ namespace Sources.Unity {
 
         private Dictionary<Component, int> renderers = new(10);
 
+        private Vector3 initHealthScale;
+
         private void Start() {
+            initHealthScale = HealthText.transform.localScale;
             foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>()) {
                 renderers.Add(renderer, renderer.sortingOrder);
             }
@@ -39,6 +42,16 @@ namespace Sources.Unity {
 
         public void AnimateHit() {
             HitAnimator.Play("Blood");
+        }
+
+        public void AnimateHeal() {
+            Transform transform = HealthText.transform;
+            DOTween.Sequence()
+                   .Append(transform.DOScale(initHealthScale * 1.2f, 0.2f))
+                   .AppendInterval(0.1f)
+                   .Append(transform.DOScale(initHealthScale, 0.2f))
+                   .Play()
+                ;
         }
 
         private void Update() {

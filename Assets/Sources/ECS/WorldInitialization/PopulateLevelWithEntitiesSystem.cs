@@ -7,6 +7,8 @@ using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Events;
 using EnemySpec = Sources.Data.Gameplay.Enemy;
 using Enemy = Sources.ECS.Components.Gameplay.Enemy;
+using HealthPotion = Sources.ECS.Components.Gameplay.HealthPotion;
+using HealthPotionSpec = Sources.Data.Gameplay.HealthPotion;
 
 namespace Sources.ECS.WorldInitialization {
     public class PopulateLevelWithEntitiesSystem : IEcsRunSystem {
@@ -71,12 +73,29 @@ namespace Sources.ECS.WorldInitialization {
                 case Level level:
                     entity = MakeDefaultCardEntity(position);
                     entity.Replace(new LevelExit { Data = level });
+                    if (!string.IsNullOrEmpty(level.Name)) {
+                        entity.Replace(new Name { Value = level.Name });
+                    }
+
                     if (level.Sprite) {
                         entity.Replace(new Face { Sprite = level.Sprite });
                     }
 
-                    if (!string.IsNullOrEmpty(level.Name)) {
-                        entity.Replace(new Name { Value = level.Name });
+                    break;
+                case Item item:
+                    entity = MakeDefaultCardEntity(position);
+
+                    if (!string.IsNullOrEmpty(item.Name)) {
+                        entity.Replace(new Name { Value = item.Name });
+                    }
+
+                    if (item.Sprite) {
+                        entity.Replace(new Face { Sprite = item.Sprite });
+                    }
+
+                    if (item is HealthPotionSpec potion) {
+                        entity.Replace(new Health { Amount = potion.Amount });
+                        entity.Replace(new HealthPotion { Amount = potion.Amount });
                     }
 
                     break;

@@ -23,7 +23,7 @@
 - [x] Add animations: fight, die (enemy), die (player)
 - [x] Add SFX
 - [x] Implement level change
-- [ ] Implement consumables 
+- [ ] Implement heal potions 
 - [ ] Implement level map display
 - [ ] Add more levels
 - [ ] Implement level announcement

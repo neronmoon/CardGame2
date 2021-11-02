@@ -29,6 +29,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 274be1b2e0d0c4c28b317e15ff27ea88, type: 2}
   - {fileID: 11400000, guid: f14f8502b6e1f4a9e8693563067cf451, type: 2}
   - {fileID: 11400000, guid: 90308065f09eb4f9a9a583c6c41a7c5a, type: 2}
+  Items:
+  - {fileID: 11400000, guid: 0d7e376957861c449838080a069e2d1b, type: 2}
+  - {fileID: 11400000, guid: bbcbe7f1134ea5549b2f13dbaefb33bc, type: 2}
+  - {fileID: 11400000, guid: 05a0c85dc245e0f41978273121b68420, type: 2}
   Exits:
   - {fileID: 11400000}
   Width: 3
