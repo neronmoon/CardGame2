@@ -30,6 +30,7 @@
 - [ ] Implement chests
 - [ ] Implement inventory & items
 - [ ] Inventory items effects
+- [ ] Add more items and potions
 - [ ] Reimplement level generation system: add more randomness and features
 - [ ] Fix card animation (spawned & complete level conflict)
 - [ ] Playtest with Vova
