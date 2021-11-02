@@ -106,8 +106,16 @@ namespace Sources.ECS.Animations {
                            .Play();
                     transform.DOPunchScale(-Vector3.one / 5, 0.4f, 1);
                 });
+                animate<Heal>(entity, _ => view.AnimateHeal());
+                animate<Dead>(entity, (up) => {
+                    sceneData.DeathScreenView.Show();
+                    transform.DOMove(sceneData.OriginPoint.transform.position, 0.3f);
+                });
 
                 animate<CompleteStep>(entity, (up) => {
+                    // Do not move any card if player become dead! This will cause animation conflicts!
+                    if (entity.Has<Dead>()) return;
+                    
                     // Only player completed step, but we move all cards  
                     foreach (int i in cards) {
                         EcsEntity cardEntity = cards.GetEntity(i);
@@ -127,12 +135,6 @@ namespace Sources.ECS.Animations {
                             gameObject.transform.DOMove(targetPos, 0.5f);
                         }
                     }
-                });
-                animate<Heal>(entity, _ => view.AnimateHeal());
-
-                animate<Dead>(entity, (up) => {
-                    sceneData.DeathScreenView.Show();
-                    transform.DOMove(sceneData.OriginPoint.transform.position, 0.3f);
                 });
             }
         }

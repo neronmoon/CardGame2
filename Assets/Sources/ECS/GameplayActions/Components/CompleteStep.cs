@@ -1,3 +1,3 @@
 namespace Sources.ECS.GameplayActions.Components {
-    public struct CompleteStep : IGameplayTrigger { }
+    public struct CompleteStep { }
 }

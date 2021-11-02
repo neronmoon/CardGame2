@@ -1,5 +1,5 @@
 namespace Sources.ECS.GameplayActions.Components {
-    public struct Heal : IGameplayTrigger {
+    public struct Heal {
         public int Amount;
     }
 }

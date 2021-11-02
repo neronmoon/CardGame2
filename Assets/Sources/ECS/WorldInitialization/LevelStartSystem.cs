@@ -17,7 +17,7 @@ namespace Sources.ECS.WorldInitialization {
         private RuntimeData runtimeData;
 
         private EcsFilter<StartLevelEvent> start;
-        private EcsFilter<LevelChangeTrigger> change;
+        private EcsFilter<LevelChange> change;
 
         private float time;
 

@@ -22,11 +22,11 @@ namespace Editor {
             EditorGUI.indentLevel--;
         }
 
-        private static void drawQueue(Queue<IGameplayTrigger> queue, string name) {
+        private static void drawQueue(Queue<object> queue, string name) {
             EditorGUILayout.LabelField(name, EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             EditorGUILayout.IntField("Count", queue.Count);
-            foreach (IGameplayTrigger element in queue) {
+            foreach (object element in queue) {
                 EditorGUILayout.TextField(element.GetType().ToString());
             }
 

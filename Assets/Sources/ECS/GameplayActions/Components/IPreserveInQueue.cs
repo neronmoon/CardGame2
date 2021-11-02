@@ -1,5 +1,5 @@
 namespace Sources.ECS.GameplayActions.Components {
-    public interface IGameplayTrigger {
+    public interface IPreserveInQueue {
         
     }
 }
