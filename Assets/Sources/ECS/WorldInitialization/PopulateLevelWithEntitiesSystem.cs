@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.Data.Gameplay;
@@ -21,6 +22,8 @@ namespace Sources.ECS.WorldInitialization {
 
         private EcsFilter<StartLevelEvent> startFilter;
         private EcsFilter<Player, Spawned> playerObject;
+        private LevelGenerator levelGenerator;
+        private Configuration configuration;
 
         public void Run() {
             if (startFilter.IsEmpty()) return;
@@ -70,6 +73,39 @@ namespace Sources.ECS.WorldInitialization {
                     }
 
                     break;
+                case Chest chest:
+                    entity = MakeDefaultCardEntity(position);
+
+                    // define chest level
+                    // this should exit to current level at chest position 
+                    Level chestLevel = chest.GetLevel();
+                    entity.Replace(new LevelExit {
+                        Data = chestLevel,
+                        Layout = levelGenerator.Generate(chestLevel, configuration.Character, true) // TODO: replace true with some other value 
+                    });
+
+                    if (!string.IsNullOrEmpty(chest.Name)) {
+                        entity.Replace(new Name { Value = chest.Name });
+                    }
+
+                    if (chest.Sprite) {
+                        entity.Replace(new Face { Sprite = chest.Sprite });
+                    }
+
+                    break;
+
+                // this is chest exit
+                case true:
+                    entity = MakeDefaultCardEntity(position);
+                    (Level prevLevel, object[][] prevLevelLayout) = runtimeData.PlayerPath.Peek();
+                    entity.Replace(new LevelExit {
+                        Data = prevLevel,
+                        Layout = prevLevelLayout
+                    });
+
+                    entity.Replace(new Name { Value = "Return to " + prevLevel.Name });
+                    break;
+
                 case Level level:
                     entity = MakeDefaultCardEntity(position);
                     entity.Replace(new LevelExit { Data = level });

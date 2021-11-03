@@ -52,7 +52,6 @@ namespace Sources {
                 .Add(new DiscardLeftoverCardsSystem())
 
                 // Level initialization
-                .Add(new GenerateLevelLayoutSystem())
                 .Add(new PopulateLevelWithEntitiesSystem())
                 .Add(new SetCurrentPlayerPositionSystem())
 
@@ -88,14 +87,15 @@ namespace Sources {
             //     .Add(new InputSystem())
             // ;
 
-            RuntimeData runtimeData = new RuntimeData();
+            RuntimeData runtimeData = new();
+            LevelGenerator levelGenerator = new();
             Camera camera = Camera.main;
             foreach (EcsSystems sys in new List<EcsSystems> { initSystems, updateSystems, fixedSystems }) {
                 sys.Inject(Configuration)
                    .Inject(SceneData)
                    .Inject(runtimeData)
                    .Inject(camera)
-                   .Inject(updateSystems)
+                   .Inject(levelGenerator)
                    .Init();
             }
 #if UNITY_EDITOR

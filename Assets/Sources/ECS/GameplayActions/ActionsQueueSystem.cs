@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Leopotam.Ecs;
+using Sources.Data;
 using Sources.ECS.Animations.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
@@ -23,6 +23,7 @@ namespace Sources.ECS.GameplayActions {
 
         private EcsFilter<ActionsQueue> queueFilter;
         private EcsFilter<Animated> animated;
+        private RuntimeData runtimeData;
 
         private float lastRunTime;
         private const float Delay = 0.5f;
@@ -37,8 +38,10 @@ namespace Sources.ECS.GameplayActions {
             );
             DefineMoveAction(
                 (entity, target) => target.Has<LevelExit>(),
-                (entity, target) => new LevelChange { Level = target.Get<LevelExit>().Data }
-            );
+                (entity, target) => {
+                    LevelExit exit = target.Get<LevelExit>();
+                    return new LevelChange { Level = exit.Data, Layout = exit.Layout};
+                });
             DefineMoveAction(
                 (entity, target) => target.Has<HealthPotion>(),
                 (entity, target) => new Heal { Amount = target.Get<HealthPotion>().Amount }
@@ -111,7 +114,7 @@ namespace Sources.ECS.GameplayActions {
                     }
                 }
 
-                if (countBefore != actionsQueue.Queue.Count) {
+                if (countBefore != actionsQueue.Queue.Count || entity.Has<PlayerMovedEvent>()) {
                     // Finish move
                     actionsQueue.Queue.Enqueue(new CompleteStep());
                     entity.Replace(actionsQueue);

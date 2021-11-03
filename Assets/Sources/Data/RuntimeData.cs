@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Leopotam.Ecs;
 using Sources.Data.Gameplay;
 using Sources.ECS.Components;
@@ -14,8 +15,10 @@ namespace Sources.Data {
         public Input Input;
         public Level CurrentLevel;
         public EcsEntity GarbageEntity;
-        public LevelPosition PlayerPosition = new LevelPosition {X = 0, Y = 0};
+        public LevelPosition PlayerPosition = new() {X = 0, Y = 0};
         public object[][] LevelLayout;
         public bool PlayerIsDead = false;
+
+        public Stack<KeyValuePair<Level, object[][]>> PlayerPath = new();
     }
 }

@@ -6,6 +6,7 @@ namespace Sources.Data.Gameplay {
         public string Name;
         public Enemy[] Enemies;
         public Item[] Items;
+        public Chest[] Chests;
         public Level[] Exits;
 
         public int Width = 3;

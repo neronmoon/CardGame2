@@ -33,6 +33,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0d7e376957861c449838080a069e2d1b, type: 2}
   - {fileID: 11400000, guid: bbcbe7f1134ea5549b2f13dbaefb33bc, type: 2}
   - {fileID: 11400000, guid: 05a0c85dc245e0f41978273121b68420, type: 2}
+  Chests:
+  - {fileID: 11400000, guid: c791960a356ffa84fb5aa5114f308ab1, type: 2}
   Exits:
   - {fileID: 11400000}
   Width: 3
