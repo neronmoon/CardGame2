@@ -54,7 +54,6 @@ namespace Sources {
 
                 // Level initialization
                 .Add(new PopulateLevelWithEntitiesSystem())
-                // .Add(new SetCurrentPlayerPositionSystem())
 
                 // Visualization
                 .Add(new AnnounceLevelSystem())
