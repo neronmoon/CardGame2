@@ -7,7 +7,7 @@ using Sources.ECS.GameplayActions.Components;
 using UnityEngine;
 
 namespace Sources.ECS.WorldInitialization {
-    public class LevelStartSystem : IEcsInitSystem, IEcsRunSystem {
+    public class LevelChangeSystem : IEcsInitSystem, IEcsRunSystem {
         /// <summary>
         /// Creates entity with one-frame component to indicate level start
         /// Also changes runtimeData's current level

@@ -81,7 +81,7 @@ namespace Sources.ECS.WorldInitialization {
                     Level chestLevel = chest.GetLevel();
                     entity.Replace(new LevelExit {
                         Data = chestLevel,
-                        Layout = levelGenerator.Generate(chestLevel, configuration.Character, true) // TODO: replace true with some other value 
+                        Layout = levelGenerator.Generate(chestLevel, configuration.Character, new ChestExit())
                     });
 
                     if (!string.IsNullOrEmpty(chest.Name)) {
@@ -94,14 +94,10 @@ namespace Sources.ECS.WorldInitialization {
 
                     break;
 
-                // this is chest exit
-                case true:
+                case ChestExit:
                     entity = MakeDefaultCardEntity(position);
                     (Level prevLevel, object[][] prevLevelLayout) = runtimeData.PlayerPath.Peek();
-                    entity.Replace(new LevelExit {
-                        Data = prevLevel,
-                        Layout = prevLevelLayout
-                    });
+                    entity.Replace(new LevelExit { Data = prevLevel, Layout = prevLevelLayout });
 
                     entity.Replace(new Name { Value = "Return to " + prevLevel.Name });
                     break;

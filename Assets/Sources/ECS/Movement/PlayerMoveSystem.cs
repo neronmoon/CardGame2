@@ -12,7 +12,7 @@ namespace Sources.ECS.Movement {
         private EcsWorld world;
 
         private EcsFilter<DroppedEvent> dropped;
-        private EcsFilter<PlayableCard, Player, LevelPosition> player;
+        private EcsFilter<PlayableCard, LevelPosition, Player> player;
         private RuntimeData runtimeData;
 
         public void Run() {

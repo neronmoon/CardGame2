@@ -10,12 +10,12 @@ namespace Sources.ECS.Movement {
         /// </summary>
         private EcsWorld world;
 
-        private EcsFilter<PlayableCard, Player, LevelPosition> player;
+        private EcsFilter<PlayableCard, LevelPosition, Player> player;
         private RuntimeData runtimeData;
 
         public void Run() {
             foreach (int idx in player) {
-                runtimeData.PlayerPosition = player.Get3(idx);
+                // runtimeData.PlayerPosition = player.Get2(idx);
             }
         }
     }

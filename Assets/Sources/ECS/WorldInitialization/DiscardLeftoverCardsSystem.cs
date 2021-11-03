@@ -17,7 +17,9 @@ namespace Sources.ECS.WorldInitialization {
         public void Run() {
             if (started.IsEmpty()) return;
             foreach (var idx in cards) {
-                cards.GetEntity(idx).Replace(new Discarded());
+                cards.GetEntity(idx)
+                     .Replace(new Discarded())
+                     .Replace(new Leftover());
             }
         }
     }

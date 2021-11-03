@@ -3,6 +3,7 @@ using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
+using Sources.ECS.Extensions;
 using Sources.Unity;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -18,19 +19,21 @@ namespace Sources.ECS.Visualization {
         private SceneData sceneData;
         private Configuration configuration;
         private EcsFilter<PlayableCard, LevelPosition>.Exclude<VisualObject> cards;
+        private EcsFilter<PlayableCard, LevelPosition, Player> playerCard;
 
         public void Run() {
             if (runtimeData.PlayerIsDead) return;
-            
+            int playerPosition = playerCard.First()?.Get<LevelPosition>().Y ?? 0;
             foreach (int idx in cards) {
                 LevelPosition pos = cards.Get2(idx);
+                EcsEntity entity = cards.GetEntity(idx);
 
                 // Spawn three rows + player row
-                if (Math.Abs(runtimeData.PlayerPosition.Y - pos.Y) >= 4) {
+                int distance = Math.Abs(playerPosition - pos.Y);
+                if (distance is >= 4 or < 1 && !entity.Has<Player>()) {
                     continue;
                 }
 
-                EcsEntity entity = cards.GetEntity(idx);
                 GameObject obj = spawnCardGameObject(entity);
                 entity.Replace(new VisualObject {Object = obj});
                 entity.Replace(new Spawned());

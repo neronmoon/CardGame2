@@ -45,15 +45,16 @@ namespace Sources {
             updateSystems
                 .Add(new InputSystem())
                 .Add(new DragndropSystem())
-                .Add(new LevelStartSystem()) // should be on top of non-technical systems
 
+                .Add(new LevelChangeSystem()) // should be on top of non-technical systems
+                
                 // Cleanup
                 .Add(new RecycleDiscardedEntitiesSystem())
                 .Add(new DiscardLeftoverCardsSystem())
 
                 // Level initialization
                 .Add(new PopulateLevelWithEntitiesSystem())
-                .Add(new SetCurrentPlayerPositionSystem())
+                // .Add(new SetCurrentPlayerPositionSystem())
 
                 // Visualization
                 .Add(new AnnounceLevelSystem())
@@ -71,6 +72,8 @@ namespace Sources {
                 .Add(new ApplyDamageSystem())
                 .Add(new HealSystem())
                 .Add(new DiscardCardsInPlayerRowSystem())
+
+                .Add(new UpdateLevelLayoutOnPlayerMoveSystem())
 
                 // Animations
                 .Add(new CardAnimationSystem())

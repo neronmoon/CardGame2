@@ -15,7 +15,7 @@ namespace Sources.Data {
         public Input Input;
         public Level CurrentLevel;
         public EcsEntity GarbageEntity;
-        public LevelPosition PlayerPosition = new() {X = 0, Y = 0};
+        // public LevelPosition PlayerPosition = new() {X = 0, Y = 0};
         public object[][] LevelLayout;
         public bool PlayerIsDead = false;
 

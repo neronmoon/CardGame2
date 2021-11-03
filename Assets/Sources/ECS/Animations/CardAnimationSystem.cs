@@ -8,6 +8,7 @@ using Sources.ECS.Animations.Components;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
+using Sources.ECS.Extensions;
 using Sources.ECS.GameplayActions.Components;
 using Sources.Unity;
 using UnityEngine;
@@ -23,12 +24,13 @@ namespace Sources.ECS.Animations {
         private EcsFilter<PlayableCard, VisualObject, LevelPosition> cards;
         private SceneData sceneData;
         private RuntimeData runtimeData;
-        private EcsFilter<PlayableCard, Player, LevelPosition> playerCard;
+        private EcsFilter<PlayableCard, LevelPosition, Player> playerCard;
 
         private Random random = new();
 
         public void Run() {
             foreach (int idx in cards) {
+                LevelPosition playerPosition = playerCard.GetComponentOnFirstOrDefault(new LevelPosition{ Y=0, X=1 });
                 EcsEntity entity = cards.GetEntity(idx);
                 GameObject obj = entity.Get<VisualObject>().Object;
                 if (obj == null) continue;
@@ -51,7 +53,7 @@ namespace Sources.ECS.Animations {
                     entity,
                     (up) => {
                         LevelPosition levelPosition = entity.Get<LevelPosition>();
-                        Vector3 targetPos = calcLevelPosition(levelPosition);
+                        Vector3 targetPos = calcLevelPosition(levelPosition, playerPosition);
                         transform.position = new Vector3(targetPos.x, transform.position.y, targetPos.z);
                         int nulls = runtimeData.LevelLayout[levelPosition.Y].Count((x) => x == null);
 
@@ -65,7 +67,7 @@ namespace Sources.ECS.Animations {
                         }
 
                         int levelWidth = runtimeData.CurrentLevel.Width;
-                        float rawDelay = (Math.Abs(Math.Max(runtimeData.PlayerPosition.Y, maxSpawnedY) - levelPosition.Y) + 0.5f) * levelWidth -
+                        float rawDelay = (Math.Abs(Math.Max(playerPosition.Y, maxSpawnedY) - levelPosition.Y) + 0.5f) * levelWidth -
                                          (levelWidth - (levelPosition.X + 1));
 
                         float delay = Mathf.Max(0f, rawDelay * 0.2f);
@@ -119,7 +121,7 @@ namespace Sources.ECS.Animations {
                     // Only player completed step, but we move all cards  
                     foreach (int i in cards) {
                         EcsEntity cardEntity = cards.GetEntity(i);
-                        Vector3 targetPos = calcLevelPosition(cardEntity.Get<LevelPosition>());
+                        Vector3 targetPos = calcLevelPosition(cardEntity.Get<LevelPosition>(), playerPosition);
                         GameObject gameObject = cardEntity.Get<VisualObject>().Object;
 
                         // This animation conflicting with non-blocking Spawned animation cause moving artifacts
@@ -139,12 +141,12 @@ namespace Sources.ECS.Animations {
             }
         }
 
-        private Vector3 calcLevelPosition(LevelPosition position) {
+        private Vector3 calcLevelPosition(LevelPosition position, LevelPosition playerPosition) {
             Vector2 origin = sceneData.OriginPoint.position;
             int relativeX = position.X - Mathf.FloorToInt(runtimeData.CurrentLevel.Width / 2);
             return new Vector3(
                 origin.x + sceneData.CardSpacing.x * relativeX,
-                origin.y + sceneData.CardSpacing.y * (position.Y - runtimeData.PlayerPosition.Y),
+                origin.y + sceneData.CardSpacing.y * (position.Y - playerPosition.Y),
                 0
             );
         }
