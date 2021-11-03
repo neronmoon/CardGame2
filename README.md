@@ -25,7 +25,7 @@
 - [x] Implement level change
 - [x] Implement heal potions
 - [x] Implement level announcement
-- [ ] Implement chests
+- [x] Implement chests
 - [ ] Implement inventory & items
 - [ ] Inventory items effects
 - [ ] Implement aggressive monsters (than attacks when you near and drop monster egg after death)
