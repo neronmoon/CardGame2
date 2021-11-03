@@ -33,6 +33,7 @@
 - [ ] Implement level map display
 - [ ] Add more items and potions
 - [ ] Reimplement level generation system: add more randomness and features
+- [ ] Fix DOTWeen warnings
 - [ ] Fix card animation (spawned & complete level conflict)
 - [ ] Playtest with Vova
 - [ ] Add VFX (Блики карт, ...)
