@@ -104,7 +104,10 @@ namespace Sources.ECS.WorldInitialization {
 
                 case Level level:
                     entity = MakeDefaultCardEntity(position);
-                    entity.Replace(new LevelExit { Data = level });
+                    entity.Replace(new LevelExit {
+                        Data = level,
+                        Layout = levelGenerator.Generate(level, configuration.Character)
+                    });
                     if (!string.IsNullOrEmpty(level.Name)) {
                         entity.Replace(new Name { Value = level.Name });
                     }
