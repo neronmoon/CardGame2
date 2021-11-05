@@ -36,9 +36,14 @@ namespace Sources.ECS.GameplayActions {
         private Dictionary<Func<EcsEntity, EcsEntity, bool>, Func<EcsEntity, EcsEntity, object[]>> moveActions = new();
 
         public ActionsQueueAlterSystem() {
+            // Place actions in right order!!
+            // Further action can relate on entity state from prev action.
+            // So After HitAction we can check if HP <=0 and use stone to add HP before player is dead
+            
+            // Move actions are executed in one frame (PlayerMovedEvent)
             DefineMoveAction(
                 (entity, target) => target.Has<Enemy>() && target.Has<Health>(), // if this is true
-                (entity, target) => new Hit { Source = target, Amount = target.Get<Health>().Amount } // then enqueue this component
+                (entity, target) => new Hit { Source = target, Amount = target.Get<Health>().Amount } // then add this component(s)
             );
             DefineMoveAction(
                 (entity, target) => target.Has<LevelExit>(),
