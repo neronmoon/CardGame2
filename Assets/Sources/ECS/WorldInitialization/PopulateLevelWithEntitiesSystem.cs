@@ -2,19 +2,21 @@ using System.Collections.Generic;
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.Data.Gameplay;
+using Sources.Data.Gameplay.Items;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Events;
+using UnityEngine;
 using EnemySpec = Sources.Data.Gameplay.Enemy;
 using Enemy = Sources.ECS.Components.Gameplay.Enemy;
 using HealthPotion = Sources.ECS.Components.Gameplay.HealthPotion;
-using HealthPotionSpec = Sources.Data.Gameplay.HealthPotion;
+using HealthPotionSpec = Sources.Data.Gameplay.Items.HealthPotion;
 
 namespace Sources.ECS.WorldInitialization {
     public class PopulateLevelWithEntitiesSystem : IEcsRunSystem {
         /// <summary>
-        /// Creates card entitites according to level layout. Also handles player is preserved between levels
+        /// Creates card entities according to level layout. Also handles player is preserved between levels
         /// </summary>
         private EcsWorld world;
 
@@ -39,6 +41,7 @@ namespace Sources.ECS.WorldInitialization {
         }
 
         private void createCardEntity(object data, int x, int y) {
+            
             EcsEntity entity;
             LevelPosition position = new() { X = x, Y = y };
             switch (data) {
@@ -55,6 +58,7 @@ namespace Sources.ECS.WorldInitialization {
                         entity.Replace(new Hoverable());
                         entity.Replace(new Clickable());
                         entity.Replace(new Draggable());
+                        entity.Replace(new Inventory(new Dictionary<Item, int>()));
 
                         entity.Replace(new Health { Amount = character.Health });
 
@@ -119,6 +123,17 @@ namespace Sources.ECS.WorldInitialization {
                     break;
                 case Item item:
                     entity = MakeDefaultCardEntity(position);
+                    switch (item) {
+                        case IConsumableItemType:
+                            entity.Replace(new ConsumableItem { Data = item });
+                            break;
+                        case IEquippableItemType:
+                            entity.Replace(new EquippableItem { Data = item });
+                            break;
+                        default:
+                            Debug.LogWarning("Item entity is built, but its not consumable or equippable!");
+                            break;
+                    }
 
                     if (!string.IsNullOrEmpty(item.Name)) {
                         entity.Replace(new Name { Value = item.Name });

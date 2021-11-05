@@ -66,7 +66,8 @@ namespace Sources {
                 .Add(new PlayerMoveSystem())
 
                 // Gameplay actions
-                .Add(new ActionsQueueSystem())
+                // .Add(new ActionsQueueSystem())
+                .Add(new ActionsQueueAlterSystem()) // for now i test new actions system
                 // here goes all GameplayAction systems
                 .Add(new ApplyDamageSystem())
                 .Add(new HealSystem())

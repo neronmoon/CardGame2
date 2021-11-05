@@ -1,3 +1,3 @@
 namespace Sources.ECS.GameplayActions.Components {
-    public struct CompleteStep { }
+    public struct CompleteStep : IShouldDisappear { }
 }

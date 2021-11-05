@@ -26,7 +26,7 @@
 - [x] Implement heal potions
 - [x] Implement level announcement
 - [x] Implement chests
-- [ ] Implement inventory & items
+- [x] Implement inventory & items
 - [ ] Inventory items effects
 - [ ] Implement aggressive monsters (than attacks when you near and drop monster egg after death)
 - [ ] Add more levels
@@ -36,6 +36,8 @@
 - [ ] Fix DOTWeen warnings
 - [ ] Fix card animation (spawned & complete level conflict)
 - [ ] Playtest with Vova
+- [ ] Implement character select menu
+- [ ] Implement quests
 - [ ] Add VFX (Блики карт, ...)
 
 To be continued... 

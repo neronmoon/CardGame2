@@ -1,5 +1,5 @@
 namespace Sources.ECS.GameplayActions.Components {
-    public struct Heal {
+    public struct Heal : IShouldDisappear {
         public int Amount;
     }
 }

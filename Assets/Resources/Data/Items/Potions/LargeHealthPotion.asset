@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4be4978870bf42d0bb8daa9e466e196c, type: 3}
-  m_Name: MinorHealthPotion
+  m_Name: LargeHealthPotion
   m_EditorClassIdentifier: 
-  Name: Minor Health potion
-  Sprite: {fileID: -1270263795, guid: d54309067f053ae4189424802a3401c5, type: 3}
-  Amount: 3
+  Name: Large Health potion
+  Sprite: {fileID: 862166902, guid: d54309067f053ae4189424802a3401c5, type: 3}
+  Type: 0
+  Amount: 10

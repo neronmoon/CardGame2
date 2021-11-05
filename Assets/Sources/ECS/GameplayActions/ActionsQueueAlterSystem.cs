@@ -13,10 +13,11 @@ using UnityEngine;
 using HealthPotion = Sources.ECS.Components.Gameplay.HealthPotion;
 
 namespace Sources.ECS.GameplayActions {
-    public class ActionsQueueSystem : IEcsRunSystem {
+    public class ActionsQueueAlterSystem : IEcsRunSystem {
         /// <summary>
-        /// This system reacts to moved event and creates queue of gameplay actions
-        /// So it's defines order of gameplay actions after dropped
+        /// This system adds components to player entity according to defined rules
+        /// But it does it with animations checks and some timeout between component packs
+        /// After all rules are played - system add CompleteStep component
         /// </summary>
         private EcsWorld world;
 
@@ -28,12 +29,13 @@ namespace Sources.ECS.GameplayActions {
         private RuntimeData runtimeData;
 
         private float lastRunTime;
+        private bool lastRunChanged = false;
         private const float Delay = 0.5f;
 
         private Dictionary<Func<EcsEntity, bool>, Func<EcsEntity, object[]>> actions = new();
         private Dictionary<Func<EcsEntity, EcsEntity, bool>, Func<EcsEntity, EcsEntity, object[]>> moveActions = new();
 
-        public ActionsQueueSystem() {
+        public ActionsQueueAlterSystem() {
             DefineMoveAction(
                 (entity, target) => target.Has<Enemy>() && target.Has<Health>(), // if this is true
                 (entity, target) => new Hit { Source = target, Amount = target.Get<Health>().Amount } // then enqueue this component
@@ -52,6 +54,8 @@ namespace Sources.ECS.GameplayActions {
                 (entity, target) => target.Has<ConsumableItem>() && target.Has<HealthPotion>(),
                 (entity, target) => new Heal { Amount = target.Get<HealthPotion>().Amount }
             );
+
+            // Resurrection before death!
             DefineAction(
                 entity => entity.Has<Health>() && entity.Get<Health>().Amount <= 0 && entity.Get<Inventory>().Has<ResurrectStone>(),
                 entity => {
@@ -63,12 +67,14 @@ namespace Sources.ECS.GameplayActions {
                     };
                 }
             );
+
+            // This is final death!
             DefineAction(
                 entity => entity.Has<Health>() && entity.Get<Health>().Amount <= 0 && !entity.Has<Dead>(),
                 entity => new Dead()
             );
         }
-        
+
         public void Run() {
             bool animationIsBlocking = false;
             foreach (int i in animated) {
@@ -78,23 +84,74 @@ namespace Sources.ECS.GameplayActions {
                 }
             }
 
-            foreach (int idx in queueFilter) {
-                EcsEntity entity = queueFilter.GetEntity(idx);
-                ActionsQueue actionsQueue = queueFilter.Get1(idx);
-                Queue<object> actions = actionsQueue.ActiveActions;
-            
-                // Remove previous frame components
-                while (actions.Count > 0) {
-                    entity.Del(actions.Dequeue().GetType());
+            // Cleanup last frame components (Heal, Hit, etc...)
+            foreach (int idx in player) {
+                EcsEntity entity = player.GetEntity(idx);
+                Type[] types = { };
+                entity.GetComponentTypes(ref types);
+                foreach (Type type in types) {
+                    if (typeof(IShouldDisappear).IsAssignableFrom(type)) {
+                        entity.Del(type);
+                    }
+                }
+
+                if (
+                    entity.Has<PlayerMovedEvent>() || // If player moved -- we need to exec actions anyway
+                    !animationIsBlocking && Time.time - lastRunTime >= Delay
+                ) {
+                    ExecuteActions();
                 }
             }
+        }
 
-            if (animationIsBlocking || !(Time.time - lastRunTime >= Delay)) {
-                return;
+        private void ExecuteActions() {
+            foreach (int idx in player) {
+                EcsEntity entity = player.GetEntity(idx);
+
+                bool changed = false;
+                if (entity.Has<PlayerMovedEvent>()) {
+                    foreach ((Func<EcsEntity, EcsEntity, bool> key, Func<EcsEntity, EcsEntity, object[]> value) in moveActions) {
+                        EcsEntity target = entity.Get<PlayerMovedEvent>().Target;
+                        if (key.Invoke(entity, target)) {
+                            changed = true;
+                            foreach (object component in value.Invoke(entity, target)) {
+                                entity.Replace(component);
+                            }
+                        }
+                    }
+
+                    // Move actions should all be triggered at one frame (because PlayerMovedEvent lives only one frame) 
+                    if (changed) {
+                        lastRunChanged = true;
+                        lastRunTime = Time.time;
+                        return;
+                    }
+
+                    Debug.LogWarning("Player moved, but no actions executed!");
+                }
+
+                foreach ((Func<EcsEntity, bool> key, Func<EcsEntity, object[]> value) in actions) {
+                    if (key.Invoke(entity)) {
+                        changed = true;
+                        foreach (object component in value.Invoke(entity)) {
+                            entity.Replace(component);
+                        }
+                    }
+
+                    // Simple actions not bound to PlayerMovedEvent, so we can apply them with timeout
+                    if (changed) {
+                        lastRunChanged = true;
+                        lastRunTime = Time.time;
+                        return;
+                    }
+                }
+
+                if (lastRunChanged) {
+                    lastRunChanged = false;
+                    lastRunTime = Time.time;
+                    entity.Replace(new CompleteStep());
+                }
             }
-
-            ExecuteActions();
-            PlanActions();
         }
 
         private void DefineMoveAction(Func<EcsEntity, EcsEntity, bool> check, Func<EcsEntity, EcsEntity, object> component) {
@@ -111,80 +168,6 @@ namespace Sources.ECS.GameplayActions {
 
         private void DefineAction(Func<EcsEntity, bool> check, Func<EcsEntity, object[]> component) {
             actions.Add(check, component);
-        }
-
-        private void PlanActions() {
-            foreach (int idx in player) {
-                EcsEntity entity = player.GetEntity(idx);
-                ActionsQueue actionsQueue = GetQueue(player.GetEntity(idx));
-                int countBefore = actionsQueue.Queue.Count;
-
-                // Means player not moved
-                if (entity.Has<PlayerMovedEvent>()) {
-                    EcsEntity target = entity.Get<PlayerMovedEvent>().Target;
-                    foreach ((Func<EcsEntity, EcsEntity, bool> key, Func<EcsEntity, EcsEntity, object[]> value) in moveActions) {
-                        if (key.Invoke(entity, target)) {
-                            foreach (object component in value.Invoke(entity, target)) {
-                                actionsQueue.Queue.Enqueue(component);
-                            }
-                        }
-                    }
-
-                    if (countBefore == actionsQueue.Queue.Count) {
-                        Debug.LogWarning("Player moved, but no actions planned!");
-                    }
-                }
-
-                foreach ((Func<EcsEntity, bool> key, Func<EcsEntity, object[]> value) in actions) {
-                    if (key.Invoke(entity)) {
-                        foreach (object component in value.Invoke(entity)) {
-                            actionsQueue.Queue.Enqueue(component);
-                        }
-                    }
-                }
-
-                if (countBefore != actionsQueue.Queue.Count || entity.Has<PlayerMovedEvent>()) {
-                    // Finish move
-                    actionsQueue.Queue.Enqueue(new CompleteStep());
-                    entity.Replace(actionsQueue);
-                }
-            }
-        }
-
-        private void ExecuteActions() {
-            foreach (int idx in queueFilter) {
-                EcsEntity entity = queueFilter.GetEntity(idx);
-                ActionsQueue actionsQueue = queueFilter.Get1(idx);
-
-                if (actionsQueue.Queue.Count <= 0) {
-                    continue;
-                }
-
-                lastRunTime = Time.time;
-                object trigger = actionsQueue.Queue.Dequeue();
-
-                entity.Replace(trigger);
-                if (trigger is IShouldDisappear) {
-                    actionsQueue.ActiveActions.Enqueue(trigger);
-                }
-
-                entity.Replace(new ActionsQueue {
-                    Queue = actionsQueue.Queue,
-                    ActiveActions = actionsQueue.ActiveActions
-                });
-            }
-        }
-
-
-        private static ActionsQueue GetQueue(EcsEntity entity) {
-            if (!entity.Has<ActionsQueue>()) {
-                entity.Replace(new ActionsQueue {
-                    Queue = new Queue<object>(),
-                    ActiveActions = new Queue<object>()
-                });
-            }
-
-            return entity.Get<ActionsQueue>();
         }
     }
 }
