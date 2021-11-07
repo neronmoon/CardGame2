@@ -15,7 +15,7 @@ namespace Sources.ECS.Visualization {
 
         public void Run() {
             foreach (int idx in filter) {
-                string levelName = filter.Get1(idx).Level.Name;
+                string levelName = filter.Get1(idx).LevelData.Name;
                 sceneData.LevelAnnounceView.AnnounceLevel(levelName);
             }
         }

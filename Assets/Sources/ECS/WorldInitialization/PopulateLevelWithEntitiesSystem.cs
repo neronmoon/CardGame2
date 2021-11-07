@@ -8,10 +8,8 @@ using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Events;
 using UnityEngine;
-using EnemySpec = Sources.Data.Gameplay.Enemy;
 using Enemy = Sources.ECS.Components.Gameplay.Enemy;
 using HealthPotion = Sources.ECS.Components.Gameplay.HealthPotion;
-using HealthPotionSpec = Sources.Data.Gameplay.Items.HealthPotion;
 
 namespace Sources.ECS.WorldInitialization {
     public class PopulateLevelWithEntitiesSystem : IEcsRunSystem {
@@ -45,7 +43,7 @@ namespace Sources.ECS.WorldInitialization {
             EcsEntity entity;
             LevelPosition position = new() { X = x, Y = y };
             switch (data) {
-                case Character character:
+                case CharacterData character:
                     if (!playerObject.IsEmpty()) {
                         // Player already spawned!
                         foreach (int idx in playerObject) {
@@ -58,7 +56,7 @@ namespace Sources.ECS.WorldInitialization {
                         entity.Replace(new Hoverable());
                         entity.Replace(new Clickable());
                         entity.Replace(new Draggable());
-                        entity.Replace(new Inventory(new Dictionary<Item, int>()));
+                        entity.Replace(new Inventory(new Dictionary<ItemData, int>()));
 
                         entity.Replace(new Health { Amount = character.Health });
 
@@ -68,7 +66,7 @@ namespace Sources.ECS.WorldInitialization {
                     }
 
                     break;
-                case EnemySpec enemy:
+                case EnemyData enemy:
                     entity = MakeDefaultCardEntity(position);
                     entity.Replace(new Enemy { Data = enemy });
                     entity.Replace(new Health { Amount = enemy.Health });
@@ -77,15 +75,15 @@ namespace Sources.ECS.WorldInitialization {
                     }
 
                     break;
-                case Chest chest:
+                case ChestData chest:
                     entity = MakeDefaultCardEntity(position);
 
                     // define chest level
                     // this should exit to current level at chest position 
-                    Level chestLevel = chest.GetLevel();
+                    LevelData chestLevelData = chest.GetLevel();
                     entity.Replace(new LevelExit {
-                        Data = chestLevel,
-                        Layout = levelGenerator.Generate(chestLevel, configuration.Character, new ChestExit())
+                        Data = chestLevelData,
+                        Layout = levelGenerator.Generate(chestLevelData, configuration.CharacterData, new ChestExit())
                     });
 
                     if (!string.IsNullOrEmpty(chest.Name)) {
@@ -100,17 +98,17 @@ namespace Sources.ECS.WorldInitialization {
 
                 case ChestExit:
                     entity = MakeDefaultCardEntity(position);
-                    (Level prevLevel, object[][] prevLevelLayout) = runtimeData.PlayerPath.Peek();
+                    (LevelData prevLevel, object[][] prevLevelLayout) = runtimeData.PlayerPath.Peek();
                     entity.Replace(new LevelExit { Data = prevLevel, Layout = prevLevelLayout });
 
                     entity.Replace(new Name { Value = "Return to " + prevLevel.Name });
                     break;
 
-                case Level level:
+                case LevelData level:
                     entity = MakeDefaultCardEntity(position);
                     entity.Replace(new LevelExit {
                         Data = level,
-                        Layout = levelGenerator.Generate(level, configuration.Character)
+                        Layout = levelGenerator.Generate(level, configuration.CharacterData)
                     });
                     if (!string.IsNullOrEmpty(level.Name)) {
                         entity.Replace(new Name { Value = level.Name });
@@ -121,7 +119,7 @@ namespace Sources.ECS.WorldInitialization {
                     }
 
                     break;
-                case Item item:
+                case ItemData item:
                     entity = MakeDefaultCardEntity(position);
                     switch (item) {
                         case IConsumableItemType:
@@ -143,7 +141,7 @@ namespace Sources.ECS.WorldInitialization {
                         entity.Replace(new Face { Sprite = item.Sprite });
                     }
 
-                    if (item is HealthPotionSpec potion) {
+                    if (item is HealthPotionData potion) {
                         entity.Replace(new Health { Amount = potion.Amount });
                         entity.Replace(new HealthPotion { Amount = potion.Amount });
                     }

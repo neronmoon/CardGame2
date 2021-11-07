@@ -5,8 +5,8 @@ namespace Sources.Data {
     [CreateAssetMenu]
     public class Configuration : ScriptableObject {
         public GameObject CardPrefab;
-        public Character Character; // we can select character in menu in future
-        public Level StartLevel;
+        public CharacterData CharacterData; // we can select character in menu in future
+        public LevelData StartLevelData;
 
         public AudioClip[] HitClips;
         public AudioClip[] CardSpawnClips;

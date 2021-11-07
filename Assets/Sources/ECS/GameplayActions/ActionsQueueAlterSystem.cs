@@ -49,7 +49,7 @@ namespace Sources.ECS.GameplayActions {
                 (entity, target) => target.Has<LevelExit>(),
                 (entity, target) => {
                     LevelExit exit = target.Get<LevelExit>();
-                    return new LevelChange { Level = exit.Data, Layout = exit.Layout };
+                    return new LevelChange { LevelData = exit.Data, Layout = exit.Layout };
                 });
             DefineMoveAction(
                 (entity, target) => target.Has<EquippableItem>() && entity.Has<Inventory>(),
@@ -62,13 +62,13 @@ namespace Sources.ECS.GameplayActions {
 
             // Resurrection before death!
             DefineAction(
-                entity => entity.Has<Health>() && entity.Get<Health>().Amount <= 0 && entity.Get<Inventory>().Has<ResurrectStone>(),
+                entity => entity.Has<Health>() && entity.Get<Health>().Amount <= 0 && entity.Get<Inventory>().Has<ResurrectStoneData>(),
                 entity => {
                     Inventory inventory = entity.Get<Inventory>();
-                    ResurrectStone stone = inventory.TakeOne<ResurrectStone>();
+                    ResurrectStoneData stoneData = inventory.TakeOne<ResurrectStoneData>();
                     return new object[] {
                         inventory,
-                        new Health { Amount = stone.HealthAfterResurrection }
+                        new Health { Amount = stoneData.HealthAfterResurrection }
                     };
                 }
             );

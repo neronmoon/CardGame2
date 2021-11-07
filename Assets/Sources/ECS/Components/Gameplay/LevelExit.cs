@@ -2,7 +2,7 @@ using Sources.Data.Gameplay;
 
 namespace Sources.ECS.Components.Gameplay {
     public struct LevelExit {
-        public Level Data;
+        public LevelData Data;
         public object[][] Layout;
     }
 }

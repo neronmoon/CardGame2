@@ -13,12 +13,12 @@ namespace Sources.Data {
 
     public class RuntimeData {
         public Input Input;
-        public Level CurrentLevel;
+        public LevelData CurrentLevelData;
         public EcsEntity GarbageEntity;
         // public LevelPosition PlayerPosition = new() {X = 0, Y = 0};
         public object[][] LevelLayout;
         public bool PlayerIsDead = false;
 
-        public Stack<KeyValuePair<Level, object[][]>> PlayerPath = new();
+        public Stack<KeyValuePair<LevelData, object[][]>> PlayerPath = new();
     }
 }

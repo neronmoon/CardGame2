@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: HealthPotion
   m_EditorClassIdentifier: 
   Name: Health potion
+  Description: 
   Sprite: {fileID: -1270263795, guid: d54309067f053ae4189424802a3401c5, type: 3}
-  Type: 0
   Amount: 5

@@ -30,25 +30,25 @@ namespace Sources.ECS.WorldInitialization {
         public void Run() {
             // Add a bit delay, because animations are freezing at start
             // TODO: Fix this!
-            if (runtimeData.CurrentLevel == null && Time.time - time > 1) {
-                Level level = configuration.StartLevel;
-                SetLevelState(level, levelGenerator.Generate(level, configuration.Character));
-                runtimeData.GarbageEntity.Replace(new StartLevelEvent { Level = level });
+            if (runtimeData.CurrentLevelData == null && Time.time - time > 1) {
+                LevelData levelData = configuration.StartLevelData;
+                SetLevelState(levelData, levelGenerator.Generate(levelData, configuration.CharacterData));
+                runtimeData.GarbageEntity.Replace(new StartLevelEvent { LevelData = levelData });
             }
 
             // Change level logic: remember current level, Set new level state, throw event about level start
             foreach (int idx in change) {
-                runtimeData.PlayerPath.Push(new KeyValuePair<Level, object[][]>(runtimeData.CurrentLevel, runtimeData.LevelLayout));
+                runtimeData.PlayerPath.Push(new KeyValuePair<LevelData, object[][]>(runtimeData.CurrentLevelData, runtimeData.LevelLayout));
                 LevelChange levelChange = change.Get1(idx);
-                SetLevelState(levelChange.Level, levelChange.Layout);
-                runtimeData.GarbageEntity.Replace(new StartLevelEvent { Level = levelChange.Level });
+                SetLevelState(levelChange.LevelData, levelChange.Layout);
+                runtimeData.GarbageEntity.Replace(new StartLevelEvent { LevelData = levelChange.LevelData });
             }
         }
 
-        private void SetLevelState(Level level, object[][] layout) {
+        private void SetLevelState(LevelData levelData, object[][] layout) {
             runtimeData.LevelLayout = layout;
-            if (runtimeData.CurrentLevel != level) {
-                runtimeData.CurrentLevel = level;
+            if (runtimeData.CurrentLevelData != levelData) {
+                runtimeData.CurrentLevelData = levelData;
             }
         }
     }

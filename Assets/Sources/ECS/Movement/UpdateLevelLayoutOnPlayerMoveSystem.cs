@@ -23,7 +23,7 @@ namespace Sources.ECS.Movement {
                 if (entity.Has<Discarded>()) {
                     runtimeData.LevelLayout[pos.Y][pos.X] = null;
                 } else if (entity.Has<Player>()) {
-                    runtimeData.LevelLayout[pos.Y][pos.X] = configuration.Character;
+                    runtimeData.LevelLayout[pos.Y][pos.X] = configuration.CharacterData;
                 }
                 
             }
