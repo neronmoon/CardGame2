@@ -36,29 +36,27 @@ namespace Sources {
         }
 
         private object[] GenerateRow(LevelData levelDataSpec, int width, int posY, object[] previousRow) {
-            object[] row = new object[3];
-            int x = 0;
             IEnumerable<bool> layout = null;
             while (layout == null) {
                 layout = GenerateRowLayout(Math.Max(width--, 1), previousRow);
             }
 
+            int x = 0;
+            object[] row = new object[3];
             foreach (bool item in layout) {
-                object value = null;
-                if (item) {
-                    Type type = Choose(levelDataSpec.CardTypesChances);
-                    if (type.IsAssignableFrom(typeof(EnemyData))) {
-                        value = Choose(levelDataSpec.EnemiesChances);
-                    } else if (type.IsAssignableFrom(typeof(ChestData))) {
-                        value = Choose(levelDataSpec.ChestChances);
-                    } else if (type.IsAssignableFrom(typeof(ItemData))) {
-                        value = Choose(levelDataSpec.ItemChances);
-                    } else {
-                        Debug.LogWarning("");
-                    }
-                }
+                if (!item) continue;
 
-                row[x++] = value;
+                Type type = Choose(levelDataSpec.CardTypesChances);
+                if (type.IsAssignableFrom(typeof(EnemyData))) {
+                    row[x++] = Choose(levelDataSpec.EnemiesChances);
+                } else if (type.IsAssignableFrom(typeof(ChestData))) {
+                    row[x++] = Choose(levelDataSpec.ChestChances);
+                } else if (type.IsAssignableFrom(typeof(ItemData))) {
+                    row[x++] = Choose(levelDataSpec.ItemChances);
+                } else {
+                    Debug.LogWarning("Unknown card type!");
+                    x++;
+                }
             }
 
             return row;
