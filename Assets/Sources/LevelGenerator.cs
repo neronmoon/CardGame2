@@ -3,42 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Sources.Data.Gameplay;
 using Sources.Data.Gameplay.Items;
+using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Extensions;
 using UnityEngine;
 
 namespace Sources {
     public class LevelGenerator {
         private System.Random random = new();
-
-        // public object[][] Generate(LevelData levelDataSpec, CharacterData characterData, object exit = null) {
-        //     // layout is matrix (N+2)xM where N is level length and M is width of level
-        //     // fist line is for player, last line for exit
-        //     // layout contains object of player/enemies/exits
-        //     // null means empty space without card
-        //     object[][] layout = new object[levelDataSpec.Length + 2][];
-        //     for (int i = 0; i < layout.Length; i++) {
-        //         layout[i] = new object[levelDataSpec.Width];
-        //     }
-        //
-        //     // placing player (always in middle of row)
-        //     int center = Mathf.FloorToInt(levelDataSpec.Width / 2);
-        //     layout[0][center] = characterData;
-        //
-        //     // generating level
-        //     for (int i = 1; i < layout.Length - 1; i++) {
-        //         int nullsCount = 0;
-        //         for (int j = 0; j < layout[i].Length; j++) {
-        //             layout[i][j] = new[] { levelDataSpec.Enemies.ChooseOne(), levelDataSpec.Items.ChooseOne(), levelDataSpec.Chests.ChooseOne() }.ChooseOne();
-        //             if (layout[i][j] == null) {
-        //                 nullsCount++;
-        //             }
-        //         }
-        //     }
-        //
-        //     // placing exit at last row
-        //     layout[^1][center] = exit ?? levelDataSpec.Exits.ChooseOne();
-        //     return layout;
-        // }
 
         public object[][] Generate(LevelData levelDataSpec, CharacterData characterData, object exit = null) {
             // layout is matrix (N+2)xM where N is level length and M is width of level
@@ -65,43 +36,14 @@ namespace Sources {
         }
 
         private object[] GenerateRow(LevelData levelDataSpec, int width, int posY, object[] previousRow) {
-            const int maxWidth = 3;
-            bool[] template = new bool[maxWidth];
-            for (int i = 0; i < width; i++) {
-                template[i] = true;
-            }
-
-            // var finalLayouts = new List<IEnumerable<bool>>();
-            // foreach (IEnumerable<bool> layout in template.GetPermutations()) {
-            //     bool allowed = false;
-            //
-            //     int xIdx = 0;
-            //     foreach (var xx in layout) {
-            //
-            //         if (!xx) {
-            //             
-            //         }
-            //         
-            //         xIdx++;
-            //     }
-            //     
-            //     
-            //     if (allowed) {
-            //         finalLayouts.Add(layout);
-            //     }
-            // }
-            //
-            IEnumerable<bool>[] layouts = template.GetPermutations().ToArray();
-            if (previousRow[1] == null) { // if prev row middle is empty -- then we allow layouts in non-empty middle
-                layouts = layouts.Where(x => {
-                    bool[] ar = x.ToArray();
-                    return ar[1];
-                }).ToArray();
-            }
-
             object[] row = new object[3];
             int x = 0;
-            foreach (bool item in (IEnumerable<bool>)layouts.ChooseOne()) {
+            IEnumerable<bool> layout = null;
+            while (layout == null) {
+                layout = GenerateRowLayout(Math.Max(width--, 1), previousRow);
+            }
+
+            foreach (bool item in layout) {
                 object value = null;
                 if (item) {
                     Type type = Choose(levelDataSpec.CardTypesChances);
@@ -120,6 +62,48 @@ namespace Sources {
             }
 
             return row;
+        }
+
+        private IEnumerable<bool> GenerateRowLayout(int width, object[] previousRow) {
+            const int maxWidth = 3;
+            bool[] template = new bool[maxWidth];
+            for (int i = 0; i < width; i++) {
+                template[i] = true;
+            }
+
+            IEnumerable<bool>[] layouts = template.GetPermutations().ToArray();
+
+            bool[] prevRowTemplate = new bool[maxWidth];
+            for (int i = 0; i < maxWidth; i++) {
+                prevRowTemplate[i] = previousRow[i] != null;
+            }
+
+            List<IEnumerable<bool>> finalLayouts = new();
+            foreach (IEnumerable<bool> layout in layouts) {
+                bool[] candidate = layout.ToArray();
+                int withSiblings = 0;
+                int items = 0;
+                for (int i = 0; i < prevRowTemplate.Length; i++) {
+                    if (!prevRowTemplate[i]) continue;
+                    items++;
+                    bool hasSibling = false;
+                    for (int s = Math.Max(0, i - 1); s <= Math.Min(maxWidth - 1, i + 1); s++) {
+                        if (candidate[s]) {
+                            hasSibling = true;
+                        }
+                    }
+
+                    if (hasSibling) {
+                        withSiblings++;
+                    }
+                }
+
+                if (items == withSiblings) {
+                    finalLayouts.Add(layout);
+                }
+            }
+
+            return !finalLayouts.Any() ? null : finalLayouts[random.Next(finalLayouts.Count)];
         }
 
         private Type Choose(IEnumerable<CardTypeChanceData> items) {

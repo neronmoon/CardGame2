@@ -27,6 +27,7 @@
 - [x] Implement level announcement
 - [x] Implement chests
 - [x] Implement inventory & items
+- [x] Fix card animation (spawned & complete level conflict)
 - [ ] Reimplement level generation system: add more randomness and features
 - [ ] Add more levels
 - [ ] Implement inventory UI
@@ -35,7 +36,6 @@
 - [ ] Implement level map display
 - [ ] Add more items and potions
 - [ ] Fix DOTWeen warnings
-- [x] Fix card animation (spawned & complete level conflict)
 - [ ] Playtest with Vova
 - [ ] Implement character select menu
 - [ ] Implement quests
