@@ -8,6 +8,7 @@ using Sources.Data;
 using Sources.ECS.Animations;
 using Sources.ECS.Audio;
 using Sources.ECS.BaseInteractions;
+using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Movement;
 using Sources.ECS.Visualization;

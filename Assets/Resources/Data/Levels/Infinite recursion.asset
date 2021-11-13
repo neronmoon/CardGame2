@@ -46,9 +46,15 @@ MonoBehaviour:
   - Data: 1
     Chance: 5
   CardTypesChances:
-  - Type:
-      _classRef: 
-    Chance: 0
+  - Data:
+      _classRef: Sources.Data.Gameplay.EnemyData, Assembly-CSharp
+    Chance: 65
+  - Data:
+      _classRef: Sources.Data.Gameplay.ChestData, Assembly-CSharp
+    Chance: 10
+  - Data:
+      _classRef: Sources.Data.Gameplay.Items.ItemData, Assembly-CSharp
+    Chance: 25
   EnemiesChances:
   - Data: {fileID: 11400000, guid: cffa0ff3443c34173b806a870b15f9f7, type: 2}
     Chance: 50

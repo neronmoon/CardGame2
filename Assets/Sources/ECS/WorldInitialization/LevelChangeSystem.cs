@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.Data.Gameplay;
+using Sources.ECS.Animations.Components;
 using Sources.ECS.Components.Events;
+using Sources.ECS.Components.Processes;
 using Sources.ECS.GameplayActions.Components;
 using UnityEngine;
 
@@ -20,6 +22,9 @@ namespace Sources.ECS.WorldInitialization {
 
         private EcsFilter<StartLevelEvent> start;
         private EcsFilter<LevelChange> change;
+        
+        private EcsFilter<Animated> animated;
+        private EcsFilter<LevelIsChanging> isChanging;
 
         private float time;
 
@@ -42,6 +47,13 @@ namespace Sources.ECS.WorldInitialization {
                 LevelChange levelChange = change.Get1(idx);
                 SetLevelState(levelChange.LevelData, levelChange.Layout);
                 runtimeData.GarbageEntity.Replace(new StartLevelEvent { LevelData = levelChange.LevelData });
+                runtimeData.GarbageEntity.Replace(new LevelIsChanging());
+            }
+            
+            foreach (int idx in isChanging) {
+                if (animated.IsEmpty()) {
+                    isChanging.GetEntity(idx).Del<LevelIsChanging>();
+                }
             }
         }
 

@@ -7,7 +7,9 @@ using Sources.Data;
 using Sources.ECS.Animations.Components;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
+using Sources.ECS.Components.Events;
 using Sources.ECS.Components.Gameplay;
+using Sources.ECS.Components.Processes;
 using Sources.ECS.Extensions;
 using Sources.ECS.GameplayActions.Components;
 using Sources.Unity;
@@ -21,16 +23,17 @@ namespace Sources.ECS.Animations {
         /// </summary>
         private EcsWorld world;
 
-        private EcsFilter<PlayableCard, VisualObject, LevelPosition> cards;
         private SceneData sceneData;
         private RuntimeData runtimeData;
+        private EcsFilter<LevelIsChanging> levelIsChanging;
+        private EcsFilter<PlayableCard, VisualObject, LevelPosition> cards;
         private EcsFilter<PlayableCard, LevelPosition, Player> playerCard;
 
         private Random random = new();
 
         public void Run() {
             foreach (int idx in cards) {
-                LevelPosition playerPosition = playerCard.GetComponentOnFirstOrDefault(new LevelPosition{ Y=0, X=1 });
+                LevelPosition playerPosition = playerCard.GetComponentOnFirstOrDefault(new LevelPosition { Y = 0, X = 1 });
                 EcsEntity entity = cards.GetEntity(idx);
                 GameObject obj = entity.Get<VisualObject>().Object;
                 if (obj == null) continue;
@@ -52,8 +55,9 @@ namespace Sources.ECS.Animations {
                 animate<Spawned>(
                     entity,
                     (up) => {
+                        if (!up) return;
                         LevelPosition levelPosition = entity.Get<LevelPosition>();
-                        Vector3 targetPos = calcLevelPosition(levelPosition, playerPosition);
+                        Vector3 targetPos = calcLevelPosition(levelPosition);
                         transform.position = new Vector3(targetPos.x, transform.position.y, targetPos.z);
                         int nulls = runtimeData.LevelLayout[levelPosition.Y].Count((x) => x == null);
 
@@ -70,27 +74,21 @@ namespace Sources.ECS.Animations {
                         float rawDelay = (Math.Abs(Math.Max(playerPosition.Y, maxSpawnedY) - levelPosition.Y) + 0.5f) * levelWidth -
                                          (levelWidth - (levelPosition.X + 1));
 
-                        float delay = Mathf.Max(0f, rawDelay * 0.2f);
+                        float delay = Mathf.Max(0f, rawDelay * 0.1f);
                         const float time = 0.8f;
 
                         DOTween.Sequence()
-                               .AppendCallback(() => {
-                                   CardAnimationState state = entity.Get<CardAnimationState>();
-                                   state.SpawnAnimationScheduled = true;
-                                   entity.Replace(state);
-                               })
                                .AppendInterval(delay)
                                .AppendCallback(() => {
                                    CardAnimationState state = entity.Get<CardAnimationState>();
                                    state.SpawnAnimationStarted = true;
                                    entity.Replace(state);
                                })
-                               .Append(transform.DOMove(targetPos, time).SetEase(Ease.OutCubic))
+                               .Append(transform.DOBlendableMoveBy(calcLevelPosition(levelPosition) - transform.position, time).SetEase(Ease.OutCubic))
                                .AppendCallback(() => {
                                    CardAnimationState state = entity.Get<CardAnimationState>();
                                    state.SpawnAnimationStarted = false;
                                    state.SpawnAnimationCompleted = true;
-                                   state.SpawnAnimationScheduled = false;
                                    entity.Replace(state);
                                })
                                .Play();
@@ -116,39 +114,38 @@ namespace Sources.ECS.Animations {
 
                 animate<CompleteStep>(entity, (up) => {
                     // Do not move any card if player become dead! This will cause animation conflicts!
-                    if (entity.Has<Dead>()) return;
-                    
+                    if (!up || entity.Has<Dead>()) return;
+
                     // Only player completed step, but we move all cards  
                     foreach (int i in cards) {
                         EcsEntity cardEntity = cards.GetEntity(i);
-                        Vector3 targetPos = calcLevelPosition(cardEntity.Get<LevelPosition>(), playerPosition);
-                        GameObject gameObject = cardEntity.Get<VisualObject>().Object;
-
-                        // This animation conflicting with non-blocking Spawned animation cause moving artifacts
-                        // But this animations does same thing - moves cards to right position
-                        // So if gameobject is already tweening — this animation don't need to do same thing
-                        // TODO Possible fix: use blendable movement only by Y axis 
-                        bool scheduled = false;
-                        if (cardEntity.Has<CardAnimationState>()) {
-                            scheduled = cardEntity.Get<CardAnimationState>().SpawnAnimationScheduled;
-                        }
-
-                        if (!scheduled) {
-                            gameObject.transform.DOMove(targetPos, 0.5f);
+                        GameObject cardObject = cardEntity.Get<VisualObject>().Object;
+                        LevelPosition pos = cardEntity.Get<LevelPosition>();
+                        float time = 0.5f;
+                        if (!cardEntity.Has<Player>()) {
+                            if (levelIsChanging.IsEmpty()) {
+                                cardObject.transform.DOBlendableMoveBy(calcLevelPosition(pos) - calcLevelPosition(new LevelPosition { X = pos.X, Y = pos.Y + 1 }), time);                                
+                            }
+                        } else {
+                            cardObject.transform.DOMove(calcLevelPosition(pos), time);
                         }
                     }
                 });
             }
         }
 
-        private Vector3 calcLevelPosition(LevelPosition position, LevelPosition playerPosition) {
+        private Vector3 calcLevelPosition(LevelPosition position) {
             Vector2 origin = sceneData.OriginPoint.position;
             int relativeX = position.X - Mathf.FloorToInt(runtimeData.CurrentLevelData.Width / 2);
             return new Vector3(
                 origin.x + sceneData.CardSpacing.x * relativeX,
-                origin.y + sceneData.CardSpacing.y * (position.Y - playerPosition.Y),
+                origin.y + sceneData.CardSpacing.y * (position.Y - GetPlayerPosition().Y),
                 0
             );
+        }
+
+        private LevelPosition GetPlayerPosition() {
+            return playerCard.GetComponentOnFirstOrDefault(new LevelPosition { Y = 0, X = 1 });
         }
 
         private float randomFloat(float min, float max) {

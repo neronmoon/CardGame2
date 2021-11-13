@@ -35,7 +35,7 @@
 - [ ] Implement level map display
 - [ ] Add more items and potions
 - [ ] Fix DOTWeen warnings
-- [ ] Fix card animation (spawned & complete level conflict)
+- [x] Fix card animation (spawned & complete level conflict)
 - [ ] Playtest with Vova
 - [ ] Implement character select menu
 - [ ] Implement quests

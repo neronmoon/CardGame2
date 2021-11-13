@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NaughtyAttributes;
 using Sources.Data.Gameplay.Items;
 using UnityEngine;
@@ -11,8 +12,11 @@ namespace Sources.Data.Gameplay {
         public int Width = 3;
         public int Length = 1;
 
-        public ItemData[] Items;
+        public ChanceData<int>[] RowWidthChances;
+        public List<CardTypeChanceData> CardTypesChances;
+        public ChanceData<EnemyData>[] EnemiesChances;
         public ChanceData<ItemData>[] ItemChances;
+        public ChanceData<ChestData>[] ChestChances;
 
         [ShowAssetPreview]
         public Sprite Sprite;
@@ -23,11 +27,12 @@ namespace Sources.Data.Gameplay {
             levelData.Width = Width;
             levelData.Length = Length;
             levelData.Sprite = Sprite;
-            levelData.Items = Items;
+            
             levelData.ItemChances = ItemChances;
-            levelData.Chests = Array.Empty<ChestData>();
-            levelData.Enemies = Array.Empty<EnemyData>();
-            levelData.Exits = Array.Empty<LevelData>();
+            levelData.EnemiesChances = EnemiesChances;
+            levelData.ChestChances = ChestChances;
+            levelData.CardTypesChances = CardTypesChances;
+            levelData.RowWidthChances = RowWidthChances;
             return levelData;
         }
     }

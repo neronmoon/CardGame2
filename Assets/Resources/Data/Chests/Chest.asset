@@ -15,10 +15,16 @@ MonoBehaviour:
   Name: Chest
   Width: 3
   Length: 1
-  Items:
-  - {fileID: 11400000, guid: 966e2e33e9f037e4c86f1a4c176703c1, type: 2}
-  - {fileID: 11400000, guid: 2977d3f52b96eb940adc44d8143c8218, type: 2}
+  RowWidthChances:
+  - Data: 3
+    Chance: 100
+  CardTypesChances:
+  - Data:
+      _classRef: Sources.Data.Gameplay.Items.ItemData, Assembly-CSharp
+    Chance: 100
+  EnemiesChances: []
   ItemChances:
   - Data: {fileID: 11400000, guid: 05a0c85dc245e0f41978273121b68420, type: 2}
     Chance: 0
+  ChestChances: []
   Sprite: {fileID: 0}

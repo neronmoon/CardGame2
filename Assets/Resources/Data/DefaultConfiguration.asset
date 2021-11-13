@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: DefaultConfiguration
   m_EditorClassIdentifier: 
   CardPrefab: {fileID: 8182558108753156521, guid: 22f65f7c3121b45f492d37225a190735, type: 3}
-  Character: {fileID: 11400000, guid: 9d759537e79e04c5ab4545ae885a5bd7, type: 2}
-  StartLevel: {fileID: 11400000, guid: 4344e52058a6348a8b7e6fed239e333f, type: 2}
+  CharacterData: {fileID: 11400000, guid: 9d759537e79e04c5ab4545ae885a5bd7, type: 2}
+  StartLevelData: {fileID: 11400000, guid: 4344e52058a6348a8b7e6fed239e333f, type: 2}
   HitClips:
   - {fileID: 8300000, guid: 1d3bdb9a5006a914382717bf9a2d6874, type: 3}
   - {fileID: 8300000, guid: 5b6d4c7fa252bda4bad28fdb4459411f, type: 3}

@@ -5,7 +5,7 @@ namespace Sources.Data.Gameplay.Items {
     public interface IConsumableItemType { };
     public interface IEquippableItemType { };
 
-    public abstract class ItemData : GameplayData {
+    public class ItemData : GameplayData {
         public string Name;
         
         [ResizableTextArea]
