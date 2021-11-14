@@ -98,6 +98,48 @@ MonoBehaviour:
     Chance: 30
   - Data: {fileID: 11400000, guid: 2a9762a883fbfcd4f9c8ac4dc02660b8, type: 2}
     Chance: 5
+  DifficultyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.12700577
+      value: 0.42474994
+      inSlope: 0.9971013
+      outSlope: 0.9971013
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.20001602
+    - serializedVersion: 3
+      time: 0.60444003
+      value: 0.60460573
+      inSlope: 1.6572526
+      outSlope: 1.6572526
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.0960295
+    - serializedVersion: 3
+      time: 0.9708232
+      value: 0.9952819
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   Width: 3
   Length: 50
   Sprite: {fileID: 0}

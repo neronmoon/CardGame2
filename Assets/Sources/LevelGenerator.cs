@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Sources.Data.Gameplay;
 using Sources.Data.Gameplay.Items;
-using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Extensions;
 using UnityEngine;
 
@@ -41,21 +40,21 @@ namespace Sources {
                 layout = GenerateRowLayout(Math.Max(width--, 1), previousRow);
             }
 
-            int x = 0;
+            int x = -1;
             object[] row = new object[3];
             foreach (bool item in layout) {
+                x++;
                 if (!item) continue;
 
                 Type type = Choose(levelDataSpec.CardTypesChances);
                 if (type.IsAssignableFrom(typeof(EnemyData))) {
-                    row[x++] = Choose(levelDataSpec.EnemiesChances);
+                    row[x] = Choose(levelDataSpec.EnemiesChances);
                 } else if (type.IsAssignableFrom(typeof(ChestData))) {
-                    row[x++] = Choose(levelDataSpec.ChestChances);
+                    row[x] = Choose(levelDataSpec.ChestChances);
                 } else if (type.IsAssignableFrom(typeof(ItemData))) {
-                    row[x++] = Choose(levelDataSpec.ItemChances);
+                    row[x] = Choose(levelDataSpec.ItemChances);
                 } else {
                     Debug.LogWarning("Unknown card type!");
-                    x++;
                 }
             }
 
@@ -69,15 +68,13 @@ namespace Sources {
                 template[i] = true;
             }
 
-            IEnumerable<bool>[] layouts = template.GetPermutations().ToArray();
-
             bool[] prevRowTemplate = new bool[maxWidth];
             for (int i = 0; i < maxWidth; i++) {
                 prevRowTemplate[i] = previousRow[i] != null;
             }
 
             List<IEnumerable<bool>> finalLayouts = new();
-            foreach (IEnumerable<bool> layout in layouts) {
+            foreach (IEnumerable<bool> layout in template.GetPermutations()) {
                 bool[] candidate = layout.ToArray();
                 int withSiblings = 0;
                 int items = 0;
