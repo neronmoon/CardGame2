@@ -29,10 +29,10 @@ namespace Sources.Unity {
 
             const string monsters = sprites + "Monsters/";
             conn.InsertAll(new[] {
-                new Character { Name = "Player", Health = 15, SpritePath = monsters + "monster (277).png" }
+                new Character { Name = "Player", Health = 50, SpritePath = monsters + "monster (277).png" }
             });
             conn.InsertAll(new[] {
-                new Level { Name = "Infinite recursion", Length = 50, Width = 3, Difficulty = 1 }
+                new Level { Name = "Infinite recursion", Length = 5, Width = 3, Difficulty = 1 }
             });
             conn.InsertAll(new[] {
                 new CardType { Value = nameof(Character) },
@@ -56,6 +56,8 @@ namespace Sources.Unity {
                 Chance.Make(testLevel, RowWidth.First(x => x.Value == 3), 70),
                 Chance.Make(testLevel, RowWidth.First(x => x.Value == 2), 25),
                 Chance.Make(testLevel, RowWidth.First(x => x.Value == 1), 5),
+                
+                Chance.Make(testLevel, testLevel, 100), // cycle
             });
             
             foreach (var item in Item.GetAll()) {
@@ -85,12 +87,14 @@ namespace Sources.Unity {
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Easy),
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Hard),
                     },
+                    Type = ItemType.Consumable,
                     SpritePath = items + "potions.png"
                 },
                 new Item {
                     Name = "Health potion", Strongness = Strongness.Hard, Effects = new[] {
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Hard)
                     },
+                    Type = ItemType.Consumable,
                     SpritePath = items + "potions.png"
                 },
             };

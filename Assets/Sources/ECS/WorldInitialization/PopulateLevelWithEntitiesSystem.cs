@@ -60,7 +60,7 @@ namespace Sources.ECS.WorldInitialization {
                         entity.Replace(new Health { Amount = character.Health });
 
                         // if (character.Sprite) {
-                            // entity.Replace(new Face { Sprite = character.Sprite });
+                        // entity.Replace(new Face { Sprite = character.Sprite });
                         // }
                     }
 
@@ -69,6 +69,7 @@ namespace Sources.ECS.WorldInitialization {
                     entity = MakeDefaultCardEntity(position);
                     entity.Replace(new EnemyComponent { Data = enemy });
                     entity.Replace(new Health { Amount = enemy.Health });
+                    entity.Replace(new Name { Value = "enemy" });
                     // if (enemy.Sprite) {
                         // entity.Replace(new Face { Sprite = enemy.Sprite });
                     // }
@@ -84,9 +85,7 @@ namespace Sources.ECS.WorldInitialization {
                         Layout = levelGenerator.Generate(chest, runtimeData.CurrentCharacter, new ChestExit())
                     });
 
-                    if (!string.IsNullOrEmpty(chest.Name)) {
-                        entity.Replace(new Name { Value = chest.Name });
-                    }
+                    entity.Replace(new Name { Value = chest.Name });
 
                     // if (chest.Sprite) {
                         // entity.Replace(new Face { Sprite = chest.Sprite });
@@ -108,9 +107,7 @@ namespace Sources.ECS.WorldInitialization {
                         Data = level,
                         Layout = levelGenerator.Generate(level, runtimeData.CurrentCharacter)
                     });
-                    if (!string.IsNullOrEmpty(level.Name)) {
-                        entity.Replace(new Name { Value = level.Name });
-                    }
+                    entity.Replace(new Name { Value = level.Name });
 
                     // if (level.Sprite) {
                         // entity.Replace(new Face { Sprite = level.Sprite });
@@ -119,6 +116,7 @@ namespace Sources.ECS.WorldInitialization {
                     break;
                 case Item item:
                     entity = MakeDefaultCardEntity(position);
+                    entity.Replace(new Name { Value = item.Name });
                     switch (item.Type) {
                         case ItemType.Consumable:
                             entity.Replace(new ConsumableItem { Data = item });
@@ -131,19 +129,17 @@ namespace Sources.ECS.WorldInitialization {
                             break;
                     }
 
-                    if (!string.IsNullOrEmpty(item.Name)) {
-                        entity.Replace(new Name { Value = item.Name });
-                    }
-
                     // if (item.Sprite) {
                         // entity.Replace(new Face { Sprite = item.Sprite });
                     // }
 
-                    // if (item is HealthPotionData potion) {
-                        // entity.Replace(new Health { Amount = potion.Amount });
-                        // entity.Replace(new HealthPotion { Amount = potion.Amount });
-                    // }
-
+                    foreach (ItemEffect effect in item.Effects) {
+                        // TODO: Add more effects and summarize them if they intersect
+                        if (effect.Name == "Heal") {
+                            entity.Replace(new Health { Amount = (int)effect.Value });
+                            entity.Replace(new HealthPotion { Amount = (int)effect.Value });    
+                        }
+                    }
                     break;
             }
         }

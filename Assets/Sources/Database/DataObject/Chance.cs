@@ -16,9 +16,6 @@ namespace Sources.Database.DataObject {
                 chance.ContainerId == container.GetId() &&
                 chance.ItemType == typeof(T).Name
             );
-            Debug.Log(typeof(T).Name);
-            Debug.Log(container.GetType().Name);
-            
             KeyValuePair<T, int>[] result = new KeyValuePair<T, int>[chances.Length];
             int i = 0;
             foreach (Chance chance in chances) {

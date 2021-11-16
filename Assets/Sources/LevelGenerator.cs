@@ -32,7 +32,7 @@ namespace Sources {
 
             // TODO: place boss at last row
             // placing exit at last row
-            // layout[^1][center] = exit ?? level.Exits.ChooseOne();
+            layout[^1][center] = exit ?? Choose(level.Chances<Level>());
             return layout;
         }
 
@@ -45,7 +45,7 @@ namespace Sources {
                 }
             }
 
-            KeyValuePair<Type, Strongness>[] choice = InterestingChoices(width);
+            KeyValuePair<Type, Strongness>[] choices = level is Chest ? InterestingChestChoices(width) : InterestingChoices(width);
 
             int x = -1;
             int c = -1;
@@ -55,19 +55,60 @@ namespace Sources {
                 if (!item) continue;
                 c++;
 
-                Type type = choice[c].Key;
+                Type type = choices[c].Key;
                 if (type.IsAssignableFrom(typeof(Enemy))) {
-                    row[x] = Choose(level.Chances<Enemy>().Where(e => e.Key.Strongness == choice[c].Value));
+                    row[x] = Choose(level.Chances<Enemy>().Where(e => e.Key.Strongness == choices[c].Value));
                 } else if (type.IsAssignableFrom(typeof(Chest))) {
-                    row[x] = Choose(level.Chances<Chest>().Where(e => e.Key.Strongness == choice[c].Value));
+                    row[x] = Choose(level.Chances<Chest>().Where(e => e.Key.Strongness == choices[c].Value));
                 } else if (type.IsAssignableFrom(typeof(Item))) {
-                    row[x] = Choose(level.Chances<Item>().Where(e => e.Key.Strongness == choice[c].Value));
+                    row[x] = Choose(level.Chances<Item>().Where(e => e.Key.Strongness == choices[c].Value));
                 } else {
                     Debug.LogWarning("Unknown card type!");
                 }
             }
 
             return row;
+        }
+
+        private KeyValuePair<Type, Strongness>[] InterestingChestChoices(int width) {
+            Type item = typeof(Item);
+
+            KeyValuePair<Type, Strongness>[][] choice = Array.Empty<KeyValuePair<Type, Strongness>[]>();
+
+            switch (width) {
+                case 1: // no choice
+                    choice = new[] {
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(item, Strongness.Hard),
+                        }
+                    };
+                    break;
+                case 2:
+                    choice = new[] {
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(item, Strongness.Easy), new(item, Strongness.Easy),
+                        },
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(item, Strongness.Hard), new(item, Strongness.Hard),
+                        },
+                    };
+                    break;
+                case 3:
+                    choice = new[] {
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(item, Strongness.Hard), new(item, Strongness.Hard), new(item, Strongness.Hard),
+                            new(item, Strongness.Easy), new(item, Strongness.Easy), new(item, Strongness.Easy),
+                            new(item, Strongness.Hard), new(item, Strongness.Easy), new(item, Strongness.Easy),
+                            new(item, Strongness.Hard), new(item, Strongness.Hard), new(item, Strongness.Easy),
+                        },
+                    };
+                    break;
+                default:
+                    Debug.LogError("Cannot build interesting choice with width=" + width);
+                    break;
+            }
+
+            return choice[random.Next(choice.Length)];
         }
 
         private KeyValuePair<Type, Strongness>[] InterestingChoices(int width) {
@@ -190,6 +231,7 @@ namespace Sources {
                 Debug.LogError("Chances of " + typeof(T) + " is empty!");
                 return default;
             }
+
             int max = sortedItems.Max(x => x.Value);
             int prev = 0;
             int c = random.Next(0, max);
