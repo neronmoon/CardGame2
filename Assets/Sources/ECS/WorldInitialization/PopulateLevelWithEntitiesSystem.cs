@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.Database.DataObject;
@@ -38,7 +39,6 @@ namespace Sources.ECS.WorldInitialization {
         }
 
         private void createCardEntity(object data, int x, int y) {
-            
             EcsEntity entity;
             LevelPosition position = new() { X = x, Y = y };
             switch (data) {
@@ -50,7 +50,7 @@ namespace Sources.ECS.WorldInitialization {
                             entity.Replace(position);
                         }
                     } else {
-                        entity = MakeDefaultCardEntity(position);
+                        entity = MakeDefaultCardEntity(position, character.Sprite);
                         entity.Replace(new Player { Data = character });
                         entity.Replace(new Hoverable());
                         entity.Replace(new Clickable());
@@ -58,25 +58,18 @@ namespace Sources.ECS.WorldInitialization {
                         entity.Replace(new Inventory(new Dictionary<Item, int>()));
 
                         entity.Replace(new Health { Amount = character.Health });
-
-                        // if (character.Sprite) {
-                        // entity.Replace(new Face { Sprite = character.Sprite });
-                        // }
                     }
 
                     break;
                 case Enemy enemy:
-                    entity = MakeDefaultCardEntity(position);
+                    entity = MakeDefaultCardEntity(position, enemy.Sprite);
                     entity.Replace(new EnemyComponent { Data = enemy });
                     entity.Replace(new Health { Amount = enemy.Health });
-                    entity.Replace(new Name { Value = "enemy" });
-                    // if (enemy.Sprite) {
-                        // entity.Replace(new Face { Sprite = enemy.Sprite });
-                    // }
 
                     break;
                 case Chest chest:
-                    entity = MakeDefaultCardEntity(position);
+                    entity = MakeDefaultCardEntity(position, chest.Sprite);
+                    entity.Replace(new Name { Value = chest.Name });
 
                     // define chest level
                     // this should exit to current level at chest position 
@@ -84,12 +77,6 @@ namespace Sources.ECS.WorldInitialization {
                         Data = chest,
                         Layout = levelGenerator.Generate(chest, runtimeData.CurrentCharacter, new ChestExit())
                     });
-
-                    entity.Replace(new Name { Value = chest.Name });
-
-                    // if (chest.Sprite) {
-                        // entity.Replace(new Face { Sprite = chest.Sprite });
-                    // }
 
                     break;
 
@@ -102,20 +89,16 @@ namespace Sources.ECS.WorldInitialization {
                     break;
 
                 case Level level:
-                    entity = MakeDefaultCardEntity(position);
+                    entity = MakeDefaultCardEntity(position, level.Sprite);
                     entity.Replace(new LevelEntrance {
                         Data = level,
                         Layout = levelGenerator.Generate(level, runtimeData.CurrentCharacter)
                     });
                     entity.Replace(new Name { Value = level.Name });
 
-                    // if (level.Sprite) {
-                        // entity.Replace(new Face { Sprite = level.Sprite });
-                    // }
-
                     break;
                 case Item item:
-                    entity = MakeDefaultCardEntity(position);
+                    entity = MakeDefaultCardEntity(position, item.Sprite);
                     entity.Replace(new Name { Value = item.Name });
                     switch (item.Type) {
                         case ItemType.Consumable:
@@ -129,26 +112,34 @@ namespace Sources.ECS.WorldInitialization {
                             break;
                     }
 
-                    // if (item.Sprite) {
-                        // entity.Replace(new Face { Sprite = item.Sprite });
-                    // }
-
                     foreach (ItemEffect effect in item.Effects) {
                         // TODO: Add more effects and summarize them if they intersect
                         if (effect.Name == "Heal") {
                             entity.Replace(new Health { Amount = (int)effect.Value });
-                            entity.Replace(new HealthPotion { Amount = (int)effect.Value });    
+                            entity.Replace(new HealthPotion { Amount = (int)effect.Value });
                         }
                     }
+
                     break;
             }
         }
 
-        private EcsEntity MakeDefaultCardEntity(LevelPosition? position = null) {
+        private EcsEntity MakeDefaultCardEntity(LevelPosition position, string spriteDef = null) {
             EcsEntity entity = world.NewEntity();
             entity.Replace(new PlayableCard());
-            if (position != null) {
-                entity.Replace((LevelPosition)position);
+            entity.Replace(position);
+            if (!string.IsNullOrEmpty(spriteDef)) {
+                Sprite sprite = default;
+                if (spriteDef.Contains(":")) {
+                    var splited = spriteDef.Split(":", 2);
+                    sprite = Resources.LoadAll<Sprite>(splited[0]).FirstOrDefault(x => x.name == splited[1]);
+                } else {
+                    sprite = Resources.Load<Sprite>(spriteDef);
+                }
+
+                if (sprite != default) {
+                    entity.Replace(new Face { Sprite = sprite });
+                }
             }
 
             return entity;

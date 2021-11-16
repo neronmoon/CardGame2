@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Sources.Data.Gameplay;
 using SQLite;
@@ -10,8 +9,8 @@ namespace Sources.Database.DataObject {
     }
     
     public class Item : DataObject<Item>, IDataObject {
-        public string Name;
-        public string SpritePath { get; set; }
+        public string Name { get; set; }
+        public string Sprite { get; set; }
         public ItemType Type;
         public Strongness Strongness { get; set; }
         

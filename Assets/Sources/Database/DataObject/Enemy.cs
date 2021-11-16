@@ -6,6 +6,6 @@ namespace Sources.Database.DataObject {
         public int Health {get; set;}
         public Strongness Strongness {get; set;}
 
-        public string SpritePath {get; set;}
+        public string Sprite {get; set;}
     }
 }

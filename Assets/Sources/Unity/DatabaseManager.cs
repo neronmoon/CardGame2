@@ -12,7 +12,7 @@ namespace Sources.Unity {
 #if UNITY_EDITOR
         [Button("Recreate database")]
         public void SeedDatabase() {
-            const string sprites = "Assets/Resources/Sprites/";
+            const string sprites = "Sprites/";
 
             DatabaseConnector connector = DatabaseConnector.getInstance();
 
@@ -29,7 +29,7 @@ namespace Sources.Unity {
 
             const string monsters = sprites + "Monsters/";
             conn.InsertAll(new[] {
-                new Character { Name = "Player", Health = 50, SpritePath = monsters + "monster (277).png" }
+                new Character { Name = "Player", Health = 50, Sprite = monsters + "monster (277)" }
             });
             conn.InsertAll(new[] {
                 new Level { Name = "Infinite recursion", Length = 5, Width = 3, Difficulty = 1 }
@@ -73,9 +73,8 @@ namespace Sources.Unity {
                     conn.Insert(Chance.Make(chest, item, 100));
                 }
                 conn.InsertAll(new[] {
-                    Chance.Make(chest, RowWidth.First(x => x.Value == 3), 70),
-                    Chance.Make(chest, RowWidth.First(x => x.Value == 2), 25),
-                    Chance.Make(chest, RowWidth.First(x => x.Value == 1), 5),
+                    Chance.Make(chest, RowWidth.First(x => x.Value == 3), 90),
+                    Chance.Make(chest, RowWidth.First(x => x.Value == 2), 10),
                 });
             }
         }
@@ -88,14 +87,14 @@ namespace Sources.Unity {
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Hard),
                     },
                     Type = ItemType.Consumable,
-                    SpritePath = items + "potions.png"
+                    Sprite = items + "potions:red small"
                 },
                 new Item {
                     Name = "Health potion", Strongness = Strongness.Hard, Effects = new[] {
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Hard)
                     },
                     Type = ItemType.Consumable,
-                    SpritePath = items + "potions.png"
+                    Sprite = items + "potions:red large"
                 },
             };
         }
@@ -116,24 +115,24 @@ namespace Sources.Unity {
 
         private static IEnumerable<Enemy> GetEnemies(string monsters) {
             return new[] {
-                new Enemy { Name = "Bird", Health = 2, Strongness = Strongness.Easy, SpritePath = monsters + "monster (24).png" },
-                new Enemy { Name = "Ghost", Health = 3, Strongness = Strongness.Easy, SpritePath = monsters + "monster (103).png" },
+                new Enemy { Name = "Bird", Health = 2, Strongness = Strongness.Easy, Sprite = monsters + "monster (24)" },
+                new Enemy { Name = "Ghost", Health = 3, Strongness = Strongness.Easy, Sprite = monsters + "monster (103)" },
                 new Enemy { Name = "Training Stand", Health = 1, Strongness = Strongness.Easy },
-                new Enemy { Name = "Wolf", Health = 3, Strongness = Strongness.Easy, SpritePath = monsters + "monster (49).png" },
-                new Enemy { Name = "Octopus", Health = 4, Strongness = Strongness.Easy, SpritePath = monsters + "monster (141).png" },
-                new Enemy { Name = "Orc", Health = 5, Strongness = Strongness.Easy, SpritePath = monsters + "monster (110).png" },
+                new Enemy { Name = "Wolf", Health = 3, Strongness = Strongness.Easy, Sprite = monsters + "monster (49)" },
+                new Enemy { Name = "Octopus", Health = 4, Strongness = Strongness.Easy, Sprite = monsters + "monster (141)" },
+                new Enemy { Name = "Orc", Health = 5, Strongness = Strongness.Easy, Sprite = monsters + "monster (110)" },
 
-                new Enemy { Name = "Stump", Health = 7, Strongness = Strongness.Hard, SpritePath = monsters + "monster (267).png" },
-                new Enemy { Name = "Skeleton", Health = 6, Strongness = Strongness.Hard, SpritePath = monsters + "monster (240).png" },
-                new Enemy { Name = "Fire Creature", Health = 10, Strongness = Strongness.Hard, SpritePath = monsters + "monster (118).png" },
-                new Enemy { Name = "Cat and Snake", Health = 6, Strongness = Strongness.Hard, SpritePath = monsters + "monster (174).png" },
-                new Enemy { Name = "Lizard", Health = 11, Strongness = Strongness.Hard, SpritePath = monsters + "monster (150).png" },
-                new Enemy { Name = "Mamonth", Health = 15, Strongness = Strongness.Hard, SpritePath = monsters + "monster (155).png" },
-                new Enemy { Name = "Turtle", Health = 9, Strongness = Strongness.Hard, SpritePath = monsters + "monster (269).png" },
+                new Enemy { Name = "Stump", Health = 7, Strongness = Strongness.Hard, Sprite = monsters + "monster (267)" },
+                new Enemy { Name = "Skeleton", Health = 6, Strongness = Strongness.Hard, Sprite = monsters + "monster (240)" },
+                new Enemy { Name = "Fire Creature", Health = 10, Strongness = Strongness.Hard, Sprite = monsters + "monster (118)" },
+                new Enemy { Name = "Cat and Snake", Health = 6, Strongness = Strongness.Hard, Sprite = monsters + "monster (174)" },
+                new Enemy { Name = "Lizard", Health = 11, Strongness = Strongness.Hard, Sprite = monsters + "monster (150)" },
+                new Enemy { Name = "Mamonth", Health = 15, Strongness = Strongness.Hard, Sprite = monsters + "monster (155)" },
+                new Enemy { Name = "Turtle", Health = 9, Strongness = Strongness.Hard, Sprite = monsters + "monster (269)" },
 
-                new Enemy { Name = "Black Knight", Health = 20, Strongness = Strongness.Boss, SpritePath = monsters + "monster (277).png" },
-                new Enemy { Name = "Medusa", Health = 21, Strongness = Strongness.Boss, SpritePath = monsters + "monster (255).png" },
-                new Enemy { Name = "Dragon", Health = 23, Strongness = Strongness.Boss, SpritePath = monsters + "monster (9).png" },
+                new Enemy { Name = "Black Knight", Health = 20, Strongness = Strongness.Boss, Sprite = monsters + "monster (277)" },
+                new Enemy { Name = "Medusa", Health = 21, Strongness = Strongness.Boss, Sprite = monsters + "monster (255)" },
+                new Enemy { Name = "Dragon", Health = 23, Strongness = Strongness.Boss, Sprite = monsters + "monster (9)" },
             };
         }
 
