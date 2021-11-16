@@ -1,7 +1,8 @@
-using Sources.Data.Gameplay;
+
+using Sources.Database.DataObject;
 
 namespace Sources.ECS.Components.Events {
     public struct StartLevelEvent {
-        public LevelData LevelData;
+        public ILevelDefinition LevelData;
     }
 }

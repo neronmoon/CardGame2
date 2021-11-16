@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sources.Data.Gameplay;
-using Sources.Data.Gameplay.Items;
+using Sources.Database;
+using Sources.Database.DataObject;
 using Sources.ECS.Extensions;
 using UnityEngine;
 
@@ -10,55 +11,136 @@ namespace Sources {
     public class LevelGenerator {
         private System.Random random = new();
 
-        public object[][] Generate(LevelData levelDataSpec, CharacterData characterData, object exit = null) {
+        public object[][] Generate<T>(CardsContainer<T> level, Character character, object exit = null) where T : IDataObject, new() {
             // layout is matrix (N+2)xM where N is level length and M is width of level
             // fist line is for player, last line for exit
             // layout contains object of player/enemies/exits
             // null means empty space without card
-            object[][] layout = new object[levelDataSpec.Length + 2][];
+            object[][] layout = new object[level.Length + 2][];
             for (int i = 0; i < layout.Length; i++) {
-                layout[i] = new object[levelDataSpec.Width];
+                layout[i] = new object[level.Width];
             }
 
             // placing player (always in middle of row)
-            int center = Mathf.FloorToInt(levelDataSpec.Width / 2);
-            layout[0][center] = characterData;
+            int center = Mathf.FloorToInt(level.Width / 2);
+            layout[0][center] = character;
 
             for (int i = 1; i < layout.Length - 1; i++) {
-                int rowWidth = Choose(levelDataSpec.RowWidthChances);
-                layout[i] = GenerateRow(levelDataSpec, rowWidth, i, layout[i - 1]);
+                int rowWidth = Choose(level.Chances<RowWidth>()).Value;
+                layout[i] = GenerateRow(level, rowWidth, i, layout[i - 1]);
             }
 
+            // TODO: place boss at last row
             // placing exit at last row
-            layout[^1][center] = exit ?? levelDataSpec.Exits.ChooseOne();
+            // layout[^1][center] = exit ?? level.Exits.ChooseOne();
             return layout;
         }
 
-        private object[] GenerateRow(LevelData levelDataSpec, int width, int posY, object[] previousRow) {
+        private object[] GenerateRow<T>(CardsContainer<T> level, int width, int posY, object[] previousRow) where T : IDataObject, new() {
             IEnumerable<bool> layout = null;
             while (layout == null) {
-                layout = GenerateRowLayout(Math.Max(width--, 1), previousRow);
+                layout = GenerateRowLayout(Math.Max(width, 1), previousRow);
+                if (layout == null) {
+                    width--;
+                }
             }
 
+            KeyValuePair<Type, Strongness>[] choice = InterestingChoices(width);
+
             int x = -1;
+            int c = -1;
             object[] row = new object[3];
             foreach (bool item in layout) {
                 x++;
                 if (!item) continue;
+                c++;
 
-                Type type = Choose(levelDataSpec.CardTypesChances);
-                if (type.IsAssignableFrom(typeof(EnemyData))) {
-                    row[x] = Choose(levelDataSpec.EnemiesChances);
-                } else if (type.IsAssignableFrom(typeof(ChestData))) {
-                    row[x] = Choose(levelDataSpec.ChestChances);
-                } else if (type.IsAssignableFrom(typeof(ItemData))) {
-                    row[x] = Choose(levelDataSpec.ItemChances);
+                Type type = choice[c].Key;
+                if (type.IsAssignableFrom(typeof(Enemy))) {
+                    row[x] = Choose(level.Chances<Enemy>().Where(e => e.Key.Strongness == choice[c].Value));
+                } else if (type.IsAssignableFrom(typeof(Chest))) {
+                    row[x] = Choose(level.Chances<Chest>().Where(e => e.Key.Strongness == choice[c].Value));
+                } else if (type.IsAssignableFrom(typeof(Item))) {
+                    row[x] = Choose(level.Chances<Item>().Where(e => e.Key.Strongness == choice[c].Value));
                 } else {
                     Debug.LogWarning("Unknown card type!");
                 }
             }
 
             return row;
+        }
+
+        private KeyValuePair<Type, Strongness>[] InterestingChoices(int width) {
+            Type enemy = typeof(Enemy);
+            Type item = typeof(Item);
+            Type chest = typeof(Chest);
+
+            KeyValuePair<Type, Strongness>[][] choice = Array.Empty<KeyValuePair<Type, Strongness>[]>();
+
+            switch (width) {
+                case 1: // no choice
+                    choice = new[] {
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(enemy, Strongness.Easy),
+                        },
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(enemy, Strongness.Hard),
+                        }
+                    };
+                    break;
+                case 2:
+                    choice = new[] {
+                        // enemy - chest
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(enemy, Strongness.Easy), new(chest, Strongness.Easy),
+                        },
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(enemy, Strongness.Easy), new(chest, Strongness.Hard),
+                        },
+                        // enemy - enemy
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(enemy, Strongness.Easy), new(enemy, Strongness.Hard),
+                        },
+                        // enemy - item
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(enemy, Strongness.Easy), new(item, Strongness.Easy),
+                        },
+                        new KeyValuePair<Type, Strongness>[] { // strong item or easy fight
+                            new(enemy, Strongness.Easy), new(item, Strongness.Hard),
+                        },
+                    };
+                    break;
+                case 3:
+                    choice = new[] {
+                        // enemy - enemy - chest
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(enemy, Strongness.Easy), new(enemy, Strongness.Easy), new(chest, Strongness.Easy),
+                        },
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(enemy, Strongness.Easy), new(enemy, Strongness.Hard), new(chest, Strongness.Easy),
+                        },
+                        // enemy - enemy - enemy
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(enemy, Strongness.Easy), new(enemy, Strongness.Easy), new(enemy, Strongness.Hard),
+                        },
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(enemy, Strongness.Easy), new(enemy, Strongness.Hard), new(enemy, Strongness.Hard),
+                        },
+                        // enemy - enemy - item
+                        new KeyValuePair<Type, Strongness>[] { // strong item or easy fight
+                            new(enemy, Strongness.Easy), new(enemy, Strongness.Easy), new(item, Strongness.Hard),
+                        },
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(enemy, Strongness.Easy), new(enemy, Strongness.Easy), new(item, Strongness.Easy),
+                        },
+                    };
+                    break;
+                default:
+                    Debug.LogError("Cannot build interesting choice with width=" + width);
+                    break;
+            }
+
+            return choice[random.Next(choice.Length)];
         }
 
         private IEnumerable<bool> GenerateRowLayout(int width, object[] previousRow) {
@@ -101,37 +183,22 @@ namespace Sources {
             return !finalLayouts.Any() ? null : finalLayouts[random.Next(finalLayouts.Count)];
         }
 
-        private Type Choose(IEnumerable<CardTypeChanceData> items) {
-            List<CardTypeChanceData> sortedItems = items.ToList();
-            sortedItems.Sort((x, xx) => x.Chance - xx.Chance);
-            int max = sortedItems.Max(x => x.Chance);
-
-            int c = random.Next(0, max);
-            int prev = 0;
-            foreach (CardTypeChanceData item in sortedItems) {
-                if (c >= prev && c <= item.Chance + prev) {
-                    return item.Data;
-                }
-
-                prev += item.Chance;
+        private T Choose<T>(IEnumerable<KeyValuePair<T, int>> items) {
+            List<KeyValuePair<T, int>> sortedItems = items.ToList();
+            sortedItems.Sort((x, xx) => x.Value - xx.Value);
+            if (sortedItems.Count < 1) {
+                Debug.LogError("Chances of " + typeof(T) + " is empty!");
+                return default;
             }
-
-            Debug.LogError("Wrong setup of " + typeof(CardTypeChanceData) + " drop chances");
-            return default;
-        }
-
-        private T Choose<T>(IEnumerable<ChanceData<T>> items) {
-            List<ChanceData<T>> sortedItems = items.ToList();
-            sortedItems.Sort((x, xx) => x.Chance - xx.Chance);
-            int max = sortedItems.Max(x => x.Chance);
+            int max = sortedItems.Max(x => x.Value);
             int prev = 0;
             int c = random.Next(0, max);
-            foreach (ChanceData<T> item in sortedItems) {
-                if (c >= prev && c <= item.Chance + prev) {
-                    return item.Data;
+            foreach (KeyValuePair<T, int> item in sortedItems) {
+                if (c >= prev && c <= item.Value + prev) {
+                    return item.Key;
                 }
 
-                prev += item.Chance;
+                prev += item.Value;
             }
 
             Debug.LogError("Wrong setup of " + typeof(T) + " drop chances");

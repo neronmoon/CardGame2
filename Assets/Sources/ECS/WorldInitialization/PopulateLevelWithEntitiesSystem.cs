@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using Leopotam.Ecs;
 using Sources.Data;
-using Sources.Data.Gameplay;
-using Sources.Data.Gameplay.Items;
+using Sources.Database.DataObject;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Events;
 using UnityEngine;
-using Enemy = Sources.ECS.Components.Gameplay.Enemy;
-using HealthPotion = Sources.ECS.Components.Gameplay.HealthPotion;
+using Enemy = Sources.Database.DataObject.Enemy;
+using EnemyComponent = Sources.ECS.Components.Gameplay.Enemy;
 
 namespace Sources.ECS.WorldInitialization {
     public class PopulateLevelWithEntitiesSystem : IEcsRunSystem {
@@ -43,7 +42,7 @@ namespace Sources.ECS.WorldInitialization {
             EcsEntity entity;
             LevelPosition position = new() { X = x, Y = y };
             switch (data) {
-                case CharacterData character:
+                case Character character:
                     if (!playerObject.IsEmpty()) {
                         // Player already spawned!
                         foreach (int idx in playerObject) {
@@ -56,76 +55,75 @@ namespace Sources.ECS.WorldInitialization {
                         entity.Replace(new Hoverable());
                         entity.Replace(new Clickable());
                         entity.Replace(new Draggable());
-                        entity.Replace(new Inventory(new Dictionary<ItemData, int>()));
+                        entity.Replace(new Inventory(new Dictionary<Item, int>()));
 
                         entity.Replace(new Health { Amount = character.Health });
 
-                        if (character.Sprite) {
-                            entity.Replace(new Face { Sprite = character.Sprite });
-                        }
+                        // if (character.Sprite) {
+                            // entity.Replace(new Face { Sprite = character.Sprite });
+                        // }
                     }
 
                     break;
-                case EnemyData enemy:
+                case Enemy enemy:
                     entity = MakeDefaultCardEntity(position);
-                    entity.Replace(new Enemy { Data = enemy });
+                    entity.Replace(new EnemyComponent { Data = enemy });
                     entity.Replace(new Health { Amount = enemy.Health });
-                    if (enemy.Sprite) {
-                        entity.Replace(new Face { Sprite = enemy.Sprite });
-                    }
+                    // if (enemy.Sprite) {
+                        // entity.Replace(new Face { Sprite = enemy.Sprite });
+                    // }
 
                     break;
-                case ChestData chest:
+                case Chest chest:
                     entity = MakeDefaultCardEntity(position);
 
                     // define chest level
                     // this should exit to current level at chest position 
-                    LevelData chestLevelData = chest.GetLevel();
-                    entity.Replace(new LevelExit {
-                        Data = chestLevelData,
-                        Layout = levelGenerator.Generate(chestLevelData, configuration.CharacterData, new ChestExit())
+                    entity.Replace(new LevelEntrance {
+                        Data = chest,
+                        Layout = levelGenerator.Generate(chest, runtimeData.CurrentCharacter, new ChestExit())
                     });
 
                     if (!string.IsNullOrEmpty(chest.Name)) {
                         entity.Replace(new Name { Value = chest.Name });
                     }
 
-                    if (chest.Sprite) {
-                        entity.Replace(new Face { Sprite = chest.Sprite });
-                    }
+                    // if (chest.Sprite) {
+                        // entity.Replace(new Face { Sprite = chest.Sprite });
+                    // }
 
                     break;
 
                 case ChestExit:
                     entity = MakeDefaultCardEntity(position);
-                    (LevelData prevLevel, object[][] prevLevelLayout) = runtimeData.PlayerPath.Peek();
-                    entity.Replace(new LevelExit { Data = prevLevel, Layout = prevLevelLayout });
+                    (ILevelDefinition prevLevel, object[][] prevLevelLayout) = runtimeData.PlayerPath.Peek();
+                    entity.Replace(new LevelEntrance { Data = prevLevel, Layout = prevLevelLayout });
 
                     entity.Replace(new Name { Value = "Return to " + prevLevel.Name });
                     break;
 
-                case LevelData level:
+                case Level level:
                     entity = MakeDefaultCardEntity(position);
-                    entity.Replace(new LevelExit {
+                    entity.Replace(new LevelEntrance {
                         Data = level,
-                        Layout = levelGenerator.Generate(level, configuration.CharacterData)
+                        Layout = levelGenerator.Generate(level, runtimeData.CurrentCharacter)
                     });
                     if (!string.IsNullOrEmpty(level.Name)) {
                         entity.Replace(new Name { Value = level.Name });
                     }
 
-                    if (level.Sprite) {
-                        entity.Replace(new Face { Sprite = level.Sprite });
-                    }
+                    // if (level.Sprite) {
+                        // entity.Replace(new Face { Sprite = level.Sprite });
+                    // }
 
                     break;
-                case ItemData item:
+                case Item item:
                     entity = MakeDefaultCardEntity(position);
-                    switch (item) {
-                        case IConsumableItemType:
+                    switch (item.Type) {
+                        case ItemType.Consumable:
                             entity.Replace(new ConsumableItem { Data = item });
                             break;
-                        case IEquippableItemType:
+                        case ItemType.Equippable:
                             entity.Replace(new EquippableItem { Data = item });
                             break;
                         default:
@@ -137,14 +135,14 @@ namespace Sources.ECS.WorldInitialization {
                         entity.Replace(new Name { Value = item.Name });
                     }
 
-                    if (item.Sprite) {
-                        entity.Replace(new Face { Sprite = item.Sprite });
-                    }
+                    // if (item.Sprite) {
+                        // entity.Replace(new Face { Sprite = item.Sprite });
+                    // }
 
-                    if (item is HealthPotionData potion) {
-                        entity.Replace(new Health { Amount = potion.Amount });
-                        entity.Replace(new HealthPotion { Amount = potion.Amount });
-                    }
+                    // if (item is HealthPotionData potion) {
+                        // entity.Replace(new Health { Amount = potion.Amount });
+                        // entity.Replace(new HealthPotion { Amount = potion.Amount });
+                    // }
 
                     break;
             }

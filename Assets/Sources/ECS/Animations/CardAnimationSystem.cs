@@ -70,7 +70,7 @@ namespace Sources.ECS.Animations {
                             }
                         }
 
-                        int levelWidth = runtimeData.CurrentLevelData.Width;
+                        int levelWidth = runtimeData.CurrentLevel.Width;
                         float rawDelay = (Math.Abs(Math.Max(playerPosition.Y, maxSpawnedY) - levelPosition.Y) + 0.5f) * levelWidth -
                                          (levelWidth - (levelPosition.X + 1));
 
@@ -136,7 +136,7 @@ namespace Sources.ECS.Animations {
 
         private Vector3 calcLevelPosition(LevelPosition position) {
             Vector2 origin = sceneData.OriginPoint.position;
-            int relativeX = position.X - Mathf.FloorToInt(runtimeData.CurrentLevelData.Width / 2);
+            int relativeX = position.X - Mathf.FloorToInt(runtimeData.CurrentLevel.Width / 2);
             return new Vector3(
                 origin.x + sceneData.CardSpacing.x * relativeX,
                 origin.y + sceneData.CardSpacing.y * (position.Y - GetPlayerPosition().Y),

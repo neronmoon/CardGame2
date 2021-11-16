@@ -1,24 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
-using Sources.Data.Gameplay.Items;
-using Sources.ECS.GameplayActions.Components;
+using Sources.Database.DataObject;
 using UnityEngine;
 
 namespace Sources.ECS.Components.Gameplay {
     public struct Inventory {
-        public Dictionary<ItemData, int> Items;
+        public Dictionary<Item, int> Items;
 
-        private static List<ItemData> removals = new(5);
+        private static List<Item> removals = new(5);
 
-        public Inventory(Dictionary<ItemData, int> items) {
+        public Inventory(Dictionary<Item, int> items) {
             Items = items;
         }
 
-        public bool Has<T>() where T : ItemData {
+        public bool Has<T>() where T : Item {
             return Items.Any(pair => pair.Key is T);
         }
 
-        public int Count<T>() where T : ItemData {
+        public int Count<T>() where T : Item {
             int count = 0;
             if (Has<T>()) {
                 count += Items.Where(pair => pair.Key is T).Sum(pair => pair.Value);
@@ -27,13 +26,13 @@ namespace Sources.ECS.Components.Gameplay {
             return count;
         }
 
-        public T TakeOne<T>() where T : ItemData {
+        public T TakeOne<T>() where T : Item {
             if (!Has<T>()) {
                 Debug.LogWarning("Tried to take item, that not in inventory!");
             }
 
-            ItemData takenItemData = null;
-            foreach ((ItemData key, int count) in Items) {
+            Item takenItemData = null;
+            foreach ((Item key, int count) in Items) {
                 if (key is T) {
                     takenItemData = key;
                     Items[key]--;
@@ -46,11 +45,11 @@ namespace Sources.ECS.Components.Gameplay {
             return (T)takenItemData;
         }
 
-        public bool Has(ItemData itemData) {
+        public bool Has(Item itemData) {
             return Items.ContainsKey(itemData);
         }
 
-        public Inventory Add(ItemData type, int count = 1) {
+        public Inventory Add(Item type, int count = 1) {
             if (Has(type)) {
                 Items[type] += count;
             } else {
@@ -61,11 +60,11 @@ namespace Sources.ECS.Components.Gameplay {
         }
 
         private void cleanupItems() {
-            foreach (KeyValuePair<ItemData, int> pair in Items.Where(pair => pair.Value <= 0)) {
+            foreach (KeyValuePair<Item, int> pair in Items.Where(pair => pair.Value <= 0)) {
                 removals.Add(pair.Key);
             }
 
-            foreach (ItemData item in removals) {
+            foreach (Item item in removals) {
                 Items.Remove(item);
             }
 

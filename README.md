@@ -29,7 +29,7 @@
 - [x] Implement inventory & items
 - [x] Fix card animation (spawned & complete level conflict)
 - [ ] Reimplement level generation system: add more randomness and features
-- [ ] Add more levels
+- [ ] Add coins and more items & levels
 - [ ] Implement inventory UI
 - [ ] Inventory items effects
 - [ ] Implement aggressive monsters (that attacks when you near and drop monster egg after death)

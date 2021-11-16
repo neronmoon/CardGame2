@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.Data.Gameplay;
+using Sources.Database.DataObject;
 using Sources.ECS.Animations.Components;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Components.Processes;
@@ -35,15 +36,17 @@ namespace Sources.ECS.WorldInitialization {
         public void Run() {
             // Add a bit delay, because animations are freezing at start
             // TODO: Fix this!
-            if (runtimeData.CurrentLevelData == null && Time.time - time > 1) {
-                LevelData levelData = configuration.StartLevelData;
-                SetLevelState(levelData, levelGenerator.Generate(levelData, configuration.CharacterData));
+            if (runtimeData.CurrentLevel == null && Time.time - time > 1) {
+                Level levelData = Level.Get(1);
+                Character character = Character.Get(1);
+                runtimeData.CurrentCharacter = character;
+                SetLevelState(levelData, levelGenerator.Generate(levelData, character));
                 runtimeData.GarbageEntity.Replace(new StartLevelEvent { LevelData = levelData });
             }
 
             // Change level logic: remember current level, Set new level state, throw event about level start
             foreach (int idx in change) {
-                runtimeData.PlayerPath.Push(new KeyValuePair<LevelData, object[][]>(runtimeData.CurrentLevelData, runtimeData.LevelLayout));
+                runtimeData.PlayerPath.Push(new KeyValuePair<ILevelDefinition, object[][]>(runtimeData.CurrentLevel, runtimeData.LevelLayout));
                 LevelChange levelChange = change.Get1(idx);
                 SetLevelState(levelChange.LevelData, levelChange.Layout);
                 runtimeData.GarbageEntity.Replace(new StartLevelEvent { LevelData = levelChange.LevelData });
@@ -57,10 +60,10 @@ namespace Sources.ECS.WorldInitialization {
             }
         }
 
-        private void SetLevelState(LevelData levelData, object[][] layout) {
+        private void SetLevelState(ILevelDefinition level, object[][] layout) {
             runtimeData.LevelLayout = layout;
-            if (runtimeData.CurrentLevelData != levelData) {
-                runtimeData.CurrentLevelData = levelData;
+            if (runtimeData.CurrentLevel != level) {
+                runtimeData.CurrentLevel = level;
             }
         }
     }
