@@ -25,15 +25,33 @@ namespace Sources {
             int center = Mathf.FloorToInt(level.Width / 2);
             layout[0][center] = character;
 
-            for (int i = 1; i < layout.Length - 1; i++) {
+            for (int i = 1; i < layout.Length - 2; i++) {
                 int rowWidth = Choose(level.Chances<RowWidth>()).Value;
                 layout[i] = GenerateRow(level, rowWidth, i, layout[i - 1]);
             }
 
-            // TODO: place boss at last row
-            // placing exit at last row
+            layout[^2][center] = exit ?? Choose(level.Chances<Enemy>().Where(x => x.Key.Strongness == Strongness.Boss));
             layout[^1][center] = exit ?? Choose(level.Chances<Level>());
             return layout;
+        }
+
+        private object BuildCard<T>(CardsContainer<T> container, Type cardType, Strongness strongness) where T : IDataObject, new() {
+            object card = null;
+            if (cardType.IsAssignableFrom(typeof(Enemy))) {
+                card = Choose(container.Chances<Enemy>().Where(e => e.Key.Strongness == strongness));
+            } else if (cardType.IsAssignableFrom(typeof(Chest))) {
+                card = Choose(container.Chances<Chest>().Where(e => e.Key.Strongness == strongness));
+            } else if (cardType.IsAssignableFrom(typeof(Item))) {
+                card = Choose(container.Chances<Item>().Where(e => e.Key.Strongness == strongness));
+            } else {
+                Debug.LogWarning("Unknown card type!");
+            }
+
+            if (container is Level level && card is ICanIncreaseValues values) {
+                values.IncreaseValues(level.Difficulty);
+            }
+
+            return card;
         }
 
         private object[] GenerateRow<T>(CardsContainer<T> level, int width, int posY, object[] previousRow) where T : IDataObject, new() {
@@ -55,16 +73,7 @@ namespace Sources {
                 if (!item) continue;
                 c++;
 
-                Type type = choices[c].Key;
-                if (type.IsAssignableFrom(typeof(Enemy))) {
-                    row[x] = Choose(level.Chances<Enemy>().Where(e => e.Key.Strongness == choices[c].Value));
-                } else if (type.IsAssignableFrom(typeof(Chest))) {
-                    row[x] = Choose(level.Chances<Chest>().Where(e => e.Key.Strongness == choices[c].Value));
-                } else if (type.IsAssignableFrom(typeof(Item))) {
-                    row[x] = Choose(level.Chances<Item>().Where(e => e.Key.Strongness == choices[c].Value));
-                } else {
-                    Debug.LogWarning("Unknown card type!");
-                }
+                row[x] = BuildCard(level, choices[c].Key, choices[c].Value);
             }
 
             return row;

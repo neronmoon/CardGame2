@@ -50,7 +50,7 @@ namespace Sources.ECS.WorldInitialization {
                             entity.Replace(position);
                         }
                     } else {
-                        entity = MakeDefaultCardEntity(position, character.Sprite);
+                        entity = MakeDefaultCardEntity(position, null, character.Sprite);
                         entity.Replace(new Player { Data = character });
                         entity.Replace(new Hoverable());
                         entity.Replace(new Clickable());
@@ -62,17 +62,13 @@ namespace Sources.ECS.WorldInitialization {
 
                     break;
                 case Enemy enemy:
-                    entity = MakeDefaultCardEntity(position, enemy.Sprite);
+                    entity = MakeDefaultCardEntity(position, null, enemy.Sprite);
                     entity.Replace(new EnemyComponent { Data = enemy });
                     entity.Replace(new Health { Amount = enemy.Health });
 
                     break;
                 case Chest chest:
-                    entity = MakeDefaultCardEntity(position, chest.Sprite);
-                    entity.Replace(new Name { Value = chest.Name });
-
-                    // define chest level
-                    // this should exit to current level at chest position 
+                    entity = MakeDefaultCardEntity(position, chest.Name, chest.Sprite);
                     entity.Replace(new LevelEntrance {
                         Data = chest,
                         Layout = levelGenerator.Generate(chest, runtimeData.CurrentCharacter, new ChestExit())
@@ -81,25 +77,22 @@ namespace Sources.ECS.WorldInitialization {
                     break;
 
                 case ChestExit:
-                    entity = MakeDefaultCardEntity(position);
                     (ILevelDefinition prevLevel, object[][] prevLevelLayout) = runtimeData.PlayerPath.Peek();
+                    entity = MakeDefaultCardEntity(position, "Return to " + prevLevel.Name);
                     entity.Replace(new LevelEntrance { Data = prevLevel, Layout = prevLevelLayout });
-
-                    entity.Replace(new Name { Value = "Return to " + prevLevel.Name });
                     break;
 
                 case Level level:
-                    entity = MakeDefaultCardEntity(position, level.Sprite);
+                    entity = MakeDefaultCardEntity(position, level.Name, level.Sprite);
+                    level.Difficulty += 1.2f;
                     entity.Replace(new LevelEntrance {
                         Data = level,
                         Layout = levelGenerator.Generate(level, runtimeData.CurrentCharacter)
                     });
-                    entity.Replace(new Name { Value = level.Name });
 
                     break;
                 case Item item:
-                    entity = MakeDefaultCardEntity(position, item.Sprite);
-                    entity.Replace(new Name { Value = item.Name });
+                    entity = MakeDefaultCardEntity(position, item.Name, item.Sprite);
                     switch (item.Type) {
                         case ItemType.Consumable:
                             entity.Replace(new ConsumableItem { Data = item });
@@ -124,10 +117,14 @@ namespace Sources.ECS.WorldInitialization {
             }
         }
 
-        private EcsEntity MakeDefaultCardEntity(LevelPosition position, string spriteDef = null) {
+        private EcsEntity MakeDefaultCardEntity(LevelPosition position, string name = null, string spriteDef = null) {
             EcsEntity entity = world.NewEntity();
             entity.Replace(new PlayableCard());
             entity.Replace(position);
+            if (!string.IsNullOrEmpty(name)) {
+                entity.Replace(new Name { Value = name });
+            }
+
             if (!string.IsNullOrEmpty(spriteDef)) {
                 Sprite sprite = default;
                 if (spriteDef.Contains(":")) {
