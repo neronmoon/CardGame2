@@ -69,10 +69,7 @@ namespace Sources.ECS.WorldInitialization {
                     break;
                 case Chest chest:
                     entity = MakeDefaultCardEntity(position, chest.Name, chest.Sprite);
-                    entity.Replace(new LevelEntrance {
-                        Data = chest,
-                        Layout = levelGenerator.Generate(chest, runtimeData.CurrentCharacter, new ChestExit())
-                    });
+                    entity.Replace(new LevelEntrance { Data = chest, Layout = levelGenerator.Generate(chest, runtimeData.CurrentCharacter, new ChestExit()) });
 
                     break;
 
@@ -84,11 +81,8 @@ namespace Sources.ECS.WorldInitialization {
 
                 case Level level:
                     entity = MakeDefaultCardEntity(position, level.Name, level.Sprite);
-                    level.Difficulty += 1.2f;
-                    entity.Replace(new LevelEntrance {
-                        Data = level,
-                        Layout = levelGenerator.Generate(level, runtimeData.CurrentCharacter)
-                    });
+                    level.Difficulty += 1.1f;
+                    entity.Replace(new LevelEntrance { Data = level, Layout = levelGenerator.Generate(level, runtimeData.CurrentCharacter) });
 
                     break;
                 case Item item:
@@ -108,8 +102,9 @@ namespace Sources.ECS.WorldInitialization {
                     foreach (ItemEffect effect in item.Effects) {
                         // TODO: Add more effects and summarize them if they intersect
                         if (effect.Name == "Heal") {
-                            entity.Replace(new Health { Amount = (int)effect.Value });
-                            entity.Replace(new HealthPotion { Amount = (int)effect.Value });
+                            int healValue = (int)effect.Value * item.Count;
+                            entity.Replace(new Health { Amount = healValue });
+                            entity.Replace(new HealthPotion { Amount = healValue });
                         }
                     }
 

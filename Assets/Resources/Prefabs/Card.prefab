@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 5238236537798299756}
   - component: {fileID: 5506246185655191896}
   m_Layer: 0
-  m_Name: HealthCorner
+  m_Name: ValueCorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1076,7 +1076,7 @@ GameObject:
   - component: {fileID: 5026846455246964066}
   - component: {fileID: 4700168099456796063}
   m_Layer: 5
-  m_Name: Health
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1365,8 +1365,8 @@ MonoBehaviour:
   HitAnimator: {fileID: 1227980286278251009}
   HighlightMask: {fileID: 3704014607755119316}
   HitMask: {fileID: 4397386145623814717}
-  HealthText: {fileID: 4700168099456796063}
-  HealthObjects:
+  ValueText: {fileID: 4700168099456796063}
+  ValueObjects:
   - {fileID: 6989218151124169873}
   - {fileID: 265564700880582083}
   NameText: {fileID: 3821670346612294872}

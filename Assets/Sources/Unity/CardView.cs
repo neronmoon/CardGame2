@@ -14,8 +14,8 @@ namespace Sources.Unity {
         public SpriteRenderer HighlightMask;
         public SpriteRenderer HitMask;
 
-        public TextMeshProUGUI HealthText;
-        public GameObject[] HealthObjects;
+        public TextMeshProUGUI ValueText;
+        public GameObject[] ValueObjects;
 
         public TextMeshProUGUI NameText;
         public GameObject[] NameObjects;
@@ -26,7 +26,7 @@ namespace Sources.Unity {
         private Vector3 initHealthScale;
 
         private void Start() {
-            initHealthScale = HealthText.transform.localScale;
+            initHealthScale = ValueText.transform.localScale;
             foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>()) {
                 renderers.Add(renderer, renderer.sortingOrder);
             }
@@ -45,7 +45,7 @@ namespace Sources.Unity {
         }
 
         public void AnimateHeal() {
-            Transform transform = HealthText.transform;
+            Transform transform = ValueText.transform;
             DOTween.Sequence()
                    .Append(transform.DOScale(initHealthScale * 1.2f, 0.2f))
                    .AppendInterval(0.1f)

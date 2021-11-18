@@ -82,19 +82,33 @@ namespace Sources.Unity {
         private static IEnumerable<Item> GetItems(string items) {
             return new[] {
                 new Item {
+                    Name = "Coin", Strongness = Strongness.Easy,
+                    Type = ItemType.Equippable,
+                    Sprite = null,
+                    Count = 1,
+                },
+                new Item {
+                    Name = "Coins", Strongness = Strongness.Easy,
+                    Type = ItemType.Equippable,
+                    Sprite = null,
+                    Count = 3,
+                },
+                new Item {
                     Name = "Minor health potion", Strongness = Strongness.Easy, Effects = new[] {
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Easy),
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Hard),
                     },
                     Type = ItemType.Consumable,
-                    Sprite = items + "potions:red small"
+                    Sprite = items + "potions:red small",
+                    Count = 1,
                 },
                 new Item {
                     Name = "Health potion", Strongness = Strongness.Hard, Effects = new[] {
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Hard)
                     },
                     Type = ItemType.Consumable,
-                    Sprite = items + "potions:red large"
+                    Sprite = items + "potions:red large",
+                    Count = 1,
                 },
             };
         }

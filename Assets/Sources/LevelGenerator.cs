@@ -22,15 +22,20 @@ namespace Sources {
             }
 
             // placing player (always in middle of row)
+            bool isChest = level is Chest;
+
             int center = Mathf.FloorToInt(level.Width / 2);
             layout[0][center] = character;
 
-            for (int i = 1; i < layout.Length - 2; i++) {
+            for (int i = 1; i < layout.Length - (isChest ? 1 : 2); i++) {
                 int rowWidth = Choose(level.Chances<RowWidth>()).Value;
                 layout[i] = GenerateRow(level, rowWidth, i, layout[i - 1]);
             }
 
-            layout[^2][center] = exit ?? Choose(level.Chances<Enemy>().Where(x => x.Key.Strongness == Strongness.Boss));
+            if (!isChest) {
+                layout[^2][center] = Choose(level.Chances<Enemy>().Where(x => x.Key.Strongness == Strongness.Boss));
+            }
+
             layout[^1][center] = exit ?? Choose(level.Chances<Level>());
             return layout;
         }
