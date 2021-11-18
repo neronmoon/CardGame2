@@ -10,10 +10,18 @@ namespace Sources.Database.DataObject {
     }
 
     public class Item : DataObject<Item>, IDataObject {
+        [Unique, NotNull]
         public string Name { get; set; }
+        
         public string Sprite { get; set; }
+        
+        [NotNull]
         public ItemType Type { get; set; }
+        
+        [NotNull]
         public int Count { get; set; }
+        
+        [NotNull]
         public Strongness Strongness { get; set; }
 
         [Ignore]

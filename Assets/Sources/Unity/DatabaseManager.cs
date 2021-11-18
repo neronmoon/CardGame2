@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using Sources.Data.Gameplay;
@@ -56,22 +57,27 @@ namespace Sources.Unity {
                 Chance.Make(testLevel, RowWidth.First(x => x.Value == 3), 70),
                 Chance.Make(testLevel, RowWidth.First(x => x.Value == 2), 25),
                 Chance.Make(testLevel, RowWidth.First(x => x.Value == 1), 5),
-                
+
                 Chance.Make(testLevel, testLevel, 100), // cycle
+
+                Chance.Make(testLevel, Enemy.ByName("Bird"), 100),
             });
-            
+
             foreach (var item in Item.GetAll()) {
                 conn.Insert(Chance.Make(testLevel, item, 100));
             }
+
             foreach (var enemy in Enemy.GetAll()) {
                 conn.Insert(Chance.Make(testLevel, enemy, 100));
             }
+
             foreach (var chest in Chest.GetAll()) {
                 conn.Insert(Chance.Make(testLevel, chest, 100));
-                
+
                 foreach (var item in Item.GetAll()) {
                     conn.Insert(Chance.Make(chest, item, 100));
                 }
+
                 conn.InsertAll(new[] {
                     Chance.Make(chest, RowWidth.First(x => x.Value == 3), 90),
                     Chance.Make(chest, RowWidth.First(x => x.Value == 2), 10),

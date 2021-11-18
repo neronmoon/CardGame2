@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using SQLite;
 
@@ -17,6 +18,10 @@ namespace Sources.Database {
 
         public static T Get(int id) {
             return GetAll().First(x => x.GetId() == id);
+        }
+
+        public static T ByName(string name) {
+            return GetConnection().Query<T>($"select * from {GetTable().Table.TableName} where Name = '{name}' limit 1;").First();
         }
 
         public static T First(Func<T, bool> expression) {

@@ -81,7 +81,7 @@ namespace Sources.ECS.WorldInitialization {
 
                 case Level level:
                     entity = MakeDefaultCardEntity(position, level.Name, level.Sprite);
-                    level.Difficulty += 1.1f;
+                    level.Difficulty *= 1.1f;
                     entity.Replace(new LevelEntrance { Data = level, Layout = levelGenerator.Generate(level, runtimeData.CurrentCharacter) });
 
                     break;

@@ -11,32 +11,35 @@ namespace Sources {
     public class LevelGenerator {
         private System.Random random = new();
 
-        public object[][] Generate<T>(CardsContainer<T> level, Character character, object exit = null) where T : IDataObject, new() {
+        public object[][] Generate<T>(CardsContainer<T> container, Character character, object exit = null) where T : IDataObject, new() {
             // layout is matrix (N+2)xM where N is level length and M is width of level
             // fist line is for player, last line for exit
             // layout contains object of player/enemies/exits
             // null means empty space without card
-            object[][] layout = new object[level.Length + 2][];
+            object[][] layout = new object[container.Length + 2][];
             for (int i = 0; i < layout.Length; i++) {
-                layout[i] = new object[level.Width];
+                layout[i] = new object[container.Width];
             }
 
             // placing player (always in middle of row)
-            bool isChest = level is Chest;
+            bool isChest = container is Chest;
 
-            int center = Mathf.FloorToInt(level.Width / 2);
+            int center = Mathf.FloorToInt(container.Width / 2);
             layout[0][center] = character;
 
             for (int i = 1; i < layout.Length - (isChest ? 1 : 2); i++) {
-                int rowWidth = Choose(level.Chances<RowWidth>()).Value;
-                layout[i] = GenerateRow(level, rowWidth, i, layout[i - 1]);
+                int rowWidth = Choose(container.Chances<RowWidth>()).Value;
+                layout[i] = GenerateRow(container, rowWidth, i, layout[i - 1]);
             }
 
             if (!isChest) {
-                layout[^2][center] = Choose(level.Chances<Enemy>().Where(x => x.Key.Strongness == Strongness.Boss));
+                layout[^2][center] = Choose(container.Chances<Enemy>().Where(x => x.Key.Strongness == Strongness.Boss));
+                if(container is Level level && layout[^2][center] is ICanIncreaseValues values) {
+                    values.IncreaseValues(level.Difficulty);
+                }
             }
 
-            layout[^1][center] = exit ?? Choose(level.Chances<Level>());
+            layout[^1][center] = exit ?? Choose(container.Chances<Level>());
             return layout;
         }
 

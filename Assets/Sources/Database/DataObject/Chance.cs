@@ -1,15 +1,24 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using SQLite;
 
 namespace Sources.Database.DataObject {
     public class Chance : DataObject<Chance>, IDataObject {
+        [NotNull]
         public string ContainerType { get; set; }
+
+        [NotNull]
         public int ContainerId { get; set; }
+
+        [NotNull]
         public string ItemType { get; set; }
+
+        [NotNull]
         public int ItemId { get; set; }
+
+        [NotNull]
         public int Probability { get; set; }
-        
+
         public static KeyValuePair<T, int>[] ChancesFor<T>(IDataObject container) where T : new() {
             Chance[] chances = Find(chance =>
                 chance.ContainerType == container.GetType().Name &&
