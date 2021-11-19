@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Leopotam.Ecs;
 using Sources.Data;
+using Sources.Database.DataObject;
 using Sources.ECS.Animations.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
@@ -9,6 +11,7 @@ using Sources.ECS.Components.Gameplay;
 using Sources.ECS.GameplayActions.Components;
 using Sources.ECS.Extensions;
 using UnityEngine;
+using Enemy = Sources.ECS.Components.Gameplay.Enemy;
 using HealthPotion = Sources.ECS.Components.Gameplay.HealthPotion;
 
 namespace Sources.ECS.GameplayActions {
@@ -38,7 +41,7 @@ namespace Sources.ECS.GameplayActions {
             // Place actions in right order!!
             // Further action can relate on entity state from prev action.
             // So After HitAction we can check if HP <=0 and use stone to add HP before player is dead
-            
+
             // Move actions are executed in one frame (PlayerMovedEvent)
             DefineMoveAction(
                 (entity, target) => target.Has<Enemy>() && target.Has<Health>(), // if this is true
@@ -55,19 +58,31 @@ namespace Sources.ECS.GameplayActions {
                 (entity, target) => entity.Get<Inventory>().Add(target.Get<EquippableItem>().Data)
             );
             DefineMoveAction(
-                (entity, target) => target.Has<ConsumableItem>() && target.Has<HealthPotion>(),
-                (entity, target) => new Heal { Amount = target.Get<HealthPotion>().Amount }
+                (entity, target) => target.Has<ConsumableItem>() && target.Has<CardEffects>(),
+                (entity, target) => {
+                    List<ItemEffect> effects = target.Get<CardEffects>().Effects;
+                    List<object> components = new(effects.Count);
+                    foreach (ItemEffect effect in effects) {
+                        switch (effect.Name) {
+                            case "Heal":
+                                components.Add(new Heal { Amount = (int)effect.Value });
+                                break;
+                        }
+                    }
+
+                    return components.ToArray();
+                }
             );
 
             // Resurrection before death!
             // DefineAction(
-            //     entity => entity.Has<Health>() && entity.Get<Health>().Amount <= 0 && entity.Get<Inventory>().Has<ResurrectStoneData>(),
+            //     entity => entity.Has<Health>() && entity.Get<Health>().Amount <= 0 && entity.Get<Inventory>().HasWithEffect("Resurrection"),
             //     entity => {
             //         Inventory inventory = entity.Get<Inventory>();
-            //         ResurrectStoneData stoneData = inventory.TakeOne<ResurrectStoneData>();
+            //         Item item = inventory.TakeOneWithEffect("Resurrection");
             //         return new object[] {
             //             inventory,
-            //             new Health { Amount = stoneData.HealthAfterResurrection }
+            //             new Health { Amount = (int)item.Effects.First(e => e.Name == "Resurrection").Value }
             //         };
             //     }
             // );

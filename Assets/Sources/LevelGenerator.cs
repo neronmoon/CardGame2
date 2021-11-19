@@ -188,7 +188,7 @@ namespace Sources {
                             new(item, Strongness.Easy), new(item, Strongness.Easy), new(item, Strongness.Easy),
                         },
                         // new KeyValuePair<Type, Strongness>[] {
-                            // new(item, Strongness.Hard), new(item, Strongness.Hard), new(item, Strongness.Hard),
+                        // new(item, Strongness.Hard), new(item, Strongness.Hard), new(item, Strongness.Hard),
                         // },
                     };
                     break;
@@ -259,9 +259,6 @@ namespace Sources {
 
                 prev += item.Value;
             }
-
-            Debug.LogError("Wrong setup of " + typeof(T) + " drop chances");
-            return default;
         }
     }
 }

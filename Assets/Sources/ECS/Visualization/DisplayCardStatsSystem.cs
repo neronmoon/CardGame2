@@ -14,7 +14,7 @@ namespace Sources.ECS.Visualization {
         private EcsFilter<PlayableCard, VisualObject> cards;
 
         public void Run() {
-            foreach (var idx in cards) {
+            foreach (int idx in cards) {
                 FillStats(cards.GetEntity(idx), cards.Get2(idx).Object);
             }
         }
@@ -27,6 +27,7 @@ namespace Sources.ECS.Visualization {
 
             view.Sprite.sprite = entity.Has<Face>() ? entity.Get<Face>().Sprite : null;
 
+            // TODO: Add icons to display item effects
             foreach (GameObject o in view.ValueObjects) {
                 o.SetActive(entity.Has<Health>() || entity.Has<EquippableItem>());
             }

@@ -99,14 +99,19 @@ namespace Sources.ECS.WorldInitialization {
                             break;
                     }
 
-                    foreach (ItemEffect effect in item.Effects) {
-                        // TODO: Add more effects and summarize them if they intersect
-                        if (effect.Name == "Heal") {
-                            int healValue = (int)effect.Value * item.Count;
-                            entity.Replace(new Health { Amount = healValue });
-                            entity.Replace(new HealthPotion { Amount = healValue });
-                        }
-                    }
+                    entity.Replace(new CardEffects { Effects = item.Effects.ToList() });
+                    //
+                    // foreach (ItemEffect effect in item.Effects) {
+                    //     // TODO: Add more effects and summarize them if they intersect
+                    //     if (effect.Name == "Heal") {
+                    //         int healValue = (int)effect.Value * item.Count;
+                    //         entity.Replace(new Health { Amount = healValue });
+                    //         entity.Replace(new HealthPotion { Amount = healValue });
+                    //     } else if (effect.Name == "Resurrection") {
+                    //         entity.Replace(new Health { Amount = (int)effect.Value });
+                    //         entity.Replace(new Res { Amount = healValue });
+                    //     }
+                    // }
 
                     break;
             }

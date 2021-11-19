@@ -33,7 +33,7 @@ namespace Sources.Unity {
                 new Character { Name = "Player", Health = 50, Sprite = monsters + "monster (277)" }
             });
             conn.InsertAll(new[] {
-                new Level { Name = "Infinite recursion", Length = 5, Width = 3, Difficulty = 1, Sprite = sprites + "Portal"}
+                new Level { Name = "Infinite recursion", Length = 5, Width = 3, Difficulty = 1, Sprite = sprites + "Portal" }
             });
             conn.InsertAll(new[] {
                 new CardType { Value = nameof(Character) },
@@ -95,9 +95,10 @@ namespace Sources.Unity {
                 Chance.Make(bag, RowWidth.First(x => x.Value == 3), 90),
                 Chance.Make(bag, RowWidth.First(x => x.Value == 2), 10),
 
+                Chance.Make(bag, Item.ByName("Resurrection stone"), 100),
                 Chance.Make(bag, Item.ByName("Coin"), 45),
                 Chance.Make(bag, Item.ByName("Coins"), 15),
-                Chance.Make(bag, Item.ByName("Minor health potion"), 30),
+                Chance.Make(bag, Item.ByName("Minor health potion"), 20),
                 Chance.Make(bag, Item.ByName("Health potion"), 10),
             });
 
@@ -106,9 +107,10 @@ namespace Sources.Unity {
                 Chance.Make(chest, RowWidth.First(x => x.Value == 3), 90),
                 Chance.Make(chest, RowWidth.First(x => x.Value == 2), 10),
 
+                Chance.Make(chest, Item.ByName("Resurrection stone"), 100),
                 Chance.Make(chest, Item.ByName("Coin"), 45),
                 Chance.Make(chest, Item.ByName("Coins"), 15),
-                Chance.Make(chest, Item.ByName("Minor health potion"), 30),
+                Chance.Make(chest, Item.ByName("Minor health potion"), 20),
                 Chance.Make(chest, Item.ByName("Health potion"), 10),
             });
         }
@@ -116,32 +118,38 @@ namespace Sources.Unity {
         private static IEnumerable<Item> GetItems(string items) {
             return new[] {
                 new Item {
-                    Name = "Coin", 
+                    Name = "Coin",
                     Strongness = Strongness.Easy,
                     Type = ItemType.Equippable,
                     Sprite = items + "Misc/Golden Coin",
                     Count = 1,
                 },
                 new Item {
-                    Name = "Coins", Strongness = Strongness.Easy,
+                    Name = "Coins",
+                    Strongness = Strongness.Easy,
                     Type = ItemType.Equippable,
                     Sprite = items + "Misc/Golden Coins",
                     Count = 3,
                 },
                 new Item {
-                    Name = "Map", Strongness = Strongness.Easy,
+                    Name = "Map",
+                    Strongness = Strongness.Easy,
                     Type = ItemType.Equippable,
                     Sprite = items + "Misc/Map",
                     Count = 1,
                 },
                 new Item {
-                    Name = "Resurrection Stone", Strongness = Strongness.Easy,
+                    Name = "Resurrection stone",
+                    Strongness = Strongness.Hard,
                     Type = ItemType.Equippable,
+                    Effects = new[] {
+                        ItemEffect.First(e => e.Name == "Resurrection" && e.Strongness == Strongness.Hard)
+                    },
                     Sprite = items + "Misc/Rune Stone",
                     Count = 1,
                 },
                 new Item {
-                    Name = "Minor health potion", 
+                    Name = "Minor health potion",
                     Strongness = Strongness.Easy,
                     Effects = new[] {
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Easy),
@@ -151,8 +159,8 @@ namespace Sources.Unity {
                     Count = 1,
                 },
                 new Item {
-                    Name = "Health potion", 
-                    Strongness = Strongness.Hard, 
+                    Name = "Health potion",
+                    Strongness = Strongness.Hard,
                     Effects = new[] {
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Hard)
                     },
@@ -167,6 +175,7 @@ namespace Sources.Unity {
             return new[] {
                 new ItemEffect { Name = "Heal", Value = 5, Strongness = Strongness.Easy },
                 new ItemEffect { Name = "Heal", Value = 10, Strongness = Strongness.Hard },
+                new ItemEffect { Name = "Resurrection", Value = 5, Strongness = Strongness.Hard },
             };
         }
 

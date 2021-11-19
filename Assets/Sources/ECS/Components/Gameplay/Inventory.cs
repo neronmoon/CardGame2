@@ -45,8 +45,21 @@ namespace Sources.ECS.Components.Gameplay {
             return (T)takenItemData;
         }
 
+        public Item TakeOneWithEffect(string effectName) {
+            Item item = Items.First(x => x.Key.Effects.Count(e => e.Name == effectName) > 0 && x.Value > 0).Key;
+
+            Items[item]--;
+            cleanupItems();
+
+            return item;
+        }
+
         public bool Has(Item itemData) {
             return Items.ContainsKey(itemData);
+        }
+
+        public bool HasWithEffect(string name) {
+            return Items.Count(x => x.Key.Effects.Count(e => e.Name == name) > 0 && x.Value > 0) > 0;
         }
 
         public Inventory Add(Item type, int count = 1) {
