@@ -33,7 +33,7 @@ namespace Sources.Unity {
                 new Character { Name = "Player", Health = 50, Sprite = monsters + "monster (277)" }
             });
             conn.InsertAll(new[] {
-                new Level { Name = "Infinite recursion", Length = 5, Width = 3, Difficulty = 1 }
+                new Level { Name = "Infinite recursion", Length = 5, Width = 3, Difficulty = 1, Sprite = sprites + "Portal"}
             });
             conn.InsertAll(new[] {
                 new CardType { Value = nameof(Character) },

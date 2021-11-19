@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 2577516646449887189, guid: 8eff8469d3d4a3a4f86b91012ab0ad68, type: 3}
   ItemCardPrefab: {fileID: 9194787811481212871, guid: 6d5b21eaf4637b747b7a225e7cfb2d66, type: 3}
-  LevelCardPrefab: {fileID: 6009241539116237311, guid: 419b16e134a222941b5f9d159f286549, type: 3}
+  LevelCardPrefab: {fileID: 4685848047678148905, guid: 419b16e134a222941b5f9d159f286549, type: 3}
   CardPrefab: {fileID: 8182558108753156521, guid: 22f65f7c3121b45f492d37225a190735, type: 3}
   HitClips:
   - {fileID: 8300000, guid: 1d3bdb9a5006a914382717bf9a2d6874, type: 3}
