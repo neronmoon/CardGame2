@@ -34,7 +34,7 @@ namespace Sources {
 
             if (!isChest) {
                 layout[^2][center] = Choose(container.Chances<Enemy>().Where(x => x.Key.Strongness == Strongness.Boss));
-                if(container is Level level && layout[^2][center] is ICanIncreaseValues values) {
+                if (container is Level level && layout[^2][center] is ICanIncreaseValues values) {
                     values.IncreaseValues(level.Difficulty);
                 }
             }
@@ -113,10 +113,10 @@ namespace Sources {
                 case 3:
                     choice = new[] {
                         new KeyValuePair<Type, Strongness>[] {
-                            new(item, Strongness.Hard), new(item, Strongness.Hard), new(item, Strongness.Hard),
                             new(item, Strongness.Easy), new(item, Strongness.Easy), new(item, Strongness.Easy),
                             new(item, Strongness.Hard), new(item, Strongness.Easy), new(item, Strongness.Easy),
                             new(item, Strongness.Hard), new(item, Strongness.Hard), new(item, Strongness.Easy),
+                            new(item, Strongness.Hard), new(item, Strongness.Hard), new(item, Strongness.Hard),
                         },
                     };
                     break;
@@ -138,34 +138,27 @@ namespace Sources {
             switch (width) {
                 case 1: // no choice
                     choice = new[] {
-                        new KeyValuePair<Type, Strongness>[] {
-                            new(enemy, Strongness.Easy),
-                        },
-                        new KeyValuePair<Type, Strongness>[] {
-                            new(enemy, Strongness.Hard),
-                        }
+                        new KeyValuePair<Type, Strongness>[] { new(item, Strongness.Easy), },
+                        new KeyValuePair<Type, Strongness>[] { new(item, Strongness.Hard), },
+                        new KeyValuePair<Type, Strongness>[] { new(enemy, Strongness.Easy), },
+                        new KeyValuePair<Type, Strongness>[] { new(enemy, Strongness.Hard), },
+                        new KeyValuePair<Type, Strongness>[] { new(chest, Strongness.Easy), },
+                        new KeyValuePair<Type, Strongness>[] { new(chest, Strongness.Hard), }
                     };
                     break;
                 case 2:
                     choice = new[] {
                         // enemy - chest
-                        new KeyValuePair<Type, Strongness>[] {
-                            new(enemy, Strongness.Easy), new(chest, Strongness.Easy),
-                        },
-                        new KeyValuePair<Type, Strongness>[] {
-                            new(enemy, Strongness.Easy), new(chest, Strongness.Hard),
-                        },
+                        new KeyValuePair<Type, Strongness>[] { new(enemy, Strongness.Easy), new(chest, Strongness.Easy), },
+                        new KeyValuePair<Type, Strongness>[] { new(enemy, Strongness.Hard), new(chest, Strongness.Hard), },
                         // enemy - enemy
-                        new KeyValuePair<Type, Strongness>[] {
-                            new(enemy, Strongness.Easy), new(enemy, Strongness.Hard),
-                        },
+                        new KeyValuePair<Type, Strongness>[] { new(enemy, Strongness.Hard), new(enemy, Strongness.Hard), },
+                        // enemy - enemy
+                        new KeyValuePair<Type, Strongness>[] { new(enemy, Strongness.Easy), new(enemy, Strongness.Easy), },
                         // enemy - item
-                        new KeyValuePair<Type, Strongness>[] {
-                            new(enemy, Strongness.Easy), new(item, Strongness.Easy),
-                        },
-                        new KeyValuePair<Type, Strongness>[] { // strong item or easy fight
-                            new(enemy, Strongness.Easy), new(item, Strongness.Hard),
-                        },
+                        new KeyValuePair<Type, Strongness>[] { new(enemy, Strongness.Easy), new(item, Strongness.Easy), },
+                        // strong item or easy fight
+                        new KeyValuePair<Type, Strongness>[] { new(enemy, Strongness.Easy), new(item, Strongness.Hard), },
                     };
                     break;
                 case 3:
@@ -191,6 +184,12 @@ namespace Sources {
                         new KeyValuePair<Type, Strongness>[] {
                             new(enemy, Strongness.Easy), new(enemy, Strongness.Easy), new(item, Strongness.Easy),
                         },
+                        new KeyValuePair<Type, Strongness>[] {
+                            new(item, Strongness.Easy), new(item, Strongness.Easy), new(item, Strongness.Easy),
+                        },
+                        // new KeyValuePair<Type, Strongness>[] {
+                            // new(item, Strongness.Hard), new(item, Strongness.Hard), new(item, Strongness.Hard),
+                        // },
                     };
                     break;
                 default:
@@ -249,11 +248,12 @@ namespace Sources {
                 return default;
             }
 
-            int max = sortedItems.Max(x => x.Value);
+            int max = sortedItems.Sum(x => x.Value);
             int prev = 0;
             int c = random.Next(0, max);
             foreach (KeyValuePair<T, int> item in sortedItems) {
                 if (c >= prev && c <= item.Value + prev) {
+                    Debug.Log($"max={max} c={c}");
                     return item.Key;
                 }
 

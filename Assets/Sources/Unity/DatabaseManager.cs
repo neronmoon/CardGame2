@@ -60,35 +60,64 @@ namespace Sources.Unity {
 
                 Chance.Make(testLevel, testLevel, 100), // cycle
 
-                Chance.Make(testLevel, Enemy.ByName("Bird"), 100),
+                // easy
+                Chance.Make(testLevel, Enemy.ByName("Bird"), 20),
+                Chance.Make(testLevel, Enemy.ByName("Ghost"), 20),
+                Chance.Make(testLevel, Enemy.ByName("Wolf"), 20),
+                Chance.Make(testLevel, Enemy.ByName("Octopus"), 20),
+                Chance.Make(testLevel, Enemy.ByName("Orc"), 20),
+
+                // hard
+                Chance.Make(testLevel, Enemy.ByName("Stump"), 14),
+                Chance.Make(testLevel, Enemy.ByName("Skeleton"), 14),
+                Chance.Make(testLevel, Enemy.ByName("Fire Creature"), 14),
+                Chance.Make(testLevel, Enemy.ByName("Cat and Snake"), 14),
+                Chance.Make(testLevel, Enemy.ByName("Lizard"), 14),
+                Chance.Make(testLevel, Enemy.ByName("Mamonth"), 14),
+                Chance.Make(testLevel, Enemy.ByName("Turtle"), 14),
+
+                // boss
+                Chance.Make(testLevel, Enemy.ByName("Black Knight"), 33),
+                Chance.Make(testLevel, Enemy.ByName("Medusa"), 33),
+                Chance.Make(testLevel, Enemy.ByName("Dragon"), 33),
+
+                Chance.Make(testLevel, Item.ByName("Coin"), 45),
+                Chance.Make(testLevel, Item.ByName("Coins"), 15),
+                Chance.Make(testLevel, Item.ByName("Minor health potion"), 30),
+                Chance.Make(testLevel, Item.ByName("Health potion"), 10),
+
+                Chance.Make(testLevel, Chest.ByName("Chest"), 70),
+                Chance.Make(testLevel, Chest.ByName("Golden chest"), 30),
             });
 
-            foreach (var item in Item.GetAll()) {
-                conn.Insert(Chance.Make(testLevel, item, 100));
-            }
+            Chest chest = Chest.ByName("Chest");
+            conn.InsertAll(new[] {
+                Chance.Make(chest, RowWidth.First(x => x.Value == 3), 90),
+                Chance.Make(chest, RowWidth.First(x => x.Value == 2), 10),
 
-            foreach (var enemy in Enemy.GetAll()) {
-                conn.Insert(Chance.Make(testLevel, enemy, 100));
-            }
+                Chance.Make(chest, Item.ByName("Coin"), 45),
+                Chance.Make(chest, Item.ByName("Coins"), 15),
+                Chance.Make(chest, Item.ByName("Minor health potion"), 30),
+                Chance.Make(chest, Item.ByName("Health potion"), 10),
+            });
 
-            foreach (var chest in Chest.GetAll()) {
-                conn.Insert(Chance.Make(testLevel, chest, 100));
+            Chest goldenChest = Chest.ByName("Golden chest");
+            conn.InsertAll(new[] {
+                Chance.Make(goldenChest, RowWidth.First(x => x.Value == 3), 90),
+                Chance.Make(goldenChest, RowWidth.First(x => x.Value == 2), 10),
 
-                foreach (var item in Item.GetAll()) {
-                    conn.Insert(Chance.Make(chest, item, 100));
-                }
-
-                conn.InsertAll(new[] {
-                    Chance.Make(chest, RowWidth.First(x => x.Value == 3), 90),
-                    Chance.Make(chest, RowWidth.First(x => x.Value == 2), 10),
-                });
-            }
+                Chance.Make(goldenChest, Item.ByName("Coin"), 45),
+                Chance.Make(goldenChest, Item.ByName("Coins"), 15),
+                Chance.Make(goldenChest, Item.ByName("Minor health potion"), 30),
+                Chance.Make(goldenChest, Item.ByName("Health potion"), 10),
+            });
         }
 
         private static IEnumerable<Item> GetItems(string items) {
             return new[] {
                 new Item {
-                    Name = "Coin", Strongness = Strongness.Easy,
+                    Name = "Coin", 
+                    Strongness = Strongness.Easy,
                     Type = ItemType.Equippable,
                     Sprite = null,
                     Count = 1,
@@ -100,16 +129,19 @@ namespace Sources.Unity {
                     Count = 3,
                 },
                 new Item {
-                    Name = "Minor health potion", Strongness = Strongness.Easy, Effects = new[] {
+                    Name = "Minor health potion", 
+                    Strongness = Strongness.Easy,
+                    Effects = new[] {
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Easy),
-                        ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Hard),
                     },
                     Type = ItemType.Consumable,
                     Sprite = items + "potions:red small",
                     Count = 1,
                 },
                 new Item {
-                    Name = "Health potion", Strongness = Strongness.Hard, Effects = new[] {
+                    Name = "Health potion", 
+                    Strongness = Strongness.Hard, 
+                    Effects = new[] {
                         ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Hard)
                     },
                     Type = ItemType.Consumable,
@@ -129,7 +161,7 @@ namespace Sources.Unity {
         private static IEnumerable<Chest> GetChests() {
             return new[] {
                 new Chest { Name = "Chest", Length = 1, Width = 3, Strongness = Strongness.Easy },
-                new Chest { Name = "Golden Chest", Length = 2, Width = 3, Strongness = Strongness.Hard },
+                new Chest { Name = "Golden chest", Length = 2, Width = 3, Strongness = Strongness.Hard },
             };
         }
 
