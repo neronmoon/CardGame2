@@ -29,6 +29,8 @@
 - [x] Implement inventory & items
 - [x] Fix card animation (spawned & complete level conflict)
 - [x] Reimplement level generation system: add more randomness and features
+- [x] Adjust nulls into spawn animation
+- [x] Make card types look different
 - [ ] Add coins and more items & levels
   - [ ] Resurection stone
   - [ ] Mutation script

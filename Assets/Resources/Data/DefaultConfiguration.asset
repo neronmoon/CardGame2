@@ -12,15 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb332407dcd47ea9651651802a62eb3, type: 3}
   m_Name: DefaultConfiguration
   m_EditorClassIdentifier: 
+  PlayerPrefab: {fileID: 2577516646449887189, guid: 8eff8469d3d4a3a4f86b91012ab0ad68, type: 3}
+  ItemCardPrefab: {fileID: 9194787811481212871, guid: 6d5b21eaf4637b747b7a225e7cfb2d66, type: 3}
+  LevelCardPrefab: {fileID: 6009241539116237311, guid: 419b16e134a222941b5f9d159f286549, type: 3}
   CardPrefab: {fileID: 8182558108753156521, guid: 22f65f7c3121b45f492d37225a190735, type: 3}
-  CharacterData: {fileID: 11400000, guid: 9d759537e79e04c5ab4545ae885a5bd7, type: 2}
-  StartLevelData: {fileID: 11400000, guid: 4344e52058a6348a8b7e6fed239e333f, type: 2}
   HitClips:
   - {fileID: 8300000, guid: 1d3bdb9a5006a914382717bf9a2d6874, type: 3}
   - {fileID: 8300000, guid: 5b6d4c7fa252bda4bad28fdb4459411f, type: 3}
-  CardSpawnClips:
-  - {fileID: 8300000, guid: cacb5ed56a8d7514b977a44789e66eae, type: 3}
-  - {fileID: 8300000, guid: 6345d4f209ec7c84484afaba0480e754, type: 3}
-  - {fileID: 8300000, guid: 1ab48de0131f7fa4f8be2edf7ebb42be, type: 3}
+  CardSpawnClip: {fileID: 8300000, guid: cacb5ed56a8d7514b977a44789e66eae, type: 3}
   DeadClip: {fileID: 8300000, guid: 13a4ca52647b6e34bb133f4e10d20712, type: 3}
   PotionClip: {fileID: 8300000, guid: 4499ea9d5997f924daf40f0bd2b9854a, type: 3}

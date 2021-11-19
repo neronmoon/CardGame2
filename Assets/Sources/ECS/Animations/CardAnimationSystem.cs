@@ -70,9 +70,9 @@ namespace Sources.ECS.Animations {
                             }
                         }
 
-                        int levelWidth = runtimeData.CurrentLevel.Width;
+                        int levelWidth = runtimeData.CurrentLevel.Width - nulls;
                         float rawDelay = (Math.Abs(Math.Max(playerPosition.Y, maxSpawnedY) - levelPosition.Y) + 0.5f) * levelWidth -
-                                         (levelWidth - (levelPosition.X + 1));
+                                         (levelWidth - (levelPosition.X + 0.5f));
 
                         float delay = Mathf.Max(0f, rawDelay * 0.1f);
                         const float time = 0.8f;

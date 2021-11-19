@@ -253,7 +253,7 @@ namespace Sources {
             int c = random.Next(0, max);
             foreach (KeyValuePair<T, int> item in sortedItems) {
                 if (c >= prev && c <= item.Value + prev) {
-                    Debug.Log($"max={max} c={c}");
+                    // Debug.Log($"max={max} c={c}");
                     return item.Key;
                 }
 
