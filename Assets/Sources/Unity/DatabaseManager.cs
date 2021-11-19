@@ -188,15 +188,15 @@ namespace Sources.Unity {
 
                 new Enemy { Name = "Stump", Health = 7, Strongness = Strongness.Hard, Sprite = monsters + "monster (267)" },
                 new Enemy { Name = "Skeleton", Health = 6, Strongness = Strongness.Hard, Sprite = monsters + "monster (240)" },
-                new Enemy { Name = "Fire Creature", Health = 10, Strongness = Strongness.Hard, Sprite = monsters + "monster (118)" },
+                new Enemy { Name = "Fire Creature", Health = 9, Strongness = Strongness.Hard, Sprite = monsters + "monster (118)" },
                 new Enemy { Name = "Cat and Snake", Health = 6, Strongness = Strongness.Hard, Sprite = monsters + "monster (174)" },
-                new Enemy { Name = "Lizard", Health = 11, Strongness = Strongness.Hard, Sprite = monsters + "monster (150)" },
-                new Enemy { Name = "Mamonth", Health = 15, Strongness = Strongness.Hard, Sprite = monsters + "monster (155)" },
-                new Enemy { Name = "Turtle", Health = 9, Strongness = Strongness.Hard, Sprite = monsters + "monster (269)" },
+                new Enemy { Name = "Lizard", Health = 10, Strongness = Strongness.Hard, Sprite = monsters + "monster (150)" },
+                new Enemy { Name = "Mamonth", Health = 11, Strongness = Strongness.Hard, Sprite = monsters + "monster (155)" },
+                new Enemy { Name = "Turtle", Health = 8, Strongness = Strongness.Hard, Sprite = monsters + "monster (269)" },
 
-                new Enemy { Name = "Black Knight", Health = 20, Strongness = Strongness.Boss, Sprite = monsters + "monster (277)" },
-                new Enemy { Name = "Medusa", Health = 21, Strongness = Strongness.Boss, Sprite = monsters + "monster (255)" },
-                new Enemy { Name = "Dragon", Health = 23, Strongness = Strongness.Boss, Sprite = monsters + "monster (9)" },
+                new Enemy { Name = "Black Knight", Health = 12, Strongness = Strongness.Boss, Sprite = monsters + "monster (277)" },
+                new Enemy { Name = "Medusa", Health = 13, Strongness = Strongness.Boss, Sprite = monsters + "monster (255)" },
+                new Enemy { Name = "Dragon", Health = 14, Strongness = Strongness.Boss, Sprite = monsters + "monster (9)" },
             };
         }
 
