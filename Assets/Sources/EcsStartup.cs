@@ -8,6 +8,7 @@ using Sources.Data;
 using Sources.ECS.Animations;
 using Sources.ECS.Audio;
 using Sources.ECS.BaseInteractions;
+using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Movement;
 using Sources.ECS.Visualization;
@@ -66,8 +67,7 @@ namespace Sources {
                 .Add(new PlayerMoveSystem())
 
                 // Gameplay actions
-                // .Add(new ActionsQueueSystem())
-                .Add(new ActionsQueueAlterSystem()) // for now i test new actions system
+                .Add(new ActionsQueueSystem()) // for now i test new actions system
                 // here goes all GameplayAction systems
                 .Add(new ApplyDamageSystem())
                 .Add(new HealSystem())

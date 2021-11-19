@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Leopotam.Ecs;
-using Sources.Data.Gameplay;
-using Sources.ECS.Components;
+using Sources.Database.DataObject;
 using UnityEngine;
 
 namespace Sources.Data {
@@ -13,12 +12,12 @@ namespace Sources.Data {
 
     public class RuntimeData {
         public Input Input;
-        public Level CurrentLevel;
+        public Character CurrentCharacter;
+        public ILevelDefinition CurrentLevel;
         public EcsEntity GarbageEntity;
-        // public LevelPosition PlayerPosition = new() {X = 0, Y = 0};
         public object[][] LevelLayout;
         public bool PlayerIsDead = false;
 
-        public Stack<KeyValuePair<Level, object[][]>> PlayerPath = new();
+        public Stack<KeyValuePair<ILevelDefinition, object[][]>> PlayerPath = new();
     }
 }

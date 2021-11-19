@@ -8,7 +8,7 @@
       "hash": "97a605bc57543b3b89a7462d78c149e8b03943da"
     },
     "com.unity.2d.animation": {
-      "version": "7.0.0",
+      "version": "7.0.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -46,11 +46,11 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.2d.psdimporter": {
-      "version": "6.0.0",
+      "version": "6.0.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.2d.animation": "7.0.0",
+        "com.unity.2d.animation": "7.0.1",
         "com.unity.2d.common": "6.0.0",
         "com.unity.2d.sprite": "1.0.0"
       },
@@ -63,7 +63,7 @@
       "dependencies": {}
     },
     "com.unity.2d.spriteshape": {
-      "version": "7.0.0",
+      "version": "7.0.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -81,7 +81,7 @@
       "dependencies": {}
     },
     "com.unity.2d.tilemap.extras": {
-      "version": "2.2.0",
+      "version": "2.2.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -208,7 +208,7 @@
       }
     },
     "com.unity.visualscripting": {
-      "version": "1.7.2",
+      "version": "1.7.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {

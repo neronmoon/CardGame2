@@ -1,7 +1,7 @@
 using System;
 using Leopotam.Ecs;
 using Leopotam.Ecs.UnityIntegration.Editor;
-using Sources.Data.Gameplay.Items;
+using Sources.Database.DataObject;
 using Sources.ECS.Components.Gameplay;
 using UnityEditor;
 
@@ -18,7 +18,7 @@ namespace Editor {
 
             foreach ((Item item, int count) in component.Items) {
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(item.ToString());
+                EditorGUILayout.LabelField(item.Name);
                 EditorGUILayout.LabelField(count.ToString());
                 EditorGUILayout.EndHorizontal();
             }

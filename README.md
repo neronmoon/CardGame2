@@ -27,15 +27,20 @@
 - [x] Implement level announcement
 - [x] Implement chests
 - [x] Implement inventory & items
+- [x] Fix card animation (spawned & complete level conflict)
+- [x] Reimplement level generation system: add more randomness and features
+- [ ] Add coins and more items & levels
+  - [ ] Resurection stone
+  - [ ] Mutation script
+  - [ ] Diagonal healer (think of name)
+  - [ ] Map
+  - [ ] Devine sword
 - [ ] Implement inventory UI
 - [ ] Inventory items effects
 - [ ] Implement aggressive monsters (that attacks when you near and drop monster egg after death)
-- [ ] Add more levels
 - [ ] Implement level map display
 - [ ] Add more items and potions
-- [ ] Reimplement level generation system: add more randomness and features
 - [ ] Fix DOTWeen warnings
-- [ ] Fix card animation (spawned & complete level conflict)
 - [ ] Playtest with Vova
 - [ ] Implement character select menu
 - [ ] Implement quests

@@ -27,12 +27,16 @@ namespace Sources.ECS.Visualization {
 
             view.Sprite.sprite = entity.Has<Face>() ? entity.Get<Face>().Sprite : null;
 
-            foreach (GameObject o in view.HealthObjects) {
-                o.SetActive(entity.Has<Health>());
+            foreach (GameObject o in view.ValueObjects) {
+                o.SetActive(entity.Has<Health>() || entity.Has<EquippableItem>());
             }
 
             if (entity.Has<Health>()) {
-                view.HealthText.text = entity.Get<Health>().Amount.ToString();
+                view.ValueText.text = entity.Get<Health>().Amount.ToString();
+            }
+
+            if (entity.Has<EquippableItem>()) {
+                view.ValueText.text = entity.Get<EquippableItem>().Data.Count.ToString();
             }
 
             foreach (GameObject o in view.NameObjects) {

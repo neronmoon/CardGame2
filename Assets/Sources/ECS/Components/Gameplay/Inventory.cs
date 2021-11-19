@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Sources.Data.Gameplay.Items;
-using Sources.ECS.GameplayActions.Components;
+using Sources.Database.DataObject;
 using UnityEngine;
 
 namespace Sources.ECS.Components.Gameplay {
@@ -32,10 +31,10 @@ namespace Sources.ECS.Components.Gameplay {
                 Debug.LogWarning("Tried to take item, that not in inventory!");
             }
 
-            Item takenItem = null;
+            Item takenItemData = null;
             foreach ((Item key, int count) in Items) {
                 if (key is T) {
-                    takenItem = key;
+                    takenItemData = key;
                     Items[key]--;
                     break;
                 }
@@ -43,11 +42,11 @@ namespace Sources.ECS.Components.Gameplay {
 
             cleanupItems();
 
-            return (T)takenItem;
+            return (T)takenItemData;
         }
 
-        public bool Has(Item item) {
-            return Items.ContainsKey(item);
+        public bool Has(Item itemData) {
+            return Items.ContainsKey(itemData);
         }
 
         public Inventory Add(Item type, int count = 1) {

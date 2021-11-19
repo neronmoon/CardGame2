@@ -1,17 +1,15 @@
 using System.Collections.Generic;
+using System.Linq;
 using Leopotam.Ecs;
 using Sources.Data;
-using Sources.Data.Gameplay;
-using Sources.Data.Gameplay.Items;
+using Sources.Database.DataObject;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Events;
 using UnityEngine;
-using EnemySpec = Sources.Data.Gameplay.Enemy;
-using Enemy = Sources.ECS.Components.Gameplay.Enemy;
-using HealthPotion = Sources.ECS.Components.Gameplay.HealthPotion;
-using HealthPotionSpec = Sources.Data.Gameplay.Items.HealthPotion;
+using Enemy = Sources.Database.DataObject.Enemy;
+using EnemyComponent = Sources.ECS.Components.Gameplay.Enemy;
 
 namespace Sources.ECS.WorldInitialization {
     public class PopulateLevelWithEntitiesSystem : IEcsRunSystem {
@@ -41,7 +39,6 @@ namespace Sources.ECS.WorldInitialization {
         }
 
         private void createCardEntity(object data, int x, int y) {
-            
             EcsEntity entity;
             LevelPosition position = new() { X = x, Y = y };
             switch (data) {
@@ -53,7 +50,7 @@ namespace Sources.ECS.WorldInitialization {
                             entity.Replace(position);
                         }
                     } else {
-                        entity = MakeDefaultCardEntity(position);
+                        entity = MakeDefaultCardEntity(position, null, character.Sprite);
                         entity.Replace(new Player { Data = character });
                         entity.Replace(new Hoverable());
                         entity.Replace(new Clickable());
@@ -61,73 +58,40 @@ namespace Sources.ECS.WorldInitialization {
                         entity.Replace(new Inventory(new Dictionary<Item, int>()));
 
                         entity.Replace(new Health { Amount = character.Health });
-
-                        if (character.Sprite) {
-                            entity.Replace(new Face { Sprite = character.Sprite });
-                        }
                     }
 
                     break;
-                case EnemySpec enemy:
-                    entity = MakeDefaultCardEntity(position);
-                    entity.Replace(new Enemy { Data = enemy });
+                case Enemy enemy:
+                    entity = MakeDefaultCardEntity(position, null, enemy.Sprite);
+                    entity.Replace(new EnemyComponent { Data = enemy });
                     entity.Replace(new Health { Amount = enemy.Health });
-                    if (enemy.Sprite) {
-                        entity.Replace(new Face { Sprite = enemy.Sprite });
-                    }
 
                     break;
                 case Chest chest:
-                    entity = MakeDefaultCardEntity(position);
-
-                    // define chest level
-                    // this should exit to current level at chest position 
-                    Level chestLevel = chest.GetLevel();
-                    entity.Replace(new LevelExit {
-                        Data = chestLevel,
-                        Layout = levelGenerator.Generate(chestLevel, configuration.Character, new ChestExit())
-                    });
-
-                    if (!string.IsNullOrEmpty(chest.Name)) {
-                        entity.Replace(new Name { Value = chest.Name });
-                    }
-
-                    if (chest.Sprite) {
-                        entity.Replace(new Face { Sprite = chest.Sprite });
-                    }
+                    entity = MakeDefaultCardEntity(position, chest.Name, chest.Sprite);
+                    entity.Replace(new LevelEntrance { Data = chest, Layout = levelGenerator.Generate(chest, runtimeData.CurrentCharacter, new ChestExit()) });
 
                     break;
 
                 case ChestExit:
-                    entity = MakeDefaultCardEntity(position);
-                    (Level prevLevel, object[][] prevLevelLayout) = runtimeData.PlayerPath.Peek();
-                    entity.Replace(new LevelExit { Data = prevLevel, Layout = prevLevelLayout });
-
-                    entity.Replace(new Name { Value = "Return to " + prevLevel.Name });
+                    (ILevelDefinition prevLevel, object[][] prevLevelLayout) = runtimeData.PlayerPath.Peek();
+                    entity = MakeDefaultCardEntity(position, "Return to " + prevLevel.Name);
+                    entity.Replace(new LevelEntrance { Data = prevLevel, Layout = prevLevelLayout });
                     break;
 
                 case Level level:
-                    entity = MakeDefaultCardEntity(position);
-                    entity.Replace(new LevelExit {
-                        Data = level,
-                        Layout = levelGenerator.Generate(level, configuration.Character)
-                    });
-                    if (!string.IsNullOrEmpty(level.Name)) {
-                        entity.Replace(new Name { Value = level.Name });
-                    }
-
-                    if (level.Sprite) {
-                        entity.Replace(new Face { Sprite = level.Sprite });
-                    }
+                    entity = MakeDefaultCardEntity(position, level.Name, level.Sprite);
+                    level.Difficulty *= 1.1f;
+                    entity.Replace(new LevelEntrance { Data = level, Layout = levelGenerator.Generate(level, runtimeData.CurrentCharacter) });
 
                     break;
                 case Item item:
-                    entity = MakeDefaultCardEntity(position);
-                    switch (item) {
-                        case IConsumableItemType:
+                    entity = MakeDefaultCardEntity(position, item.Name, item.Sprite);
+                    switch (item.Type) {
+                        case ItemType.Consumable:
                             entity.Replace(new ConsumableItem { Data = item });
                             break;
-                        case IEquippableItemType:
+                        case ItemType.Equippable:
                             entity.Replace(new EquippableItem { Data = item });
                             break;
                         default:
@@ -135,28 +99,39 @@ namespace Sources.ECS.WorldInitialization {
                             break;
                     }
 
-                    if (!string.IsNullOrEmpty(item.Name)) {
-                        entity.Replace(new Name { Value = item.Name });
-                    }
-
-                    if (item.Sprite) {
-                        entity.Replace(new Face { Sprite = item.Sprite });
-                    }
-
-                    if (item is HealthPotionSpec potion) {
-                        entity.Replace(new Health { Amount = potion.Amount });
-                        entity.Replace(new HealthPotion { Amount = potion.Amount });
+                    foreach (ItemEffect effect in item.Effects) {
+                        // TODO: Add more effects and summarize them if they intersect
+                        if (effect.Name == "Heal") {
+                            int healValue = (int)effect.Value * item.Count;
+                            entity.Replace(new Health { Amount = healValue });
+                            entity.Replace(new HealthPotion { Amount = healValue });
+                        }
                     }
 
                     break;
             }
         }
 
-        private EcsEntity MakeDefaultCardEntity(LevelPosition? position = null) {
+        private EcsEntity MakeDefaultCardEntity(LevelPosition position, string name = null, string spriteDef = null) {
             EcsEntity entity = world.NewEntity();
             entity.Replace(new PlayableCard());
-            if (position != null) {
-                entity.Replace((LevelPosition)position);
+            entity.Replace(position);
+            if (!string.IsNullOrEmpty(name)) {
+                entity.Replace(new Name { Value = name });
+            }
+
+            if (!string.IsNullOrEmpty(spriteDef)) {
+                Sprite sprite = default;
+                if (spriteDef.Contains(":")) {
+                    var splited = spriteDef.Split(":", 2);
+                    sprite = Resources.LoadAll<Sprite>(splited[0]).FirstOrDefault(x => x.name == splited[1]);
+                } else {
+                    sprite = Resources.Load<Sprite>(spriteDef);
+                }
+
+                if (sprite != default) {
+                    entity.Replace(new Face { Sprite = sprite });
+                }
             }
 
             return entity;

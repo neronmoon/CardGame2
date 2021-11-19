@@ -1,13 +1,13 @@
-using System;
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
-using UnityEngine;
 
 namespace Sources.ECS.Movement {
     public class UpdateLevelLayoutOnPlayerMoveSystem : IEcsRunSystem {
         /// <summary>
+        /// Adjusts current level layout in runtime data.
+        /// If player is going into chest we need to place him back when he returns
         /// </summary>
         private EcsWorld world;
 
@@ -23,7 +23,7 @@ namespace Sources.ECS.Movement {
                 if (entity.Has<Discarded>()) {
                     runtimeData.LevelLayout[pos.Y][pos.X] = null;
                 } else if (entity.Has<Player>()) {
-                    runtimeData.LevelLayout[pos.Y][pos.X] = configuration.Character;
+                    runtimeData.LevelLayout[pos.Y][pos.X] = runtimeData.CurrentCharacter;
                 }
                 
             }

@@ -1,4 +1,4 @@
-using Sources.Data.Gameplay.Items;
+using Sources.Database.DataObject;
 
 namespace Sources.ECS.Components.Gameplay {
     public struct ConsumableItem {
