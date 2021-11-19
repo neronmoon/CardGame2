@@ -30,6 +30,11 @@
 - [x] Fix card animation (spawned & complete level conflict)
 - [x] Reimplement level generation system: add more randomness and features
 - [ ] Add coins and more items & levels
+  - [ ] Resurection stone
+  - [ ] Mutation script
+  - [ ] Diagonal healer (think of name)
+  - [ ] Map
+  - [ ] Devine sword
 - [ ] Implement inventory UI
 - [ ] Inventory items effects
 - [ ] Implement aggressive monsters (that attacks when you near and drop monster egg after death)
