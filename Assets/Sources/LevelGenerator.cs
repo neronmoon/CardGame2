@@ -125,7 +125,9 @@ namespace Sources {
                     break;
             }
 
-            return choice[random.Next(choice.Length)];
+            KeyValuePair<Type, Strongness>[] choosen = choice[random.Next(choice.Length)];
+            random.Shuffle(choosen);
+            return choosen;
         }
 
         private KeyValuePair<Type, Strongness>[] InterestingChoices(int width) {
@@ -197,7 +199,9 @@ namespace Sources {
                     break;
             }
 
-            return choice[random.Next(choice.Length)];
+            KeyValuePair<Type, Strongness>[] choosen = choice[random.Next(choice.Length)];
+            random.Shuffle(choosen);
+            return choosen;
         }
 
         private IEnumerable<bool> GenerateRowLayout(int width, object[] previousRow) {
@@ -259,6 +263,8 @@ namespace Sources {
 
                 prev += item.Value;
             }
+            Debug.LogError("Chances of " + typeof(T) + " is empty!");
+            return default;
         }
     }
 }
