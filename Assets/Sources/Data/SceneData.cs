@@ -10,6 +10,7 @@ namespace Sources.Data {
 
         public DeathScreenView DeathScreenView;
         public LevelAnnounceView LevelAnnounceView;
+        public BottomBarView BottomBarView;
 
         public AudioSource SFXAudioSource;
     }

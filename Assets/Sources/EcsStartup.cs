@@ -60,6 +60,7 @@ namespace Sources {
                 .Add(new AnnounceLevelSystem())
                 .Add(new SpawnCardsGameObjectsSystem())
                 .Add(new DisplayCardStatsSystem())
+                .Add(new AdjustBottomBarValuesSystem())
 
                 // Player movement
                 .Add(new DefinePlayerAvailableMovesSystem())
