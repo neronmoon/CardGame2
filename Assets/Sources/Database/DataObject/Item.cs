@@ -23,6 +23,9 @@ namespace Sources.Database.DataObject {
         
         [NotNull]
         public Strongness Strongness { get; set; }
+        
+        [NotNull]
+        public bool ShowInInventory  { get; set; }
 
         [Ignore]
         public ItemEffect[] Effects {

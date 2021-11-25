@@ -7,6 +7,7 @@ using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Events;
+using Sources.LevelGeneration;
 using UnityEngine;
 using Enemy = Sources.Database.DataObject.Enemy;
 using EnemyComponent = Sources.ECS.Components.Gameplay.Enemy;

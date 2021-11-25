@@ -7,6 +7,7 @@ using Sources.ECS.Animations.Components;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Components.Processes;
 using Sources.ECS.GameplayActions.Components;
+using Sources.LevelGeneration;
 using UnityEngine;
 
 namespace Sources.ECS.WorldInitialization {

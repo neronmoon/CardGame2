@@ -29,18 +29,14 @@ namespace Sources.Unity {
             RecreateTable<Chance>();
 
             const string monsters = sprites + "Monsters/";
+
             conn.InsertAll(new[] {
-                new Character { Name = "Player", Health = 50, Sprite = monsters + "monster (277)" }
-            });
-            conn.InsertAll(new[] {
-                new Level { Name = "Infinite recursion", Length = 5, Width = 3, Difficulty = 1, Sprite = sprites + "Portal" }
-            });
-            conn.InsertAll(new[] {
-                new CardType { Value = nameof(Character) },
-                new CardType { Value = nameof(Enemy) },
-                new CardType { Value = nameof(Chest) },
-                new CardType { Value = nameof(Item) },
-                new CardType { Value = nameof(Level) },
+                new CardType { Value = CardType.Character },
+                new CardType { Value = CardType.Enemy },
+                new CardType { Value = CardType.Chest },
+                new CardType { Value = CardType.Item },
+                new CardType { Value = CardType.Level },
+                new CardType { Value = CardType.NPC },
             });
             conn.InsertAll(new[] {
                 new RowWidth { Value = 1 },
@@ -52,42 +48,54 @@ namespace Sources.Unity {
             conn.InsertAll(GetItemEffects());
             conn.InsertAll(GetItems(sprites + "Items/"));
 
-            Level testLevel = Level.First(x => x.Name == "Infinite recursion");
             conn.InsertAll(new[] {
-                Chance.Make(testLevel, RowWidth.First(x => x.Value == 3), 70),
-                Chance.Make(testLevel, RowWidth.First(x => x.Value == 2), 25),
-                Chance.Make(testLevel, RowWidth.First(x => x.Value == 1), 5),
+                new Character { Name = "Player", Health = 50, Sprite = monsters + "monster (277)" }
+            });
+            Level level = new Level {
+                Name = "Infinite recursion",
+                Length = 15,
+                Width = 3,
+                Difficulty = 1,
+                Sprite = sprites + "Portal",
+                SubLevelCount = 3
+            };
+            conn.InsertAll(new[] { level });
 
-                Chance.Make(testLevel, testLevel, 100), // cycle
+            conn.InsertAll(new[] {
+                Chance.Make(level, RowWidth.First(x => x.Value == 3), 70),
+                Chance.Make(level, RowWidth.First(x => x.Value == 2), 25),
+                Chance.Make(level, RowWidth.First(x => x.Value == 1), 5),
+
+                Chance.Make(level, level, 100), // cycle
 
                 // easy
-                Chance.Make(testLevel, Enemy.ByName("Bird"), 20),
-                Chance.Make(testLevel, Enemy.ByName("Ghost"), 20),
-                Chance.Make(testLevel, Enemy.ByName("Wolf"), 20),
-                Chance.Make(testLevel, Enemy.ByName("Octopus"), 20),
-                Chance.Make(testLevel, Enemy.ByName("Orc"), 20),
+                Chance.Make(level, Enemy.ByName("Bird"), 20),
+                Chance.Make(level, Enemy.ByName("Ghost"), 20),
+                Chance.Make(level, Enemy.ByName("Wolf"), 20),
+                Chance.Make(level, Enemy.ByName("Octopus"), 20),
+                Chance.Make(level, Enemy.ByName("Orc"), 20),
 
                 // hard
-                Chance.Make(testLevel, Enemy.ByName("Stump"), 14),
-                Chance.Make(testLevel, Enemy.ByName("Skeleton"), 14),
-                Chance.Make(testLevel, Enemy.ByName("Fire Creature"), 14),
-                Chance.Make(testLevel, Enemy.ByName("Cat and Snake"), 14),
-                Chance.Make(testLevel, Enemy.ByName("Lizard"), 14),
-                Chance.Make(testLevel, Enemy.ByName("Mamonth"), 14),
-                Chance.Make(testLevel, Enemy.ByName("Turtle"), 14),
+                Chance.Make(level, Enemy.ByName("Stump"), 14),
+                Chance.Make(level, Enemy.ByName("Skeleton"), 14),
+                Chance.Make(level, Enemy.ByName("Fire Creature"), 14),
+                Chance.Make(level, Enemy.ByName("Cat and Snake"), 14),
+                Chance.Make(level, Enemy.ByName("Lizard"), 14),
+                Chance.Make(level, Enemy.ByName("Mamonth"), 14),
+                Chance.Make(level, Enemy.ByName("Turtle"), 14),
 
                 // boss
-                Chance.Make(testLevel, Enemy.ByName("Black Knight"), 33),
-                Chance.Make(testLevel, Enemy.ByName("Medusa"), 33),
-                Chance.Make(testLevel, Enemy.ByName("Dragon"), 33),
+                Chance.Make(level, Enemy.ByName("Black Knight"), 33),
+                Chance.Make(level, Enemy.ByName("Medusa"), 33),
+                Chance.Make(level, Enemy.ByName("Dragon"), 33),
 
-                Chance.Make(testLevel, Item.ByName("Coin"), 45),
-                Chance.Make(testLevel, Item.ByName("Coins"), 15),
-                Chance.Make(testLevel, Item.ByName("Minor health potion"), 30),
-                Chance.Make(testLevel, Item.ByName("Health potion"), 10),
+                Chance.Make(level, Item.ByName("Coin"), 45),
+                Chance.Make(level, Item.ByName("Coins"), 15),
+                Chance.Make(level, Item.ByName("Minor health potion"), 30),
+                Chance.Make(level, Item.ByName("Health potion"), 10),
 
-                Chance.Make(testLevel, Chest.ByName("Small bag"), 70),
-                Chance.Make(testLevel, Chest.ByName("Chest"), 30),
+                Chance.Make(level, Chest.ByName("Small bag"), 70),
+                Chance.Make(level, Chest.ByName("Chest"), 30),
             });
 
             Chest bag = Chest.ByName("Small bag");
@@ -137,6 +145,7 @@ namespace Sources.Unity {
                     Type = ItemType.Equippable,
                     Sprite = items + "Misc/Map",
                     Count = 1,
+                    ShowInInventory = true,
                 },
                 new Item {
                     Name = "Resurrection stone",
@@ -147,6 +156,7 @@ namespace Sources.Unity {
                     },
                     Sprite = items + "Misc/Rune Stone",
                     Count = 1,
+                    ShowInInventory = true,
                 },
                 new Item {
                     Name = "Minor health potion",
