@@ -33,7 +33,7 @@ namespace Sources.ECS.Visualization {
             }
 
             if (entity.Has<Health>()) {
-                view.ValueText.text = entity.Get<Health>().Amount.ToString();
+                view.ValueText.text = entity.Get<Health>().Value.ToString();
             }
 
             if (entity.Has<EquippableItem>()) {

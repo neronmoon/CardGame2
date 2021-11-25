@@ -58,14 +58,15 @@ namespace Sources.ECS.WorldInitialization {
                         entity.Replace(new Draggable());
                         entity.Replace(new Inventory(new Dictionary<Item, int>()));
 
-                        entity.Replace(new Health { Amount = character.Health });
+                        entity.Replace(new Health { Value = character.Health });
+                        entity.Replace(new MaxHealth { Value = character.Health });
                     }
 
                     break;
                 case Enemy enemy:
                     entity = MakeDefaultCardEntity(position, null, enemy.Sprite);
                     entity.Replace(new EnemyComponent { Data = enemy });
-                    entity.Replace(new Health { Amount = enemy.Health });
+                    entity.Replace(new Health { Value = enemy.Health });
 
                     break;
                 case Chest chest:

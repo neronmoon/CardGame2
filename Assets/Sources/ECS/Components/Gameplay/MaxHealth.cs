@@ -1,5 +1,5 @@
 namespace Sources.ECS.Components.Gameplay {
-    public struct Health {
+    public struct MaxHealth {
         public int Value;
     }
 }

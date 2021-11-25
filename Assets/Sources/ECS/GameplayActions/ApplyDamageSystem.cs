@@ -16,8 +16,8 @@ namespace Sources.ECS.GameplayActions {
             foreach (int idx in hits) {
                 EcsEntity entity = hits.GetEntity(idx);
                 int dmg = hits.Get2(idx).Amount;
-                int health = hits.Get1(idx).Amount;
-                entity.Replace(new Health { Amount = Math.Max(0, health - dmg) });
+                int health = hits.Get1(idx).Value;
+                entity.Replace(new Health { Value = Math.Max(0, health - dmg) });
             }
         }
     }

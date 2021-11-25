@@ -45,7 +45,7 @@ namespace Sources.ECS.GameplayActions {
             // Move actions are executed in one frame (PlayerMovedEvent)
             DefineMoveAction(
                 (entity, target) => target.Has<Enemy>() && target.Has<Health>(), // if this is true
-                (entity, target) => new Hit { Source = target, Amount = target.Get<Health>().Amount } // then add this component(s)
+                (entity, target) => new Hit { Source = target, Amount = target.Get<Health>().Value } // then add this component(s)
             );
             DefineMoveAction(
                 (entity, target) => target.Has<LevelEntrance>(),
@@ -89,7 +89,7 @@ namespace Sources.ECS.GameplayActions {
 
             // This is final death!
             DefineAction(
-                entity => entity.Has<Health>() && entity.Get<Health>().Amount <= 0 && !entity.Has<Dead>(),
+                entity => entity.Has<Health>() && entity.Get<Health>().Value <= 0 && !entity.Has<Dead>(),
                 entity => new Dead()
             );
         }
