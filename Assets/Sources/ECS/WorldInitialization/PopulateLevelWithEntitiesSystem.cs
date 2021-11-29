@@ -7,11 +7,12 @@ using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Events;
+using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.Components.Gameplay.Perks;
 using Sources.LevelGeneration;
 using UnityEngine;
 using Enemy = Sources.Database.DataObject.Enemy;
-using EnemyComponent = Sources.ECS.Components.Gameplay.Enemy;
+using EnemyComponent = Sources.ECS.Components.Gameplay.CardTypes.Enemy;
 
 namespace Sources.ECS.WorldInitialization {
     public class PopulateLevelWithEntitiesSystem : IEcsRunSystem {

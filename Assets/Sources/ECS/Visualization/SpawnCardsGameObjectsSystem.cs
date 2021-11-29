@@ -4,6 +4,7 @@ using Sources.Data;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Components.Gameplay;
+using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.Extensions;
 using Sources.ECS.GameplayActions.Components;
 using Sources.Unity;

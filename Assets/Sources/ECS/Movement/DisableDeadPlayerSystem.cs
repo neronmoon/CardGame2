@@ -2,6 +2,7 @@ using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components.Gameplay;
+using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.GameplayActions.Components;
 
 namespace Sources.ECS.Movement {

@@ -1,7 +1,7 @@
 using Leopotam.Ecs;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
-using Sources.ECS.Components.Gameplay;
+using Sources.ECS.Components.Gameplay.CardTypes;
 
 namespace Sources.ECS.WorldInitialization {
     public class DiscardLeftoverCardsSystem : IEcsRunSystem {

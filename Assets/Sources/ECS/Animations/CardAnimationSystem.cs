@@ -9,6 +9,7 @@ using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Components.Gameplay;
+using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.Components.Processes;
 using Sources.ECS.Extensions;
 using Sources.ECS.GameplayActions.Components;
@@ -99,6 +100,7 @@ namespace Sources.ECS.Animations {
                 );
                 animate<Discarded>(entity, (up) => view.FadeOut(0.2f));
                 animate<Hit>(entity, (up) => {
+                    if(!up) return;
                     view.AnimateHit();
                     DOTween.Sequence()
                            .Append(view.HitMask.DOFade(0.5f, 0.2f))

@@ -1,6 +1,7 @@
 using Leopotam.Ecs;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
+using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.Components.Gameplay.Perks;
 using Sources.Unity;
 using UnityEngine;
