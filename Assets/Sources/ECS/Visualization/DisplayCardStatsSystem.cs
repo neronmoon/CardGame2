@@ -1,6 +1,7 @@
 using Leopotam.Ecs;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
+using Sources.ECS.Components.Gameplay.Perks;
 using Sources.Unity;
 using UnityEngine;
 
@@ -47,6 +48,8 @@ namespace Sources.ECS.Visualization {
             if (entity.Has<Name>()) {
                 view.NameText.text = entity.Get<Name>().Value;
             }
+
+            view.SetAggressive(entity.Has<Aggressive>());
         }
     }
 }

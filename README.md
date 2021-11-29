@@ -32,6 +32,7 @@
 - [x] Adjust nulls into spawn animation
 - [x] Make card types look different
 - [x] Add coins and more items & levels
+- [ ] Implement aggressive monsters (that attacks when you near and drop monster egg after death)
   - [ ] Resurection stone
   - [ ] Mutation script
   - [ ] Diagonal healer (think of name)
@@ -39,7 +40,6 @@
   - [ ] Devine sword
 - [ ] Implement inventory UI
 - [ ] Inventory items effects
-- [ ] Implement aggressive monsters (that attacks when you near and drop monster egg after death)
 - [ ] Implement level map display
 - [ ] Add more items and potions
 - [ ] Fix DOTWeen warnings

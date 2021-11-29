@@ -21,6 +21,8 @@ namespace Sources.Unity {
         public GameObject[] NameObjects;
         public int AdditionalSortOrder = 0;
 
+        public GameObject AggressivePerk;
+
         private Dictionary<Component, int> renderers = new(10);
 
         private Vector3 initHealthScale;
@@ -38,6 +40,10 @@ namespace Sources.Unity {
             foreach (SortingGroup group in GetComponentsInChildren<SortingGroup>()) {
                 renderers.Add(group, group.sortingOrder);
             }
+        }
+
+        public void SetAggressive(bool isAggressive) {
+            AggressivePerk.SetActive(isAggressive);
         }
 
         public void AnimateHit() {

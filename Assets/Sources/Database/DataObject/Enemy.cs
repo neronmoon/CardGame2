@@ -1,5 +1,7 @@
-using JetBrains.Annotations;
+using System;
+using System.Linq;
 using Sources.Data.Gameplay;
+using SQLite;
 
 namespace Sources.Database.DataObject {
     public class Enemy : DataObject<Enemy>, IDataObject, ICanIncreaseValues {
@@ -14,6 +16,8 @@ namespace Sources.Database.DataObject {
 
         public string Sprite { get; set; }
 
+        public bool IsAggressive { get; set; }
+        
         public void IncreaseValues(float multiplier) {
             Health = (int)(Health * multiplier);
         }

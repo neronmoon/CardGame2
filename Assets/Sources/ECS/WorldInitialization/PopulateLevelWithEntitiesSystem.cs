@@ -7,6 +7,7 @@ using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Events;
+using Sources.ECS.Components.Gameplay.Perks;
 using Sources.LevelGeneration;
 using UnityEngine;
 using Enemy = Sources.Database.DataObject.Enemy;
@@ -67,6 +68,10 @@ namespace Sources.ECS.WorldInitialization {
                     entity = MakeDefaultCardEntity(position, null, enemy.Sprite);
                     entity.Replace(new EnemyComponent { Data = enemy });
                     entity.Replace(new Health { Value = enemy.Health });
+
+                    if (enemy.IsAggressive) {
+                        entity.Replace(new Aggressive());
+                    }
 
                     break;
                 case Chest chest:

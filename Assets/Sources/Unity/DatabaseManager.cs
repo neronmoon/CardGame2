@@ -198,24 +198,24 @@ namespace Sources.Unity {
 
         private static IEnumerable<Enemy> GetEnemies(string monsters) {
             return new[] {
-                new Enemy { Name = "Bird", Health = 2, Strongness = Strongness.Easy, Sprite = monsters + "monster (24)" },
-                new Enemy { Name = "Ghost", Health = 3, Strongness = Strongness.Easy, Sprite = monsters + "monster (103)" },
+                new Enemy { Name = "Bird", Health = 2, Strongness = Strongness.Easy, Sprite = monsters + "monster (24)", IsAggressive = true },
+                new Enemy { Name = "Ghost", Health = 3, Strongness = Strongness.Easy, Sprite = monsters + "monster (103)", IsAggressive = true },
                 new Enemy { Name = "Training Stand", Health = 1, Strongness = Strongness.Easy },
-                new Enemy { Name = "Wolf", Health = 3, Strongness = Strongness.Easy, Sprite = monsters + "monster (49)" },
-                new Enemy { Name = "Octopus", Health = 4, Strongness = Strongness.Easy, Sprite = monsters + "monster (141)" },
-                new Enemy { Name = "Orc", Health = 5, Strongness = Strongness.Easy, Sprite = monsters + "monster (110)" },
+                new Enemy { Name = "Wolf", Health = 3, Strongness = Strongness.Easy, Sprite = monsters + "monster (49)", IsAggressive = true },
+                new Enemy { Name = "Octopus", Health = 4, Strongness = Strongness.Easy, Sprite = monsters + "monster (141)", IsAggressive = true },
+                new Enemy { Name = "Orc", Health = 5, Strongness = Strongness.Easy, Sprite = monsters + "monster (110)", IsAggressive = true },
 
-                new Enemy { Name = "Stump", Health = 7, Strongness = Strongness.Hard, Sprite = monsters + "monster (267)" },
-                new Enemy { Name = "Skeleton", Health = 6, Strongness = Strongness.Hard, Sprite = monsters + "monster (240)" },
-                new Enemy { Name = "Fire Creature", Health = 9, Strongness = Strongness.Hard, Sprite = monsters + "monster (118)" },
-                new Enemy { Name = "Cat and Snake", Health = 6, Strongness = Strongness.Hard, Sprite = monsters + "monster (174)" },
-                new Enemy { Name = "Lizard", Health = 10, Strongness = Strongness.Hard, Sprite = monsters + "monster (150)" },
-                new Enemy { Name = "Mamonth", Health = 11, Strongness = Strongness.Hard, Sprite = monsters + "monster (155)" },
-                new Enemy { Name = "Turtle", Health = 8, Strongness = Strongness.Hard, Sprite = monsters + "monster (269)" },
+                new Enemy { Name = "Stump", Health = 7, Strongness = Strongness.Hard, Sprite = monsters + "monster (267)", IsAggressive = true },
+                new Enemy { Name = "Skeleton", Health = 6, Strongness = Strongness.Hard, Sprite = monsters + "monster (240)", IsAggressive = true },
+                new Enemy { Name = "Fire Creature", Health = 9, Strongness = Strongness.Hard, Sprite = monsters + "monster (118)", IsAggressive = true },
+                new Enemy { Name = "Cat and Snake", Health = 6, Strongness = Strongness.Hard, Sprite = monsters + "monster (174)", IsAggressive = true },
+                new Enemy { Name = "Lizard", Health = 10, Strongness = Strongness.Hard, Sprite = monsters + "monster (150)", IsAggressive = true },
+                new Enemy { Name = "Mamonth", Health = 11, Strongness = Strongness.Hard, Sprite = monsters + "monster (155)", IsAggressive = true },
+                new Enemy { Name = "Turtle", Health = 8, Strongness = Strongness.Hard, Sprite = monsters + "monster (269)", IsAggressive = true },
 
-                new Enemy { Name = "Black Knight", Health = 12, Strongness = Strongness.Boss, Sprite = monsters + "monster (277)" },
-                new Enemy { Name = "Medusa", Health = 13, Strongness = Strongness.Boss, Sprite = monsters + "monster (255)" },
-                new Enemy { Name = "Dragon", Health = 14, Strongness = Strongness.Boss, Sprite = monsters + "monster (9)" },
+                new Enemy { Name = "Black Knight", Health = 12, Strongness = Strongness.Boss, Sprite = monsters + "monster (277)", IsAggressive = true },
+                new Enemy { Name = "Medusa", Health = 13, Strongness = Strongness.Boss, Sprite = monsters + "monster (255)", IsAggressive = true },
+                new Enemy { Name = "Dragon", Health = 14, Strongness = Strongness.Boss, Sprite = monsters + "monster (9)", IsAggressive = true },
             };
         }
 
