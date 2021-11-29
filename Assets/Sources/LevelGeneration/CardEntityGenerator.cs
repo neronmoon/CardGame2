@@ -25,18 +25,17 @@ namespace Sources.LevelGeneration {
         }
         
 
-        public void CreateCardEntity(object data, int x, int y) {
-            EcsEntity entity;
+        public EcsEntity CreateCardEntity(object data, int x, int y) {
+            EcsEntity entity = default;
             LevelPosition position = new() { X = x, Y = y };
             switch (data) {
                 case Character character:
-
                     entity = MakeDefaultCardEntity(position, null, character.Sprite);
                     entity.Replace(new Player { Data = character });
                     entity.Replace(new Hoverable());
                     entity.Replace(new Clickable());
                     entity.Replace(new Draggable());
-                    entity.Replace(new Inventory(new Dictionary<Item, int>()));
+                    entity.Replace(new Inventory {Items = new List<Item>(10)});
 
                     entity.Replace(new Health { Value = character.Health });
                     entity.Replace(new MaxHealth { Value = character.Health });
@@ -99,6 +98,8 @@ namespace Sources.LevelGeneration {
 
                     break;
             }
+
+            return entity;
         }
 
         private EcsEntity MakeDefaultCardEntity(LevelPosition position, string name = null, string spriteDef = null) {

@@ -2,9 +2,15 @@ using Sources.Data.Gameplay;
 using SQLite;
 
 namespace Sources.Database.DataObject {
+    [StoreAsText]
+    public enum ItemEffectType {
+        Heal,
+        Resurrection,
+    }
+
     public class ItemEffect : DataObject<ItemEffect>, IDataObject, ICanIncreaseValues {
         [NotNull]
-        public string Name { get; set; }
+        public ItemEffectType Name { get; set; }
 
         [NotNull]
         public float Value { get; set; }

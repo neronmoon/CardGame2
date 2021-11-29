@@ -4,6 +4,7 @@ using Sources.Database.DataObject;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.GameplayActions.Components;
+using UnityEngine;
 
 namespace Sources.ECS.GameplayActions.Actions {
     public class ConsumeItemAction :IGameplayMoveAction {
@@ -14,8 +15,11 @@ namespace Sources.ECS.GameplayActions.Actions {
             List<object> components = new(effects.Count);
             foreach (ItemEffect effect in effects) {
                 switch (effect.Name) {
-                    case "Heal":
+                    case ItemEffectType.Heal:
                         components.Add(new Heal { Amount = (int)effect.Value });
+                        break;
+                    default:
+                        Debug.LogWarning($"Not applied item effect {effect.Name}");
                         break;
                 }
             }

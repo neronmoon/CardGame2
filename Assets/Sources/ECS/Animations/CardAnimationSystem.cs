@@ -8,8 +8,6 @@ using Sources.Database.DataObject;
 using Sources.ECS.Animations.Components;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
-using Sources.ECS.Components.Events;
-using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.Components.Processes;
 using Sources.ECS.Extensions;
@@ -60,8 +58,14 @@ namespace Sources.ECS.Animations {
                         if (!up) return;
                         LevelPosition levelPosition = entity.Get<LevelPosition>();
                         Vector3 targetPos = calcLevelPosition(levelPosition);
+
                         transform.position = new Vector3(targetPos.x, transform.position.y, targetPos.z);
-                        int nulls = runtimeData.LevelLayout[levelPosition.Y].Count((x) => x == null);
+                        if (entity.Has<EnemyDrop>()) {
+                            transform.position = new Vector3(targetPos.x, targetPos.y + 2, targetPos.z);
+                            transform.DOMove(new Vector3(targetPos.x, targetPos.y, targetPos.z), 0.5f);
+                            view.FadeIn(0.5f);
+                            return;
+                        }
 
                         int maxSpawnedY = 0;
                         foreach (int idx in cards) {
@@ -146,12 +150,10 @@ namespace Sources.ECS.Animations {
                         //         cardObject.transform.DOBlendableMoveBy(calcLevelPosition(pos) - calcLevelPosition(new LevelPosition { X = pos.X, Y = pos.Y + 1 }), time);
                         //     }
                         // } else {
-                            cardObject.transform.DOMove(calcLevelPosition(pos), time);
+                        cardObject.transform.DOMove(calcLevelPosition(pos), time);
                         // }
                     }
                 });
-                
-
             }
         }
 

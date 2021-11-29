@@ -160,7 +160,7 @@ namespace Sources.Unity {
                     Strongness = Strongness.Hard,
                     Type = ItemType.Equippable,
                     Effects = new[] {
-                        ItemEffect.First(e => e.Name == "Resurrection" && e.Strongness == Strongness.Hard)
+                        ItemEffect.First(e => e.Name == ItemEffectType.Resurrection && e.Strongness == Strongness.Hard)
                     },
                     Sprite = items + "Misc/Rune Stone",
                     Count = 1,
@@ -170,7 +170,7 @@ namespace Sources.Unity {
                     Name = "Minor health potion",
                     Strongness = Strongness.Easy,
                     Effects = new[] {
-                        ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Easy),
+                        ItemEffect.First(x => x.Name == ItemEffectType.Heal && x.Strongness == Strongness.Easy),
                     },
                     Type = ItemType.Consumable,
                     Sprite = items + "Potion/Red Potion",
@@ -180,7 +180,7 @@ namespace Sources.Unity {
                     Name = "Health potion",
                     Strongness = Strongness.Hard,
                     Effects = new[] {
-                        ItemEffect.First(x => x.Name == "Heal" && x.Strongness == Strongness.Hard)
+                        ItemEffect.First(x => x.Name == ItemEffectType.Heal && x.Strongness == Strongness.Hard)
                     },
                     Type = ItemType.Consumable,
                     Sprite = items + "Potion/Red Potion 2",
@@ -191,9 +191,9 @@ namespace Sources.Unity {
 
         private static IEnumerable<ItemEffect> GetItemEffects() {
             return new[] {
-                new ItemEffect { Name = "Heal", Value = 5, Strongness = Strongness.Easy },
-                new ItemEffect { Name = "Heal", Value = 10, Strongness = Strongness.Hard },
-                new ItemEffect { Name = "Resurrection", Value = 5, Strongness = Strongness.Hard },
+                new ItemEffect { Name = ItemEffectType.Heal, Value = 5, Strongness = Strongness.Easy },
+                new ItemEffect { Name = ItemEffectType.Heal, Value = 10, Strongness = Strongness.Hard },
+                new ItemEffect { Name = ItemEffectType.Resurrection, Value = 5, Strongness = Strongness.Hard },
             };
         }
 

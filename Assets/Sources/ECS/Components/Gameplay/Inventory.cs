@@ -1,87 +1,65 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sources.Database.DataObject;
-using UnityEngine;
 
 namespace Sources.ECS.Components.Gameplay {
     public struct Inventory {
-        public Dictionary<Item, int> Items;
+        public List<Item> Items;
+        private List<Item> removals;
 
-        private static List<Item> removals = new(5);
-
-        public Inventory(Dictionary<Item, int> items) {
-            Items = items;
-        }
-
-        public bool Has<T>() where T : Item {
-            return Items.Any(pair => pair.Key is T);
-        }
-
-        public int Count<T>() where T : Item {
-            int count = 0;
-            if (Has<T>()) {
-                count += Items.Where(pair => pair.Key is T).Sum(pair => pair.Value);
-            }
-
-            return count;
-        }
-
-        public T TakeOne<T>() where T : Item {
-            if (!Has<T>()) {
-                Debug.LogWarning("Tried to take item, that not in inventory!");
-            }
-
-            Item takenItemData = null;
-            foreach ((Item key, int count) in Items) {
-                if (key is T) {
-                    takenItemData = key;
-                    Items[key]--;
-                    break;
-                }
-            }
-
-            cleanupItems();
-
-            return (T)takenItemData;
-        }
-
-        public Item TakeOneWithEffect(string effectName) {
-            Item item = Items.First(x => x.Key.Effects.Count(e => e.Name == effectName) > 0 && x.Value > 0).Key;
-
-            Items[item]--;
-            cleanupItems();
-
-            return item;
-        }
-
-        public bool Has(Item itemData) {
-            return Items.ContainsKey(itemData);
-        }
-
-        public bool HasWithEffect(string name) {
-            return Items.Count(x => x.Key.Effects.Count(e => e.Name == name) > 0 && x.Value > 0) > 0;
-        }
-
-        public Inventory Add(Item type, int count = 1) {
-            if (Has(type)) {
-                Items[type] += count;
-            } else {
-                Items.Add(type, count);
+        public Inventory AddItem(Item item, int amount = 1) {
+            for (int i = 0; i < amount; i++) {
+                Items.Add(item);
             }
 
             return this;
         }
 
-        private void cleanupItems() {
-            foreach (KeyValuePair<Item, int> pair in Items.Where(pair => pair.Value <= 0)) {
-                removals.Add(pair.Key);
+        public bool HasItem(string name) {
+            return Items.Count(x => x.Name == name) == 0;
+        }
+
+        public bool HasItemWithEffect(ItemEffectType name) {
+            return Items.SelectMany(item => item.Effects).Any(effect => effect.Name == name);
+        }
+
+        public List<Item> TakeItem(string name, int amount = 1) {
+            List<Item> taken = new(amount);
+            foreach (Item item in Items.Where(x => x.Name == name).ToList().TakeWhile(item => taken.Count <= amount)) {
+                taken.Add(item);
+                removeItem(item);
             }
 
-            foreach (Item item in removals) {
-                Items.Remove(item);
+            cleanupInventory();
+
+            return taken;
+        }
+
+        public Item TakeFirstItemWithEffect(ItemEffectType type) {
+            return TakeItemWithEffect(type).First();
+        }
+
+        public List<Item> TakeItemWithEffect(ItemEffectType type, int amount = 1) {
+            List<Item> taken = new(amount);
+            foreach (Item item in Items.TakeWhile(_ => taken.Count <= amount).Where(item => item.Effects.Any(x => x.Name == type))) {
+                taken.Add(item);
+                removeItem(item);
             }
 
-            removals.Clear();
+            cleanupInventory();
+
+            return taken;
+        }
+
+        private void removeItem(Item item) {
+            removals ??= new List<Item>();
+            removals.Add(item);
+        }
+
+        private void cleanupInventory() {
+            foreach (var itemToRemove in removals) {
+                Items.Remove(itemToRemove);
+            }
         }
     }
 }

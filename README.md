@@ -33,8 +33,8 @@
 - [x] Make card types look different
 - [x] Add coins and more items & levels
 - [x] Implement aggressive monsters (that attacks when you near and drop monster egg after death) 
-- [ ] Fix drop animation 
-  - [ ] Resurection stone
+- [x] Fix drop animation 
+  - [x] Resurection stone
   - [ ] Mutation script
   - [ ] Diagonal healer (think of name)
   - [ ] Map

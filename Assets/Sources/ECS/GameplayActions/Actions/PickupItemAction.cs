@@ -7,7 +7,9 @@ namespace Sources.ECS.GameplayActions.Actions {
          public bool ShouldAct(EcsEntity entity, EcsEntity target) => target.Has<EquippableItem>() && entity.Has<Inventory>();
 
          public object[] Act(EcsEntity entity, EcsEntity target) {
-             return new object[] { entity.Get<Inventory>().Add(target.Get<EquippableItem>().Data) };
+             return new object[] {
+                 entity.Get<Inventory>().AddItem(target.Get<EquippableItem>().Data, target.Get<EquippableItem>().Data.Count)
+             };
          }
      }
 }

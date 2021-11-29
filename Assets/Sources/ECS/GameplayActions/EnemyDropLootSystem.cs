@@ -25,7 +25,8 @@ namespace Sources.ECS.GameplayActions {
                 object item = Choose(filter.Get1(idx).Data.DropItems());
                 filter.GetEntity(idx).Replace(new Discarded());
                 LevelPosition pos = filter.Get3(idx);
-                cardEntityGenerator.CreateCardEntity(item, pos.X, pos.Y);
+                EcsEntity entity = cardEntityGenerator.CreateCardEntity(item, pos.X, pos.Y);
+                entity.Replace(new EnemyDrop());
             }
         }
 

@@ -77,6 +77,21 @@ namespace Sources.Unity {
             }
         }
 
+        public void FadeIn(float time) {
+            FadeOut(0f);
+            foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>()) {
+                if (!renderer.gameObject.name.Contains("Mask")) {
+                    renderer.DOFade(1f, time);
+                }
+            }
+
+            foreach (CanvasGroup renderer in GetComponentsInChildren<CanvasGroup>()) {
+                if (!renderer.gameObject.name.Contains("Mask")) {
+                    renderer.DOFade(1f, time);
+                }
+            }
+        }
+
         public void FadeOut(float time, float target = 0f) {
             foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>()) {
                 renderer.DOFade(target, time);

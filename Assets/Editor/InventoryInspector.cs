@@ -16,10 +16,9 @@ namespace Editor {
             EditorGUILayout.LabelField(label, EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
-            foreach ((Item item, int count) in component.Items) {
+            foreach (Item item in component.Items) {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(item.Name);
-                EditorGUILayout.LabelField(count.ToString());
                 EditorGUILayout.EndHorizontal();
             }
 
