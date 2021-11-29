@@ -121,6 +121,14 @@ namespace Sources.Unity {
                 Chance.Make(chest, Item.ByName("Minor health potion"), 20),
                 Chance.Make(chest, Item.ByName("Health potion"), 10),
             });
+
+            foreach (Enemy enemy in Enemy.GetAll()) {
+                conn.InsertAll(new[] {
+                    Chance.Make(enemy, Item.ByName("Coin"), 30),
+                    Chance.Make(enemy, Item.ByName("Coins"), 20),
+                    Chance.Make(enemy, Item.ByName("Minor health potion"), 50),
+                });
+            }
         }
 
         private static IEnumerable<Item> GetItems(string items) {

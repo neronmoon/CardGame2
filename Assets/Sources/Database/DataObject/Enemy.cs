@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using Sources.Data.Gameplay;
 using SQLite;
 
@@ -17,9 +17,13 @@ namespace Sources.Database.DataObject {
         public string Sprite { get; set; }
 
         public bool IsAggressive { get; set; }
-        
+
         public void IncreaseValues(float multiplier) {
             Health = (int)(Health * multiplier);
+        }
+
+        public KeyValuePair<Item, int>[] DropItems() {
+            return Chance.ChancesFor<Item>(this);
         }
     }
 }

@@ -1,4 +1,3 @@
-using System.Linq;
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.Components;
@@ -8,11 +7,11 @@ using Sources.ECS.GameplayActions.Components;
 namespace Sources.ECS.GameplayActions.Actions {
     public class GetAttackedByAggressiveEnemyAction : IGameplayAction {
         private EcsWorld world;
-        private EcsFilter<ECS.Components.Gameplay.CardTypes.Enemy, Health, LevelPosition, Spawned>.Exclude<Discarded> filter;
+        private EcsFilter<ECS.Components.Gameplay.CardTypes.Enemy, Health, LevelPosition, Spawned>.Exclude<Dead> filter;
         private RuntimeData runtimeData;
 
         public GetAttackedByAggressiveEnemyAction(
-            EcsFilter<ECS.Components.Gameplay.CardTypes.Enemy, Health, LevelPosition, Spawned>.Exclude<Discarded> filter,
+            EcsFilter<ECS.Components.Gameplay.CardTypes.Enemy, Health, LevelPosition, Spawned>.Exclude<Dead> filter,
             RuntimeData runtimeData
         ) {
             this.filter = filter;
@@ -29,7 +28,6 @@ namespace Sources.ECS.GameplayActions.Actions {
                 return new object[] { };
             }
 
-            enemy.Replace(new Discarded());
             return new object[] {
                 new Hit { Source = enemy, Amount = enemy.Get<Health>().Value }
             };

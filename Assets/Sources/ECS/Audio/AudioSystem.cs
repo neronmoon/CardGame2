@@ -5,6 +5,7 @@ using Sources.Data;
 using Sources.ECS.Animations.Components;
 using Sources.ECS.Audio.Components;
 using Sources.ECS.Components;
+using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.GameplayActions.Components;
 using UnityEngine;
 using Random = System.Random;
@@ -42,7 +43,9 @@ namespace Sources.ECS.Audio {
                     }
                 });
                 play<Heal>(entity, _ => source.PlayOneShot(configuration.PotionClip));
-                play<Dead>(entity, _ => source.PlayOneShot(configuration.DeadClip));
+                if (entity.Has<Player>()) {
+                    play<Dead>(entity, _ => source.PlayOneShot(configuration.DeadClip));
+                }
             }
         }
 

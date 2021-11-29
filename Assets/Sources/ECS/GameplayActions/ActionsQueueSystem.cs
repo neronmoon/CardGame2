@@ -23,7 +23,7 @@ namespace Sources.ECS.GameplayActions {
 
         private EcsFilter<Player> player;
         private EcsFilter<PlayableCard, Spawned> cards;
-        private EcsFilter<Enemy, Health, LevelPosition, Spawned>.Exclude<Discarded> enemiesFilter;
+        private EcsFilter<Enemy, Health, LevelPosition, Spawned>.Exclude<Dead> enemiesFilter;
 
         private EcsFilter<ActionsQueue> queueFilter;
         private EcsFilter<Animated> animated;
@@ -91,7 +91,7 @@ namespace Sources.ECS.GameplayActions {
                     foreach (IGameplayMoveAction action in GetMoveActions()) {
                         EcsEntity target = entity.Get<PlayerMovedEvent>().Target;
                         if (action.ShouldAct(entity, target)) {
-                            Debug.Log($"[Actions Queue] Executing {action.GetType()}");
+                            Debug.Log($"[Actions Queue] Executing {action.GetType().Name}");
                             changed = true;
                             foreach (object component in action.Act(entity, target)) {
                                 entity.Replace(component);
@@ -112,7 +112,7 @@ namespace Sources.ECS.GameplayActions {
                 foreach (IGameplayAction action in GetActions()) {
                     if (action.ShouldAct(entity)) {
                         changed = true;
-                        Debug.Log($"[Actions Queue] Executing {action.GetType()}");
+                        Debug.Log($"[Actions Queue] Executing {action.GetType().Name}");
                         foreach (object component in action.Act(entity)) {
                             entity.Replace(component);
                         }

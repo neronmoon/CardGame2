@@ -15,9 +15,12 @@ namespace Sources.ECS.GameplayActions {
         public void Run() {
             foreach (int idx in hits) {
                 EcsEntity entity = hits.GetEntity(idx);
-                int dmg = hits.Get2(idx).Amount;
+                Hit dmg = hits.Get2(idx);
                 int health = hits.Get1(idx).Value;
-                entity.Replace(new Health { Value = Math.Max(0, health - dmg) });
+                entity.Replace(new Health { Value = Math.Max(0, health - dmg.Amount) });
+                if (dmg.Source != default) {
+                    dmg.Source.Replace(new Dead());
+                }
             }
         }
     }

@@ -47,8 +47,9 @@ namespace Sources {
                 .Add(new InputSystem())
                 .Add(new DragndropSystem())
 
-                .Add(new LevelChangeSystem()) // should be on top of non-technical systems
-                
+                // should be on top of non-technical systems
+                .Add(new LevelChangeSystem())
+
                 // Cleanup
                 .Add(new RecycleDiscardedEntitiesSystem())
                 .Add(new DiscardLeftoverCardsSystem())
@@ -72,8 +73,8 @@ namespace Sources {
                 // here goes all GameplayAction systems
                 .Add(new ApplyDamageSystem())
                 .Add(new HealSystem())
+                .Add(new EnemyDropLootSystem())
                 .Add(new DiscardCardsInPlayerRowSystem())
-
                 .Add(new UpdateLevelLayoutOnPlayerMoveSystem())
 
                 // Animations
@@ -93,6 +94,7 @@ namespace Sources {
 
             RuntimeData runtimeData = new();
             LevelGenerator levelGenerator = new();
+            CardEntityGenerator cardEntityGenerator = new(world, runtimeData, levelGenerator);
             Camera camera = Camera.main;
             foreach (EcsSystems sys in new List<EcsSystems> { initSystems, updateSystems, fixedSystems }) {
                 sys.Inject(Configuration)
@@ -100,6 +102,7 @@ namespace Sources {
                    .Inject(runtimeData)
                    .Inject(camera)
                    .Inject(levelGenerator)
+                   .Inject(cardEntityGenerator)
                    .Init();
             }
 #if UNITY_EDITOR

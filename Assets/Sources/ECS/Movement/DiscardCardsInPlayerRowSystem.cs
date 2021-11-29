@@ -2,7 +2,6 @@ using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.Extensions;
 using Sources.ECS.Components;
-using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.GameplayActions.Components;
 

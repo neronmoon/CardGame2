@@ -100,7 +100,7 @@ namespace Sources.ECS.Animations {
                 );
                 animate<Discarded>(entity, (up) => view.FadeOut(0.2f));
                 animate<Hit>(entity, (up) => {
-                    if(!up) return;
+                    if (!up) return;
                     view.AnimateHit();
                     DOTween.Sequence()
                            .Append(view.HitMask.DOFade(0.5f, 0.2f))
@@ -110,6 +110,8 @@ namespace Sources.ECS.Animations {
                 });
                 animate<Heal>(entity, _ => view.AnimateHeal());
                 animate<Dead>(entity, (up) => {
+                    if (!entity.Has<Player>()) return;
+
                     sceneData.DeathScreenView.Show();
                     transform.DOMove(sceneData.OriginPoint.transform.position, 0.3f);
                 });
@@ -126,7 +128,7 @@ namespace Sources.ECS.Animations {
                         float time = 0.5f;
                         if (!cardEntity.Has<Player>()) {
                             if (levelIsChanging.IsEmpty()) {
-                                cardObject.transform.DOBlendableMoveBy(calcLevelPosition(pos) - calcLevelPosition(new LevelPosition { X = pos.X, Y = pos.Y + 1 }), time);                                
+                                cardObject.transform.DOBlendableMoveBy(calcLevelPosition(pos) - calcLevelPosition(new LevelPosition { X = pos.X, Y = pos.Y + 1 }), time);
                             }
                         } else {
                             cardObject.transform.DOMove(calcLevelPosition(pos), time);
