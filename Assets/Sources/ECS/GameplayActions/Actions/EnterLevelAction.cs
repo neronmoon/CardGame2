@@ -9,7 +9,9 @@ namespace Sources.ECS.GameplayActions.Actions {
 
         public object[] Act(EcsEntity entity, EcsEntity target) {
             LevelEntrance entrance = target.Get<LevelEntrance>();
-            return new object[] { new LevelChange { LevelData = entrance.Data, Layout = entrance.Layout } };
+            return new object[] {
+                new LevelChange { LevelData = entrance.Data, Layout = entrance.Layout },
+            };
         }
     }
 }

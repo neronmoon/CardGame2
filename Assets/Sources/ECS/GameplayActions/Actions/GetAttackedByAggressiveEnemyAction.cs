@@ -3,6 +3,7 @@ using Sources.Data;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.GameplayActions.Components;
+using UnityEngine;
 
 namespace Sources.ECS.GameplayActions.Actions {
     public class GetAttackedByAggressiveEnemyAction : IGameplayAction {
@@ -19,6 +20,7 @@ namespace Sources.ECS.GameplayActions.Actions {
         }
 
         public bool ShouldAct(EcsEntity target) {
+            if (target.Has<PreHit>()) return false;
             return GetAggressiveEnemy(target) != default;
         }
 
@@ -29,7 +31,7 @@ namespace Sources.ECS.GameplayActions.Actions {
             }
 
             return new object[] {
-                new Hit { Source = enemy, Amount = enemy.Get<Health>().Value }
+                new PreHit { Hit = new Hit { Source = enemy, Amount = enemy.Get<Health>().Value, ByPlayer = false } }
             };
         }
 

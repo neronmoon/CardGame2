@@ -4,11 +4,13 @@ using Sources.ECS.GameplayActions.Components;
 using Enemy = Sources.ECS.Components.Gameplay.CardTypes.Enemy;
 
 namespace Sources.ECS.GameplayActions.Actions {
-    public class AttackAction : IGameplayMoveAction {
+    public class PlayerAttackAction : IGameplayMoveAction {
         public bool ShouldAct(EcsEntity entity, EcsEntity target) => target.Has<Enemy>() && target.Has<Health>();
 
-        public object[] Act(EcsEntity entity, EcsEntity target) {
-            return new object[] { new Hit { Source = target, Amount = target.Get<Health>().Value } };
+        public object[] Act(EcsEntity entity, EcsEntity target) { 
+            // target is enemy
+            // hit added to player (entity)
+            return new object[] { new Hit { Source = target, Amount = target.Get<Health>().Value, ByPlayer = true} };
         }
     }
 }

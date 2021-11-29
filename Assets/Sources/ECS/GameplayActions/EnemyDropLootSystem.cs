@@ -24,16 +24,12 @@ namespace Sources.ECS.GameplayActions {
             foreach (int idx in filter) {
                 object item = Choose(filter.Get1(idx).Data.DropItems());
                 filter.GetEntity(idx).Replace(new Discarded());
-                
-                Debug.Log(item);
-
                 LevelPosition pos = filter.Get3(idx);
                 cardEntityGenerator.CreateCardEntity(item, pos.X, pos.Y);
             }
         }
-        
-        
-        private T Choose<T>(IEnumerable<KeyValuePair<T, int>> items) {
+
+        private T Choose<T>(IEnumerable<KeyValuePair<T, int>> items) { // TODO: remove copypaste
             List<KeyValuePair<T, int>> sortedItems = items.ToList();
             sortedItems.Sort((x, xx) => x.Value - xx.Value);
             if (sortedItems.Count < 1) {

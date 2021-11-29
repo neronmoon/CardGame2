@@ -1,7 +1,6 @@
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.Components;
-using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Gameplay.CardTypes;
 
 namespace Sources.ECS.Movement {
@@ -26,7 +25,6 @@ namespace Sources.ECS.Movement {
                 } else if (entity.Has<Player>()) {
                     runtimeData.LevelLayout[pos.Y][pos.X] = runtimeData.CurrentCharacter;
                 }
-                
             }
         }
     }

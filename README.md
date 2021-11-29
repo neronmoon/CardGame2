@@ -32,7 +32,8 @@
 - [x] Adjust nulls into spawn animation
 - [x] Make card types look different
 - [x] Add coins and more items & levels
-- [ ] Implement aggressive monsters (that attacks when you near and drop monster egg after death)
+- [x] Implement aggressive monsters (that attacks when you near and drop monster egg after death) 
+- [ ] Fix drop animation 
   - [ ] Resurection stone
   - [ ] Mutation script
   - [ ] Diagonal healer (think of name)

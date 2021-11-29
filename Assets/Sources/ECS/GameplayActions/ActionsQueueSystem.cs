@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.Animations.Components;
@@ -7,6 +8,7 @@ using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Gameplay.CardTypes;
+using Sources.ECS.Components.Processes;
 using Sources.ECS.GameplayActions.Components;
 using Sources.ECS.Extensions;
 using Sources.ECS.GameplayActions.Actions;
@@ -30,7 +32,7 @@ namespace Sources.ECS.GameplayActions {
         private RuntimeData runtimeData;
 
         private float lastRunTime;
-        private bool lastRunChanged = false;
+        private bool lastRunChanged;
         private const float Delay = 0.5f;
 
         private IEnumerable<IGameplayMoveAction> GetMoveActions() {
@@ -38,7 +40,7 @@ namespace Sources.ECS.GameplayActions {
             // Further action can relate on entity state from prev action.
             // So After HitAction we can check if HP <=0 and use stone to add HP before player is dead
             return new IGameplayMoveAction[] {
-                new AttackAction(),
+                new PlayerAttackAction(),
                 new PickupItemAction(),
                 new ConsumeItemAction(),
                 new EnterLevelAction(),
@@ -48,19 +50,20 @@ namespace Sources.ECS.GameplayActions {
         private IEnumerable<IGameplayAction> GetActions() {
             return new IGameplayAction[] {
                 new GetAttackedByAggressiveEnemyAction(enemiesFilter, runtimeData),
+                new PreHitAttackAction(),
                 new ResurrectAction(),
                 new DieAction()
             };
         }
 
         public void Run() {
-            bool animationIsBlocking = false;
-            foreach (int i in animated) {
-                if (animated.Get1(i).Blocking) {
-                    animationIsBlocking = true;
-                    break;
-                }
-            }
+            bool animationIsBlocking = DOTween.TotalPlayingTweens() != 0;
+            // foreach (int i in animated) {
+                // if (animated.Get1(i).Blocking) {
+                    // animationIsBlocking = true;
+                    // break;
+                // }
+            // }
 
             // Cleanup last frame components (Heal, Hit, etc...)
             foreach (int idx in player) {
@@ -75,7 +78,8 @@ namespace Sources.ECS.GameplayActions {
 
                 if (
                     entity.Has<PlayerMovedEvent>() || // If player moved -- we need to exec actions anyway
-                    !animationIsBlocking && Time.time - lastRunTime >= Delay
+                    !animationIsBlocking &&
+                    Time.time - lastRunTime >= Delay
                 ) {
                     ExecuteActions();
                 }
@@ -129,6 +133,7 @@ namespace Sources.ECS.GameplayActions {
                 if (lastRunChanged) {
                     lastRunChanged = false;
                     lastRunTime = Time.time;
+                    Debug.Log("[Actions Queue] Complete step");
                     entity.Replace(new CompleteStep());
                 }
             }

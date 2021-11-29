@@ -4,6 +4,7 @@ using System.Linq;
 using DG.Tweening;
 using Leopotam.Ecs;
 using Sources.Data;
+using Sources.Database.DataObject;
 using Sources.ECS.Animations.Components;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
@@ -99,6 +100,16 @@ namespace Sources.ECS.Animations {
                     false
                 );
                 animate<Discarded>(entity, (up) => view.FadeOut(0.2f));
+                animate<PreHit>(entity, (up) => {
+                    if (!up) return;
+                    Hit hit = entity.Get<PreHit>().Hit;
+                    EcsEntity source = hit.Source;
+                    GameObject enemyObj = source.Get<VisualObject>().Object;
+                    enemyObj.GetComponent<CardView>().AdditionalSortOrder += 200;
+                    Transform enemyTransform = enemyObj.transform;
+                    enemyTransform.DOScale(Vector3.one * 1.1f, 0.4f);
+                    enemyTransform.DOMove(transform.position + Vector3.one / 3, 0.3f);
+                });
                 animate<Hit>(entity, (up) => {
                     if (!up) return;
                     view.AnimateHit();
@@ -115,6 +126,10 @@ namespace Sources.ECS.Animations {
                     sceneData.DeathScreenView.Show();
                     transform.DOMove(sceneData.OriginPoint.transform.position, 0.3f);
                 });
+                animate<LevelChange>(entity, (up) => {
+                    if (up) return;
+                    transform.DOMove(calcLevelPosition(entity.Get<LevelPosition>()), 0.5f).SetDelay(0.3f);
+                });
 
                 animate<CompleteStep>(entity, (up) => {
                     // Do not move any card if player become dead! This will cause animation conflicts!
@@ -126,15 +141,17 @@ namespace Sources.ECS.Animations {
                         GameObject cardObject = cardEntity.Get<VisualObject>().Object;
                         LevelPosition pos = cardEntity.Get<LevelPosition>();
                         float time = 0.5f;
-                        if (!cardEntity.Has<Player>()) {
-                            if (levelIsChanging.IsEmpty()) {
-                                cardObject.transform.DOBlendableMoveBy(calcLevelPosition(pos) - calcLevelPosition(new LevelPosition { X = pos.X, Y = pos.Y + 1 }), time);
-                            }
-                        } else {
+                        // if (!cardEntity.Has<Player>()) {
+                        //     if (levelIsChanging.IsEmpty()) {
+                        //         cardObject.transform.DOBlendableMoveBy(calcLevelPosition(pos) - calcLevelPosition(new LevelPosition { X = pos.X, Y = pos.Y + 1 }), time);
+                        //     }
+                        // } else {
                             cardObject.transform.DOMove(calcLevelPosition(pos), time);
-                        }
+                        // }
                     }
                 });
+                
+
             }
         }
 

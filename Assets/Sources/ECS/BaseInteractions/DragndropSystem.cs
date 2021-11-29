@@ -83,7 +83,7 @@ namespace Sources.ECS.BaseInteractions {
             EcsEntity? candidate = getDropZoneCandidate(entity);
 
             Vector3 pos = candidate != null
-                ? ((EcsEntity) candidate).Get<VisualObject>().Object.transform.position
+                ? ((EcsEntity)candidate).Get<VisualObject>().Object.transform.position
                 : entity.Get<Dragging>().StartPosition;
 
             if (candidate != null) {
@@ -118,7 +118,7 @@ namespace Sources.ECS.BaseInteractions {
                 }
             }
 
-            return candidate != default ? candidate : (EcsEntity?) null;
+            return candidate != default ? candidate : (EcsEntity?)null;
         }
 
         private Vector3 GetWorldPosition(Vector2 screenPosition) {
