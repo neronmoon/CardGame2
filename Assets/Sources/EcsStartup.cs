@@ -5,6 +5,7 @@ using Leopotam.Ecs;
 using Leopotam.Ecs.UnityIntegration;
 #endif
 using Sources.Data;
+using Sources.ECS;
 using Sources.ECS.Animations;
 using Sources.ECS.Audio;
 using Sources.ECS.BaseInteractions;
