@@ -11,7 +11,7 @@ namespace Sources.Database.DataObject {
         
         [Ignore]
         public Item RewardItem {
-            get => RewardItemRaw != null ? Item.First(x => x.Id == RewardItemRaw) : null;
+            get => RewardItemRaw != default ? Item.First(x => x.Id == RewardItemRaw) : null;
             set => RewardItemRaw = value.Id;
         }
 
