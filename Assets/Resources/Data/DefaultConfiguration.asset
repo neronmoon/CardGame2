@@ -16,6 +16,7 @@ MonoBehaviour:
   ItemCardPrefab: {fileID: 9194787811481212871, guid: 6d5b21eaf4637b747b7a225e7cfb2d66, type: 3}
   LevelCardPrefab: {fileID: 4685848047678148905, guid: 419b16e134a222941b5f9d159f286549, type: 3}
   CardPrefab: {fileID: 8182558108753156521, guid: 22f65f7c3121b45f492d37225a190735, type: 3}
+  LevelChunkPrefab: {fileID: 3081388729439530343, guid: 99c826bd90e8df04bb06a44187b781fd, type: 3}
   HitClips:
   - {fileID: 8300000, guid: 1d3bdb9a5006a914382717bf9a2d6874, type: 3}
   - {fileID: 8300000, guid: 5b6d4c7fa252bda4bad28fdb4459411f, type: 3}

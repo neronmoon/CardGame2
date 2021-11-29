@@ -7,6 +7,7 @@ namespace Sources.Data {
         public GameObject ItemCardPrefab;
         public GameObject LevelCardPrefab;
         public GameObject CardPrefab;
+        public GameObject LevelChunkPrefab;
 
         public AudioClip[] HitClips;
         public AudioClip CardSpawnClip;

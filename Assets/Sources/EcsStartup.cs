@@ -68,6 +68,8 @@ namespace Sources {
                 .Add(new DefinePlayerAvailableMovesSystem())
                 .Add(new DisableDeadPlayerSystem())
                 .Add(new PlayerMoveSystem())
+                
+                .Add(new DrawLevelMapSystem())
 
                 // Gameplay actions
                 .Add(new ActionsQueueSystem()) // for now i test new actions system
