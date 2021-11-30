@@ -34,14 +34,10 @@
 - [x] Add coins and more items & levels
 - [x] Implement aggressive monsters (that attacks when you near and drop monster egg after death) 
 - [x] Fix drop animation 
-  - [x] Resurection stone
-  - [ ] Map
-  - [ ] Mutation script
-  - [ ] Diagonal healer (think of name)
-  - [ ] Devine sword
+- [x] Implement level map display
+- [x] Inventory items effects
+  [ ] Implement some items
 - [ ] Implement inventory UI
-- [ ] Inventory items effects
-- [ ] Implement level map display
 - [ ] Add more items and potions
 - [ ] Fix DOTWeen warnings
 - [ ] Playtest with Vova
