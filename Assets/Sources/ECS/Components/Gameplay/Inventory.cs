@@ -16,7 +16,7 @@ namespace Sources.ECS.Components.Gameplay {
         }
 
         public bool HasItem(string name) {
-            return Items.Count(x => x.Name == name) == 0;
+            return Items.Count(x => x.Name == name) != 0;
         }
 
         public bool HasItemWithEffect(ItemEffectType name) {

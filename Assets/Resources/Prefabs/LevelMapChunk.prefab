@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6886792, g: 0.13318795, b: 0.13318795, a: 1}
+  m_Color: {r: 0.9529412, g: 0.8745098, b: 0.7490196, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -214,3 +214,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 3081388728583254658}
   Bar: {fileID: 3081388728637481107}
+  BossChunkIcon: {fileID: 21300000, guid: 0123bb4a9e5a7b84d831534059104664, type: 3}
+  FightChunkIcon: {fileID: 21300000, guid: 0123bb4a9e5a7b84d831534059104664, type: 3}
+  ItemChunkIcon: {fileID: 21300000, guid: 79fca56e6ad17a143b5629319c48d8da, type: 3}
+  ChestChunkIcon: {fileID: 21300000, guid: 52277a823dad57948878cb857a3d7d0e, type: 3}
+  ExitChunkIcon: {fileID: 21300000, guid: afcec8e2369b1b142abe0995e4408a76, type: 3}
+  CurrentChunkIcon: {fileID: 21300000, guid: 9aa49de6aab1fcd49951444862a0f84e, type: 3}
+  BossIconColor: {r: 0.6037736, g: 0.1509434, b: 0.1509434, a: 1}
+  DefaultIconColor: {r: 0.95294124, g: 0.8745099, b: 0.7490196, a: 1}
+  Y: 0

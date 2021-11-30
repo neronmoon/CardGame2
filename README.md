@@ -35,9 +35,9 @@
 - [x] Implement aggressive monsters (that attacks when you near and drop monster egg after death) 
 - [x] Fix drop animation 
   - [x] Resurection stone
+  - [ ] Map
   - [ ] Mutation script
   - [ ] Diagonal healer (think of name)
-  - [ ] Map
   - [ ] Devine sword
 - [ ] Implement inventory UI
 - [ ] Inventory items effects

@@ -58,12 +58,6 @@ namespace Sources.ECS.GameplayActions {
 
         public void Run() {
             bool animationIsBlocking = DOTween.TotalPlayingTweens() != 0;
-            // foreach (int i in animated) {
-                // if (animated.Get1(i).Blocking) {
-                    // animationIsBlocking = true;
-                    // break;
-                // }
-            // }
 
             // Cleanup last frame components (Heal, Hit, etc...)
             foreach (int idx in player) {

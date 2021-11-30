@@ -103,11 +103,12 @@ namespace Sources.Unity {
                 Chance.Make(bag, RowWidth.First(x => x.Value == 3), 90),
                 Chance.Make(bag, RowWidth.First(x => x.Value == 2), 10),
 
-                Chance.Make(bag, Item.ByName("Resurrection stone"), 100),
-                Chance.Make(bag, Item.ByName("Coin"), 45),
-                Chance.Make(bag, Item.ByName("Coins"), 15),
+                Chance.Make(bag, Item.ByName("Coin"), 25),
+                Chance.Make(bag, Item.ByName("Coins"), 25),
                 Chance.Make(bag, Item.ByName("Minor health potion"), 20),
                 Chance.Make(bag, Item.ByName("Health potion"), 10),
+                Chance.Make(bag, Item.ByName("Resurrection stone"), 10),
+                Chance.Make(bag, Item.ByName("Map"), 10),
             });
 
             Chest chest = Chest.ByName("Chest");
@@ -115,11 +116,12 @@ namespace Sources.Unity {
                 Chance.Make(chest, RowWidth.First(x => x.Value == 3), 90),
                 Chance.Make(chest, RowWidth.First(x => x.Value == 2), 10),
 
-                Chance.Make(chest, Item.ByName("Resurrection stone"), 100),
-                Chance.Make(chest, Item.ByName("Coin"), 45),
-                Chance.Make(chest, Item.ByName("Coins"), 15),
+                Chance.Make(chest, Item.ByName("Coin"), 25),
+                Chance.Make(chest, Item.ByName("Coins"), 25),
                 Chance.Make(chest, Item.ByName("Minor health potion"), 20),
                 Chance.Make(chest, Item.ByName("Health potion"), 10),
+                Chance.Make(chest, Item.ByName("Map"), 10),
+                Chance.Make(chest, Item.ByName("Resurrection stone"), 10),
             });
 
             foreach (Enemy enemy in Enemy.GetAll()) {
