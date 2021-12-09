@@ -27,13 +27,12 @@ namespace Sources.ECS.GameplayActions {
         private EcsFilter<PlayableCard, Spawned> cards;
         private EcsFilter<Enemy, Health, LevelPosition, Spawned>.Exclude<Dead> enemiesFilter;
 
-        private EcsFilter<ActionsQueue> queueFilter;
         private EcsFilter<Animated> animated;
         private RuntimeData runtimeData;
 
         private float lastRunTime;
         private bool lastRunChanged;
-        private const float Delay = 0.5f;
+        private const float Delay = 0f;
 
         private IEnumerable<IGameplayMoveAction> GetMoveActions() {
             // Place actions in right order!!
@@ -68,6 +67,10 @@ namespace Sources.ECS.GameplayActions {
                     if (typeof(IShouldDisappear).IsAssignableFrom(type)) {
                         entity.Del(type);
                     }
+
+                    if (typeof(CompleteStep) == type) {
+                        entity.Del<StepInProgress>();
+                    }
                 }
 
                 if (
@@ -93,6 +96,7 @@ namespace Sources.ECS.GameplayActions {
                             changed = true;
                             foreach (object component in action.Act(entity, target)) {
                                 entity.Replace(component);
+                                entity.Replace(new StepInProgress());
                             }
                         }
                     }
@@ -113,6 +117,7 @@ namespace Sources.ECS.GameplayActions {
                         Debug.Log($"[Actions Queue] Executing {action.GetType().Name}");
                         foreach (object component in action.Act(entity)) {
                             entity.Replace(component);
+                            entity.Replace(new StepInProgress());
                         }
                     }
 

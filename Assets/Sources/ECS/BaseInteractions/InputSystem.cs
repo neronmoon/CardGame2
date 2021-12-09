@@ -3,6 +3,7 @@ using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
+using Sources.ECS.GameplayActions.Components;
 using UnityEngine;
 using Input = UnityEngine.Input;
 
@@ -17,9 +18,14 @@ namespace Sources.ECS.BaseInteractions {
 
         private EcsFilter<Clickable, VisualObject> clickables;
         private EcsFilter<Hoverable, VisualObject> hoverables;
+        private EcsFilter<StepInProgress> stepInProgress;
         private Camera camera;
 
         public void Run() {
+            if (!stepInProgress.IsEmpty()) {
+                return;
+            }
+
             runtimeData.Input.Position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             runtimeData.Input.Primary = Input.GetMouseButton(0);
             runtimeData.Input.Secondary = Input.GetMouseButton(1);
