@@ -36,13 +36,16 @@
 - [x] Fix drop animation 
 - [x] Implement level map display
 - [x] Inventory items effects
-  [ ] Implement some items
+- [ ] Implement card description UI 
+- [ ] Implement some items
 - [ ] Implement inventory UI
+- [ ] Implement quests
+- [ ] Write scenario
+- [ ] Implement game levels according to quests
 - [ ] Add more items and potions
 - [ ] Fix DOTWeen warnings
 - [ ] Playtest with Vova
 - [ ] Implement character select menu
-- [ ] Implement quests
 - [ ] Add VFX (Блики карт, ...)
 
 To be continued... 
