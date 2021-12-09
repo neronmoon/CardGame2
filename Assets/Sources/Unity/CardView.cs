@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Leopotam.Ecs;
+using Sources.ECS.Components.Gameplay;
+using Sources.ECS.Components.Gameplay.CardTypes;
+using Sources.ECS.Components.Gameplay.Perks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -40,6 +44,37 @@ namespace Sources.Unity {
             foreach (SortingGroup group in GetComponentsInChildren<SortingGroup>()) {
                 renderers.Add(group, group.sortingOrder);
             }
+        }
+
+        public void FillStats(EcsEntity entity) {
+            if (entity.Has<Player>()) {
+                AdditionalSortOrder = 100;
+            }
+
+            Sprite.sprite = entity.Has<Face>() ? entity.Get<Face>().Sprite : null;
+
+            // TODO: Add icons to display item effects
+            foreach (GameObject o in ValueObjects) {
+                o.SetActive(entity.Has<Health>() || entity.Has<EquippableItem>());
+            }
+
+            if (entity.Has<Health>()) {
+                ValueText.text = entity.Get<Health>().Value.ToString();
+            }
+
+            if (entity.Has<EquippableItem>()) {
+                ValueText.text = entity.Get<EquippableItem>().Data.Count.ToString();
+            }
+
+            foreach (GameObject o in NameObjects) {
+                o.SetActive(entity.Has<Name>());
+            }
+
+            if (entity.Has<Name>()) {
+                NameText.text = entity.Get<Name>().Value;
+            }
+
+            SetAggressive(entity.Has<Aggressive>());
         }
 
         public void SetAggressive(bool isAggressive) {

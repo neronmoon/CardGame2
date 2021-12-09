@@ -63,6 +63,7 @@ namespace Sources {
                 .Add(new SpawnCardsGameObjectsSystem())
                 .Add(new DisplayCardStatsSystem())
                 .Add(new AdjustBottomBarValuesSystem())
+                .Add(new ShowCardDetailsSystem())
 
                 // Player movement
                 .Add(new DefinePlayerAvailableMovesSystem())
@@ -89,6 +90,7 @@ namespace Sources {
                 // Events
                 .OneFrame<StartLevelEvent>()
                 .OneFrame<DroppedEvent>()
+                .OneFrame<DoubleClickedEvent>()
                 .OneFrame<PlayerMovedEvent>()
                 ;
             // fixedSystems

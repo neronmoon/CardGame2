@@ -3,6 +3,7 @@ using Leopotam.Ecs;
 using Sources.Data;
 using Sources.ECS.BaseInteractions.Components;
 using Sources.ECS.Components;
+using Sources.ECS.Components.Events;
 using Sources.ECS.GameplayActions.Components;
 using UnityEngine;
 using Input = UnityEngine.Input;
@@ -21,7 +22,7 @@ namespace Sources.ECS.BaseInteractions {
         private EcsFilter<StepInProgress> stepInProgress;
         private Camera camera;
 
-        private const float DoubleClickTime = 0.5f;
+        private const float DoubleClickTime = 0.2f;
         private float lastClickTime = 0f;
 
         public void Run() {
@@ -66,18 +67,17 @@ namespace Sources.ECS.BaseInteractions {
 
             foreach (int idx in clickables) {
                 EcsEntity entity = clickables.GetEntity(idx);
-                bool alreadyClicked = entity.Has<Clicked>() || entity.Has<DoubleClicked>();
+                bool alreadyClicked = entity.Has<Clicked>();
                 if (keyDown && entity.Has<Hovered>() && !alreadyClicked) {
-                    if (entity.Has<DoubleClickable>() && Time.time - lastClickTime <= DoubleClickTime) {
-                        entity.Replace(new DoubleClicked());
-                    } else {
-                        entity.Replace(new Clicked());
+                    if (entity.Has<DoubleClickable>() && !entity.Has<DoubleClickedEvent>() && Time.time - lastClickTime <= DoubleClickTime) {
+                        entity.Replace(new DoubleClickedEvent());
                     }
+
+                    entity.Replace(new Clicked());
                 }
 
                 if (!keyDown && alreadyClicked) {
                     entity.Del<Clicked>();
-                    entity.Del<DoubleClicked>();
                     if (entity.Has<DoubleClickable>()) {
                         lastClickTime = Time.time;
                     }

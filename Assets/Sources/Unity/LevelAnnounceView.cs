@@ -25,9 +25,9 @@ namespace Sources.Unity {
             LevelNameText.text = levelName;
 
             DOTween.Sequence()
-                   .Append(rt.DOAnchorPosY(targetPosition, 0.5f).SetEase(Ease.OutCubic))
+                   .Append(rt.DOAnchorPosY(targetPosition, 0.5f))
                    .AppendInterval(1f)
-                   .Append(CanvasGroup.DOFade(0f, 0.5f))
+                   .Append(CanvasGroup.DOFade(0f, 0.2f))
                    .AppendCallback(Reset)
                    .Play();
         }
