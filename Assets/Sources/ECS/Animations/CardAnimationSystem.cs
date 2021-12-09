@@ -144,14 +144,7 @@ namespace Sources.ECS.Animations {
                         EcsEntity cardEntity = cards.GetEntity(i);
                         GameObject cardObject = cardEntity.Get<VisualObject>().Object;
                         LevelPosition pos = cardEntity.Get<LevelPosition>();
-                        float time = 0.5f;
-                        // if (!cardEntity.Has<Player>()) {
-                        //     if (levelIsChanging.IsEmpty()) {
-                        //         cardObject.transform.DOBlendableMoveBy(calcLevelPosition(pos) - calcLevelPosition(new LevelPosition { X = pos.X, Y = pos.Y + 1 }), time);
-                        //     }
-                        // } else {
-                        cardObject.transform.DOMove(calcLevelPosition(pos), time);
-                        // }
+                        cardObject.transform.DOMove(calcLevelPosition(pos), 0.5f);
                     }
                 });
             }

@@ -21,6 +21,9 @@ namespace Sources.ECS.BaseInteractions {
         private EcsFilter<StepInProgress> stepInProgress;
         private Camera camera;
 
+        private const float DoubleClickTime = 0.5f;
+        private float lastClickTime = 0f;
+
         public void Run() {
             if (!stepInProgress.IsEmpty()) {
                 return;
@@ -63,13 +66,21 @@ namespace Sources.ECS.BaseInteractions {
 
             foreach (int idx in clickables) {
                 EcsEntity entity = clickables.GetEntity(idx);
-                bool alreadyClicked = entity.Has<Clicked>();
+                bool alreadyClicked = entity.Has<Clicked>() || entity.Has<DoubleClicked>();
                 if (keyDown && entity.Has<Hovered>() && !alreadyClicked) {
-                    entity.Replace(new Clicked());
+                    if (entity.Has<DoubleClickable>() && Time.time - lastClickTime <= DoubleClickTime) {
+                        entity.Replace(new DoubleClicked());
+                    } else {
+                        entity.Replace(new Clicked());
+                    }
                 }
 
                 if (!keyDown && alreadyClicked) {
                     entity.Del<Clicked>();
+                    entity.Del<DoubleClicked>();
+                    if (entity.Has<DoubleClickable>()) {
+                        lastClickTime = Time.time;
+                    }
                 }
             }
         }

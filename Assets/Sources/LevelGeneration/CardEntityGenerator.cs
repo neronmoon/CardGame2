@@ -32,8 +32,6 @@ namespace Sources.LevelGeneration {
                 case Character character:
                     entity = MakeDefaultCardEntity(position, null, character.Sprite);
                     entity.Replace(new Player { Data = character });
-                    entity.Replace(new Hoverable());
-                    entity.Replace(new Clickable());
                     entity.Replace(new Draggable());
                     entity.Replace(new Inventory {Items = new List<Item>(10)});
 
@@ -90,16 +88,19 @@ namespace Sources.LevelGeneration {
         private EcsEntity MakeDefaultCardEntity(LevelPosition position, string name = null, string spriteDef = null) {
             EcsEntity entity = world.NewEntity();
             entity.Replace(new PlayableCard());
+            entity.Replace(new Hoverable());
+            entity.Replace(new Clickable());
+            entity.Replace(new DoubleClickable());
             entity.Replace(position);
             if (!string.IsNullOrEmpty(name)) {
                 entity.Replace(new Name { Value = name });
             }
 
             if (!string.IsNullOrEmpty(spriteDef)) {
-                Sprite sprite = default;
+                Sprite sprite;
                 if (spriteDef.Contains(":")) {
-                    var splited = spriteDef.Split(":", 2);
-                    sprite = Resources.LoadAll<Sprite>(splited[0]).FirstOrDefault(x => x.name == splited[1]);
+                    string[] split = spriteDef.Split(":", 2);
+                    sprite = Resources.LoadAll<Sprite>(split[0]).FirstOrDefault(x => x.name == split[1]);
                 } else {
                     sprite = Resources.Load<Sprite>(spriteDef);
                 }

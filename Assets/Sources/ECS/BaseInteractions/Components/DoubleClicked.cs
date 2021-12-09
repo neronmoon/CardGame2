@@ -1,3 +1,5 @@
 namespace Sources.ECS.BaseInteractions.Components {
-    public struct Clicked { }
+    public struct DoubleClicked {
+        
+    }
 }
