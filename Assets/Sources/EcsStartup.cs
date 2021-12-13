@@ -25,7 +25,7 @@ namespace Sources {
         private EcsSystems updateSystems;
         private EcsSystems fixedSystems;
 
-        [SerializeField] private Configuration Configuration;
+        [SerializeField] public Configuration Configuration;
         [SerializeField] private SceneData SceneData;
 
         private void Start() {

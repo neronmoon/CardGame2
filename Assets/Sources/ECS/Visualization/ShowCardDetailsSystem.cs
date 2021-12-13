@@ -1,7 +1,8 @@
 using Leopotam.Ecs;
+using Sources.Data;
 using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
-using UnityEngine;
+using Sources.Unity;
 
 namespace Sources.ECS.Visualization {
     public class ShowCardDetailsSystem : IEcsRunSystem {
@@ -10,9 +11,14 @@ namespace Sources.ECS.Visualization {
         /// </summary>
         private EcsFilter<PlayableCard, DoubleClickedEvent> cards;
 
+        private SceneData sceneData;
+
         public void Run() {
+            CardDetailsView view = sceneData.CardDetailsView;
             foreach (int idx in cards) {
-                 Debug.Log(cards.Get1(idx));
+                view.gameObject.SetActive(true);
+                view.SetCard(cards.GetEntity(idx));
+                view.Show();
             }
         }
     }

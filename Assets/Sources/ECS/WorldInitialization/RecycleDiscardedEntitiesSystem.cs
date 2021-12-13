@@ -1,4 +1,3 @@
-using System;
 using Leopotam.Ecs;
 using Sources.ECS.Animations.Components;
 using Sources.ECS.Components;
@@ -13,7 +12,7 @@ namespace Sources.ECS.WorldInitialization {
         private EcsFilter<VisualObject, Discarded>.Exclude<Animated> objects;
 
         public void Run() {
-            foreach (var idx in objects) {
+            foreach (int idx in objects) {
                 VisualObject obj = objects.Get1(idx);
                 Object.Destroy(obj.Object);
                 objects.GetEntity(idx).Destroy();

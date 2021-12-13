@@ -30,7 +30,7 @@ namespace Sources.ECS.WorldInitialization {
                     if (layout[i][j] == null) continue;
                     // i - row number (Y), j - position in row - x, so its inverted
 
-                    if (layout[i][j] is Character character && !playerObject.IsEmpty()) {
+                    if (layout[i][j] is Character && !playerObject.IsEmpty()) {
                         foreach (int idx in playerObject) {
                             playerObject.GetEntity(idx).Replace(new LevelPosition { X = j, Y = i });
                         }

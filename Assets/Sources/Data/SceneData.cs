@@ -11,6 +11,7 @@ namespace Sources.Data {
         public DeathScreenView DeathScreenView;
         public LevelAnnounceView LevelAnnounceView;
         public BottomBarView BottomBarView;
+        public CardDetailsView CardDetailsView;
         public Transform LevelMapContainer;
 
         public AudioSource SFXAudioSource;
