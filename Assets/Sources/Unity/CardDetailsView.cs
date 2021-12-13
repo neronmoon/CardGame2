@@ -12,7 +12,6 @@ namespace Sources.Unity {
         public Transform DetailsContainer;
         public EcsStartup Startup;
 
-        
         public void SetCard(EcsEntity entity) {
             if (LastCardPreview != null) {
                 Destroy(LastCardPreview);
@@ -33,13 +32,12 @@ namespace Sources.Unity {
             LastCardPreview = obj;
         }
 
-        private static void AdjustCardViewToPreview(GameObject obj) {
+        private void AdjustCardViewToPreview(GameObject obj) {
             string UILayer = "UI";
+            SetLayer(UILayer);
             foreach (Transform trans in obj.GetComponentsInChildren<Transform>(true)) {
                 if (trans.name.Contains("Mask")) {
                     trans.gameObject.SetActive(false);
-                } else {
-                    trans.gameObject.layer = LayerMask.NameToLayer(UILayer);
                 }
             }
 

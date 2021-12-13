@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Leopotam.Ecs;
 using Sources.Data;
@@ -6,6 +7,7 @@ using Sources.ECS.Components;
 using Sources.ECS.Components.Events;
 using Sources.ECS.GameplayActions.Components;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Input = UnityEngine.Input;
 
 namespace Sources.ECS.BaseInteractions {
@@ -40,6 +42,7 @@ namespace Sources.ECS.BaseInteractions {
 
         private void HandleHover() {
             RaycastHit2D[] hits = new RaycastHit2D[2];
+
             int size = Physics2D.GetRayIntersectionNonAlloc(
                 camera.ScreenPointToRay(runtimeData.Input.Position),
                 hits
@@ -48,7 +51,7 @@ namespace Sources.ECS.BaseInteractions {
             foreach (int idx in hoverables) {
                 EcsEntity entity = hoverables.GetEntity(idx);
                 bool alreadyHovered = entity.Has<Hovered>();
-                bool shouldBeHovered = size > 0 && hits.Any(hit => {
+                bool shouldBeHovered = !IsOverUI() && size > 0 && hits.Any(hit => {
                     GameObject obj = hoverables.Get2(idx).Object;
                     return hit && hit.collider.gameObject == obj;
                 });
@@ -60,6 +63,25 @@ namespace Sources.ECS.BaseInteractions {
                     entity.Replace(new Hovered());
                 }
             }
+        }
+
+        private bool IsOverUI() {
+            PointerEventData pointerData = new(EventSystem.current) {
+                position = runtimeData.Input.Position
+            };
+
+            List<RaycastResult> results = new();
+            EventSystem.current.RaycastAll(pointerData, results);
+
+            if (results.Count > 0) {
+                foreach (RaycastResult t in results) {
+                    if (t.gameObject.GetComponent<CanvasRenderer>()) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private void HandleClicks() {

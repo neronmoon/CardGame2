@@ -5,12 +5,13 @@ using Leopotam.Ecs;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.Components.Gameplay.Perks;
+using Sources.Unity.Support;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace Sources.Unity {
-    public class CardView : MonoBehaviour {
+    public class CardView : View {
         public SpriteRenderer Sprite;
 
         public Animator HitAnimator;
@@ -74,11 +75,7 @@ namespace Sources.Unity {
                 NameText.text = entity.Get<Name>().Value;
             }
 
-            SetAggressive(entity.Has<Aggressive>());
-        }
-
-        public void SetAggressive(bool isAggressive) {
-            AggressivePerk.SetActive(isAggressive);
+            AggressivePerk.SetActive(entity.Has<Aggressive>());
         }
 
         public void AnimateHit() {

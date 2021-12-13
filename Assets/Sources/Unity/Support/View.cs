@@ -42,5 +42,11 @@ namespace Sources.Unity.Support {
                 }
             }
         }
+
+        public void SetLayer(string layer) {
+            foreach (Transform trans in gameObject.GetComponentsInChildren<Transform>(true)) {
+                trans.gameObject.layer = LayerMask.NameToLayer(layer);
+            }
+        }
     }
 }

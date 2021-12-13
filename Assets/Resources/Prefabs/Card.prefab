@@ -1438,6 +1438,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea9fa29d3c6045deb274d4817440eae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowHideIgnoreObjects:
+  - {fileID: 66842549384342517}
+  - {fileID: 915772938219375103}
+  ShowHideTime: 0.3
+  InitialState: 1
   Sprite: {fileID: 4027190743810982450}
   HitAnimator: {fileID: 1227980286278251009}
   HighlightMask: {fileID: 3704014607755119316}

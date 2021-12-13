@@ -127,7 +127,9 @@ namespace Sources.ECS.Animations {
                 animate<Dead>(entity, (up) => {
                     if (!entity.Has<Player>()) return;
 
+                    sceneData.DeathScreenView.gameObject.SetActive(true);
                     sceneData.DeathScreenView.Show();
+                    view.SetLayer("UI");
                     transform.DOMove(sceneData.OriginPoint.transform.position, 0.3f);
                 });
                 animate<LevelChange>(entity, (up) => {
