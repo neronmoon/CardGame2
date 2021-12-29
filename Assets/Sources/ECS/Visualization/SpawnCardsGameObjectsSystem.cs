@@ -62,7 +62,7 @@ namespace Sources.ECS.Visualization {
                 prefab = configuration.LevelCardPrefab;
             }
 
-            GameObject obj = Object.Instantiate(prefab);
+            GameObject obj = Object.Instantiate(prefab, sceneData.WorldParent);
             obj.transform.position = sceneData.SpawnPoint.transform.position;
             CardView view = obj.GetComponent<CardView>();
             if (isPlayer) {

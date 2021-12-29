@@ -8,6 +8,8 @@ namespace Sources.Data {
         public Transform DiscardPoint;
         public Vector2 CardSpacing;
 
+        public Transform WorldParent;
+
         public DeathScreenView DeathScreenView;
         public LevelAnnounceView LevelAnnounceView;
         public BottomBarView BottomBarView;
