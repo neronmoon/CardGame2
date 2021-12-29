@@ -19,7 +19,7 @@ namespace Sources.ECS.BaseInteractions {
         private Camera camera;
         private RuntimeData runtimeData;
 
-        private EcsFilter<Draggable, Clickable, VisualObject> draggables;
+        private EcsFilter<Interactive, VisualObject> draggables;
         private EcsFilter<DropZone, VisualObject> dropZones;
 
         private ContactFilter2D contactFilter = new();
@@ -28,6 +28,11 @@ namespace Sources.ECS.BaseInteractions {
         public void Run() {
             foreach (int idx in draggables) {
                 EcsEntity entity = draggables.GetEntity(idx);
+                Interactive setup = draggables.Get1(idx);
+                if (!setup.Draggable || !setup.Clickable) {
+                    continue;
+                }
+
                 if (entity.Has<Animated>() && entity.Get<Animated>().Blocking) {
                     continue;
                 }
@@ -87,7 +92,7 @@ namespace Sources.ECS.BaseInteractions {
                 : entity.Get<Dragging>().StartPosition;
 
             if (candidate != null) {
-                runtimeData.GarbageEntity.Replace(new DroppedEvent {DropZone = (EcsEntity) candidate});
+                runtimeData.GarbageEntity.Replace(new DroppedEvent { DropZone = (EcsEntity)candidate });
             }
 
             gameObject.transform.DOMove(pos, 0.1f);

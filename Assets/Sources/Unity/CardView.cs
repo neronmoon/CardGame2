@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Leopotam.Ecs;
+using Sources.Database.DataObject;
+using Sources.ECS;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.Components.Gameplay.Perks;
+using Sources.ECS.GameplayActions.Components;
 using Sources.Unity.Support;
 using TMPro;
 using UnityEngine;
@@ -53,19 +57,7 @@ namespace Sources.Unity {
             }
 
             Sprite.sprite = entity.Has<Face>() ? entity.Get<Face>().Sprite : null;
-
-            // TODO: Add icons to display item effects
-            foreach (GameObject o in ValueObjects) {
-                o.SetActive(entity.Has<Health>() || entity.Has<EquippableItem>());
-            }
-
-            if (entity.Has<Health>()) {
-                ValueText.text = entity.Get<Health>().Value.ToString();
-            }
-
-            if (entity.Has<EquippableItem>()) {
-                ValueText.text = entity.Get<EquippableItem>().Data.Count.ToString();
-            }
+            ValueText.text = MakeValueText(entity);
 
             foreach (GameObject o in NameObjects) {
                 o.SetActive(entity.Has<Name>());
@@ -75,7 +67,48 @@ namespace Sources.Unity {
                 NameText.text = entity.Get<Name>().Value;
             }
 
+            // TODO: Add icons to display item effects
+            foreach (GameObject o in ValueObjects) {
+                o.SetActive(ValueText.text != null);
+            }
+
             AggressivePerk.SetActive(entity.Has<Aggressive>());
+        }
+
+        private string MakeValueText(EcsEntity entity) {
+            string valueText;
+            if (entity.Has<Health>()) {
+                valueText = entity.Get<Health>().Value.ToString();
+            } else {
+                Item item = null;
+                if (entity.Has<EquippableItem>()) {
+                    item = entity.Get<EquippableItem>().Data;
+                } else if (entity.Has<ConsumableItem>()) {
+                    item = entity.Get<ConsumableItem>().Data;
+                }
+
+                if (item == null) {
+                    return null;
+                }
+                ItemEffectsProcessor processor = new();
+                object[] components = processor.ProcessItem(item, entity);
+
+                if (components.Length > 0) {
+                    int value = 0;
+                    foreach (object comp in components) {
+                        if (comp is Heal heal) {
+                            value += heal.Amount;
+                        }
+                    }
+
+                    valueText = value.ToString();
+                } else {
+                    valueText = item.Count.ToString();
+                }
+
+            }
+
+            return valueText;
         }
 
         public void AnimateHit() {

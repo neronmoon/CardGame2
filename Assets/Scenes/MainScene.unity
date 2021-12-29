@@ -823,6 +823,7 @@ MonoBehaviour:
   InitialState: 0
   CardContainer: {fileID: 655136046}
   LastCardPreview: {fileID: 2071174377}
+  DescriptionText: {fileID: 515724178}
   DetailsLinePrefab: {fileID: 1439224810}
   DetailsContainer: {fileID: 215024173558982277, guid: e3b9d46ad3e45cb46a67283e60bdaf20, type: 3}
   Startup: {fileID: 1840396142}

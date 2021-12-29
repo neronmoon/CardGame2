@@ -1,13 +1,19 @@
 using Leopotam.Ecs;
+using Sources.Database.DataObject;
+using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Gameplay.CardTypes;
+using Sources.ECS.Extensions;
 using Sources.Unity.Support;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Enemy = Sources.ECS.Components.Gameplay.CardTypes.Enemy;
 
 namespace Sources.Unity {
     public class CardDetailsView : View {
         public Transform CardContainer;
         public GameObject LastCardPreview;
+        public TextMeshProUGUI DescriptionText;
         public GameObject DetailsLinePrefab;
         public Transform DetailsContainer;
         public EcsStartup Startup;
@@ -29,7 +35,18 @@ namespace Sources.Unity {
             GameObject obj = Instantiate(prefab, CardContainer);
             obj.GetComponent<CardView>().FillStats(entity);
             AdjustCardViewToPreview(obj);
+            FillDescription(entity);
             LastCardPreview = obj;
+        }
+
+        private void FillDescription(EcsEntity entity) {
+            string description = "";
+            
+            if (entity.Has<Enemy>()) {
+                description = entity.Get<Enemy>().Data.Description;
+            }
+
+            DescriptionText.text = description;
         }
 
         private void AdjustCardViewToPreview(GameObject obj) {

@@ -32,7 +32,7 @@ namespace Sources.LevelGeneration {
                 case Character character:
                     entity = MakeDefaultCardEntity(position, null, character.Sprite);
                     entity.Replace(new Player { Data = character });
-                    entity.Replace(new Draggable());
+                    entity.Get<Interactive>().Draggable = true;
                     entity.Replace(new Inventory {Items = new List<Item>(10)});
 
                     entity.Replace(new Health { Value = character.Health });
@@ -87,10 +87,12 @@ namespace Sources.LevelGeneration {
 
         private EcsEntity MakeDefaultCardEntity(LevelPosition position, string name = null, string spriteDef = null) {
             EcsEntity entity = world.NewEntity();
+            entity.Replace(new Interactive {
+                Hoverable = true,
+                Clickable = true,
+                DoubleClickable = true,
+            });
             entity.Replace(new PlayableCard());
-            entity.Replace(new Hoverable());
-            entity.Replace(new Clickable());
-            entity.Replace(new DoubleClickable());
             entity.Replace(position);
             if (!string.IsNullOrEmpty(name)) {
                 entity.Replace(new Name { Value = name });

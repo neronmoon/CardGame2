@@ -19,7 +19,7 @@ namespace Sources.ECS.Movement {
             foreach (int idx in cards) {
                 EcsEntity entity = cards.GetEntity(idx);
                 runtimeData.PlayerIsDead = true;
-                entity.Del<Draggable>();
+                entity.Del<Interactive>();
             }
         }
     }

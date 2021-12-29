@@ -19,8 +19,7 @@ namespace Sources.ECS.BaseInteractions {
 
         private EcsWorld world;
 
-        private EcsFilter<Clickable, VisualObject> clickables;
-        private EcsFilter<Hoverable, VisualObject> hoverables;
+        private EcsFilter<Interactive, VisualObject> interactive;
         private EcsFilter<StepInProgress> stepInProgress;
         private Camera camera;
 
@@ -48,11 +47,14 @@ namespace Sources.ECS.BaseInteractions {
                 hits
             );
 
-            foreach (int idx in hoverables) {
-                EcsEntity entity = hoverables.GetEntity(idx);
+            foreach (int idx in interactive) {
+                if (!interactive.Get1(idx).Hoverable) {
+                    continue;
+                }
+                EcsEntity entity = interactive.GetEntity(idx);
                 bool alreadyHovered = entity.Has<Hovered>();
                 bool shouldBeHovered = !IsOverUI() && size > 0 && hits.Any(hit => {
-                    GameObject obj = hoverables.Get2(idx).Object;
+                    GameObject obj = interactive.Get2(idx).Object;
                     return hit && hit.collider.gameObject == obj;
                 });
                 if (alreadyHovered && !shouldBeHovered) {
@@ -87,11 +89,14 @@ namespace Sources.ECS.BaseInteractions {
         private void HandleClicks() {
             bool keyDown = runtimeData.Input.Primary;
 
-            foreach (int idx in clickables) {
-                EcsEntity entity = clickables.GetEntity(idx);
+            foreach (int idx in interactive) {
+                if (!interactive.Get1(idx).Clickable) {
+                    continue;
+                }
+                EcsEntity entity = interactive.GetEntity(idx);
                 bool alreadyClicked = entity.Has<Clicked>();
                 if (keyDown && entity.Has<Hovered>() && !alreadyClicked) {
-                    if (entity.Has<DoubleClickable>() && !entity.Has<DoubleClickedEvent>() && Time.time - lastClickTime <= DoubleClickTime) {
+                    if (interactive.Get1(idx).DoubleClickable && !entity.Has<DoubleClickedEvent>() && Time.time - lastClickTime <= DoubleClickTime) {
                         entity.Replace(new DoubleClickedEvent());
                     }
 
@@ -100,7 +105,7 @@ namespace Sources.ECS.BaseInteractions {
 
                 if (!keyDown && alreadyClicked) {
                     entity.Del<Clicked>();
-                    if (entity.Has<DoubleClickable>()) {
+                    if (interactive.Get1(idx).DoubleClickable) {
                         lastClickTime = Time.time;
                     }
                 }
