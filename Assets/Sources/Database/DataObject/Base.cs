@@ -4,6 +4,7 @@ using SQLite;
 namespace Sources.Database.DataObject {
     public interface ILevelDefinition {
         public string Name { get; set; }
+        public string Description { get; set; }
         public int Length { get; set; }
         public int Width { get; set; }
     }
@@ -15,6 +16,8 @@ namespace Sources.Database.DataObject {
     public abstract class CardsContainer<T> : DataObject<T>, ILevelDefinition, IDataObject where T : IDataObject, new() {
         [Unique, NotNull]
         public string Name { get; set; }
+
+        public string Description { get; set; }
 
         [NotNull]
         public int Length { get; set; }

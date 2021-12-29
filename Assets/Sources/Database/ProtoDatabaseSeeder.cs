@@ -42,7 +42,7 @@ namespace Sources.Database {
             conn.InsertAll(GetItems(sprites + "Items/"));
 
             conn.InsertAll(new[] {
-                new Character { Name = "Player", Health = 50, Sprite = monsters + "monster (277)" }
+                new Character { Name = "Player", Health = 50, Sprite = monsters + "monster (277)", Description = "This is you." }
             });
             Level level = new Level {
                 Name = "Infinite recursion",
@@ -50,7 +50,8 @@ namespace Sources.Database {
                 Width = 3,
                 Difficulty = 1,
                 Sprite = sprites + "Portal",
-                SubLevelCount = 3
+                SubLevelCount = 3,
+                Description = "Infinite level, that you cannot escape!"
             };
             conn.InsertAll(new[] { level });
 
@@ -134,6 +135,7 @@ namespace Sources.Database {
                     Type = ItemType.Equippable,
                     Sprite = items + "Misc/Golden Coin",
                     Count = 1,
+                    Description = "Just gold coin. Spend it wisely"
                 },
                 new Item {
                     Name = "Coins",
@@ -141,6 +143,7 @@ namespace Sources.Database {
                     Type = ItemType.Equippable,
                     Sprite = items + "Misc/Golden Coins",
                     Count = 3,
+                    Description = "Bag of coins"
                 },
                 new Item {
                     Name = "Map",
@@ -149,6 +152,7 @@ namespace Sources.Database {
                     Sprite = items + "Misc/Map",
                     Count = 1,
                     ShowInInventory = true,
+                    Description = "You know, a map. Shows you da way"
                 },
                 new Item {
                     Name = "Resurrection stone",
@@ -160,6 +164,7 @@ namespace Sources.Database {
                     Sprite = items + "Misc/Rune Stone",
                     Count = 1,
                     ShowInInventory = true,
+                    Description = "Prevents you from death"
                 },
                 new Item {
                     Name = "Minor health potion",
@@ -170,6 +175,7 @@ namespace Sources.Database {
                     Type = ItemType.Consumable,
                     Sprite = items + "Potion/Red Potion",
                     Count = 1,
+                    Description = "Delicious orange juice that heals you"
                 },
                 new Item {
                     Name = "Health potion",
@@ -180,6 +186,7 @@ namespace Sources.Database {
                     Type = ItemType.Consumable,
                     Sprite = items + "Potion/Red Potion 2",
                     Count = 1,
+                    Description = "One fucking liter of health potion. So strong, that makes you cry"
                 },
             };
         }
@@ -194,31 +201,155 @@ namespace Sources.Database {
 
         private static IEnumerable<Chest> GetChests(string items) {
             return new[] {
-                new Chest { Name = "Small bag", Length = 1, Width = 3, Sprite = items + "Equipment/Bag", Strongness = Strongness.Easy },
-                new Chest { Name = "Chest", Length = 2, Width = 3, Sprite = items + "Misc/Chest", Strongness = Strongness.Hard },
+                new Chest {
+                    Name = "Small bag",
+                    Length = 1,
+                    Width = 3,
+                    Sprite = items + "Equipment/Bag",
+                    Strongness = Strongness.Easy,
+                    Description = "Forgotten bag. May contain some gold or helpful stuff"
+                },
+                new Chest {
+                    Name = "Chest",
+                    Length = 2,
+                    Width = 3,
+                    Sprite = items + "Misc/Chest",
+                    Strongness = Strongness.Hard,
+                    Description = "Just chest"
+                },
             };
         }
 
         private static IEnumerable<Enemy> GetEnemies(string monsters) {
             return new[] {
-                new Enemy { Name = "Bird", Health = 2, Strongness = Strongness.Easy, Sprite = monsters + "monster (24)", IsAggressive = true },
-                new Enemy { Name = "Ghost", Health = 3, Strongness = Strongness.Easy, Sprite = monsters + "monster (103)", IsAggressive = true },
-                new Enemy { Name = "Training Stand", Health = 1, Strongness = Strongness.Easy },
-                new Enemy { Name = "Wolf", Health = 3, Strongness = Strongness.Easy, Sprite = monsters + "monster (49)", IsAggressive = true },
-                new Enemy { Name = "Octopus", Health = 4, Strongness = Strongness.Easy, Sprite = monsters + "monster (141)", IsAggressive = true },
-                new Enemy { Name = "Orc", Health = 5, Strongness = Strongness.Easy, Sprite = monsters + "monster (110)", IsAggressive = true },
+                new Enemy {
+                    Name = "Bird",
+                    Health = 2,
+                    Strongness = Strongness.Easy,
+                    Sprite = monsters + "monster (24)",
+                    IsAggressive = true,
+                    Description = "Bird, that makes you cry"
+                },
+                new Enemy {
+                    Name = "Ghost",
+                    Health = 3,
+                    Strongness = Strongness.Easy,
+                    Sprite = monsters + "monster (103)",
+                    IsAggressive = true,
+                    Description = "This is ghost of Jared Bollor that used to be fucking aggressive abuser. Kill it now!"
+                },
+                new Enemy {
+                    Name = "Training Stand",
+                    Health = 1,
+                    Strongness = Strongness.Easy,
+                    Description = "Wooden thing that you use to practice"
+                },
+                new Enemy {
+                    Name = "Wolf",
+                    Health = 3,
+                    Strongness = Strongness.Easy,
+                    Sprite = monsters + "monster (49)",
+                    IsAggressive = true,
+                    Description = "Woooof! Skinny angry wolf. Must be hungry"
+                },
+                new Enemy {
+                    Name = "Octopus",
+                    Health = 4,
+                    Strongness = Strongness.Easy,
+                    Sprite = monsters + "monster (141)",
+                    IsAggressive = true,
+                    Description = "Wow! Octopus! Never thought they can live in recursion levels. mAgIc!!1"
+                },
+                new Enemy {
+                    Name = "Orc",
+                    Health = 5,
+                    Strongness = Strongness.Easy,
+                    Sprite = monsters + "monster (110)",
+                    IsAggressive = true,
+                    Description = "Just simple orc. A small one."
+                },
 
-                new Enemy { Name = "Stump", Health = 7, Strongness = Strongness.Hard, Sprite = monsters + "monster (267)", IsAggressive = true },
-                new Enemy { Name = "Skeleton", Health = 6, Strongness = Strongness.Hard, Sprite = monsters + "monster (240)", IsAggressive = true },
-                new Enemy { Name = "Fire Creature", Health = 9, Strongness = Strongness.Hard, Sprite = monsters + "monster (118)", IsAggressive = true },
-                new Enemy { Name = "Cat and Snake", Health = 6, Strongness = Strongness.Hard, Sprite = monsters + "monster (174)", IsAggressive = true },
-                new Enemy { Name = "Lizard", Health = 10, Strongness = Strongness.Hard, Sprite = monsters + "monster (150)", IsAggressive = true },
-                new Enemy { Name = "Mamonth", Health = 11, Strongness = Strongness.Hard, Sprite = monsters + "monster (155)", IsAggressive = true },
-                new Enemy { Name = "Turtle", Health = 8, Strongness = Strongness.Hard, Sprite = monsters + "monster (269)", IsAggressive = true },
+                new Enemy {
+                    Name = "Stump",
+                    Health = 7,
+                    Strongness = Strongness.Hard,
+                    Sprite = monsters + "monster (267)",
+                    IsAggressive = true,
+                    Description = "Dead tree, that want you to be dead too"
+                },
+                new Enemy {
+                    Name = "Skeleton",
+                    Health = 6,
+                    Strongness = Strongness.Hard,
+                    Sprite = monsters + "monster (240)",
+                    IsAggressive = true,
+                    Description = "Bunch of calcium, its good for you teeth"
+                },
+                new Enemy {
+                    Name = "Fire Creature",
+                    Health = 9,
+                    Strongness = Strongness.Hard,
+                    Sprite = monsters + "monster (118)",
+                    IsAggressive = true,
+                    Description = "It's warm. Too warm"
+                },
+                new Enemy {
+                    Name = "Cat and Snake",
+                    Health = 6,
+                    Strongness = Strongness.Hard,
+                    Sprite = monsters + "monster (174)",
+                    IsAggressive = true,
+                    Description = "Strange couple. Did you know that cats should be afraid of snakes? So this one does not"
+                },
+                new Enemy {
+                    Name = "Lizard",
+                    Health = 10,
+                    Strongness = Strongness.Hard,
+                    Sprite = monsters + "monster (150)",
+                    IsAggressive = true,
+                    Description = "A lizard"
+                },
+                new Enemy {
+                    Name = "Mamonth",
+                    Health = 11,
+                    Strongness = Strongness.Hard,
+                    Sprite = monsters + "monster (155)",
+                    IsAggressive = true,
+                    Description = "A big elephant. Thought they are all dead"
+                },
+                new Enemy {
+                    Name = "Turtle",
+                    Health = 8,
+                    Strongness = Strongness.Hard,
+                    Sprite = monsters + "monster (269)",
+                    IsAggressive = true, 
+                    Description = "Not nice turtle"
+                },
 
-                new Enemy { Name = "Black Knight", Health = 12, Strongness = Strongness.Boss, Sprite = monsters + "monster (277)", IsAggressive = true },
-                new Enemy { Name = "Medusa", Health = 13, Strongness = Strongness.Boss, Sprite = monsters + "monster (255)", IsAggressive = true },
-                new Enemy { Name = "Dragon", Health = 14, Strongness = Strongness.Boss, Sprite = monsters + "monster (9)", IsAggressive = true },
+                new Enemy {
+                    Name = "Black Knight",
+                    Health = 12,
+                    Strongness = Strongness.Boss,
+                    Sprite = monsters + "monster (277)",
+                    IsAggressive = true,
+                    Description = "This guy looks scary!"
+                },
+                new Enemy {
+                    Name = "Medusa",
+                    Health = 13,
+                    Strongness = Strongness.Boss,
+                    Sprite = monsters + "monster (255)",
+                    IsAggressive = true,
+                    Description = "Bunch of snakes and a skull"
+                },
+                new Enemy {
+                    Name = "Dragon",
+                    Health = 14,
+                    Strongness = Strongness.Boss,
+                    Sprite = monsters + "monster (9)",
+                    IsAggressive = true,
+                    Description = "Elder dragon that loves money! Euros mostly"
+                },
             };
         }
 
