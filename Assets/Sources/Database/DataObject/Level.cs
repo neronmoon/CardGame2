@@ -8,7 +8,9 @@ namespace Sources.Database.DataObject {
         public int SubLevelCount { get; set; }
 
         public string Sprite { get; set; }
-        
+
+        public string Description { get; set; }
+
         [Ignore]
         public Item RewardItem {
             get => RewardItemRaw != default ? Item.First(x => x.Id == RewardItemRaw) : null;

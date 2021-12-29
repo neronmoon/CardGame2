@@ -17,6 +17,8 @@ namespace Sources.Database.DataObject {
 
         [NotNull]
         public Strongness Strongness { get; set; }
+        
+        public string Description { get; set; }
 
         public void IncreaseValues(float multiplier) {
             Value *= multiplier;

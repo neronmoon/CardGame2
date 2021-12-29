@@ -7,6 +7,8 @@ namespace Sources.Database.DataObject {
     public class Enemy : DataObject<Enemy>, IDataObject, ICanIncreaseValues {
         [NotNull]
         public string Name { get; set; }
+        
+        public string Description { get; set; }
 
         [NotNull]
         public int Health { get; set; }
