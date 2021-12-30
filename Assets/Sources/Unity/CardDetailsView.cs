@@ -1,10 +1,12 @@
 using Leopotam.Ecs;
 using NaughtyAttributes;
 using Sources.Database.DataObject;
+using Sources.ECS;
 using Sources.ECS.Components.Gameplay;
 using Sources.ECS.Components.Gameplay.CardTypes;
 using Sources.ECS.Components.Gameplay.Perks;
 using Sources.ECS.Extensions;
+using Sources.ECS.GameplayActions.Components;
 using Sources.Unity.Support;
 using Sources.Unity.UI;
 using TMPro;
@@ -26,6 +28,12 @@ namespace Sources.Unity {
 
         [Foldout("Sprites")]
         public Sprite AggressiveSprite;
+
+        [Foldout("Sprites")]
+        public Sprite HealSprite;
+
+        [Foldout("Sprites")]
+        public Sprite ItemSprite;
 
         public void SetCard(EcsEntity entity) {
             if (LastCardPreview != null) {
@@ -59,16 +67,29 @@ namespace Sources.Unity {
 
                 if (entity.Has<Enemy>()) {
                     if (entity.Has<Health>()) {
-                        DetailsLineView view = Instantiate(DetailsLinePrefab, DetailsContainer).GetComponent<DetailsLineView>();
-                        view.Fill(DamageSprite, $"Deals {entity.Get<Health>().Value} damage");
+                        MakeLine(DamageSprite, $"Deals {entity.Get<Health>().Value} damage");
                     }
 
                     if (entity.Has<Aggressive>()) {
-                        DetailsLineView view = Instantiate(DetailsLinePrefab, DetailsContainer).GetComponent<DetailsLineView>();
-                        view.Fill(AggressiveSprite, $"Attacks you first");
+                        MakeLine(AggressiveSprite, "Attacks you first");
+                    }
+                } else if (entity.Has<ConsumableItem>() || entity.Has<EquippableItem>()) {
+                    Item item = entity.Has<ConsumableItem>() ? entity.Get<ConsumableItem>().Data : entity.Get<EquippableItem>().Data;
+                    ItemEffectsProcessor processor = new();
+                    MakeLine(ItemSprite, entity.Has<ConsumableItem>() ? "This item will be applied to you instantly" : "This item can be used later");
+                    object[] components = processor.ProcessItem(item, entity);
+                    foreach (object component in components) {
+                        if (component is Heal heal) {
+                            MakeLine(HealSprite, $"Heals you by {heal.Amount} hp");
+                        }
                     }
                 }
             }
+        }
+
+        private void MakeLine(Sprite sprite, string text) {
+            DetailsLineView view = Instantiate(DetailsLinePrefab, DetailsContainer).GetComponent<DetailsLineView>();
+            view.Fill(sprite, text);
         }
 
         private void FillDescription(EcsEntity entity) {
