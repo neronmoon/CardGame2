@@ -36,7 +36,8 @@
 - [x] Fix drop animation 
 - [x] Implement level map display
 - [x] Inventory items effects
-- [ ] Implement card description UI 
+- [x] Implement card description UI
+- [ ] Implement level maps according to story
 - [ ] Implement some items
 - [ ] Implement inventory UI
 - [ ] Implement quests
